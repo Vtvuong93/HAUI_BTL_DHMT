@@ -23,8 +23,8 @@ Camera camera;
 // Biến quản lý trạng thái
 bool keys[256]; 
 
-const int FIXED_W = 1280;
-const int FIXED_H = 800;
+const int FIXED_W = 1440;
+const int FIXED_H = 900;
 bool isFullScrn = false;
 bool needToResetPos = false;
 
@@ -77,11 +77,11 @@ void updateCameraMovement() {
 
     // Phím W
     if (GetAsyncKeyState('W') & 0x8000)
-        camera.position += currentSpeed * front * 1.15f;
+        camera.position += currentSpeed * front;
 
     // Phím S
     if (GetAsyncKeyState('S') & 0x8000)
-        camera.position -= currentSpeed * front * 1.15f;
+        camera.position -= currentSpeed * front;
 
     // Phím A
     if (GetAsyncKeyState('A') & 0x8000)
@@ -218,7 +218,7 @@ int main(int argc, char** argv) {
     glutInitWindowSize(FIXED_W, FIXED_H);
     glutInitWindowPosition(posX, posY);
 
-    glutCreateWindow("HAUI - BÀI TẬP LỚN - ĐỒ HOẠ MÁY TÍNH - GROUP");
+    glutCreateWindow("HAUI - BAI TAP LON - DO HOA MAY TINH - GROUP");
 
     // GLEW
     if (glewInit() != GLEW_OK) {
