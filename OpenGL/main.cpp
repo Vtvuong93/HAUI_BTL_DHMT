@@ -255,18 +255,17 @@ int main(int argc, char** argv) {
 
     // ================== TẦNG 1 – PHÒNG KHÁCH ==================
 
+    // ===== THIẾT LẬP VỊ TRÍ CAMERA BAN ĐẦU ===== 
+    camera.position = vec3(0.0f, 2.0f, 30.0f); // X (giữa), Y (cao tầm mắt người)
 
     // ===== CALLBACK =====
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
 
-    // Đăng ký cả nhấn và thả
-    glutKeyboardFunc(keyboardDown);
-    glutKeyboardUpFunc(keyboardUp);
-    // Đăng ký hàm xử lý F11
-    glutSpecialFunc(specialInput);
-
-    glutPassiveMotionFunc(mouseMotion);
+	glutKeyboardFunc(keyboardDown); // Nhấn phím
+	glutKeyboardUpFunc(keyboardUp); // Thả phím
+    glutSpecialFunc(specialInput); //F1
+	glutPassiveMotionFunc(mouseMotion); // Chuột di chuyển
 
     glutSetCursor(GLUT_CURSOR_NONE);
     std::cout << "Entering GLUT main loop..." << std::endl;
