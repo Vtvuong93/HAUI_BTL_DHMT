@@ -1,12 +1,6 @@
 ﻿// ================== THƯ VIỆN TỔNG ==================
 #include "Globals.h"
 
-// ================== CÁC OBJECT TRONG SCENE ==================
-#include "house.h"
-#include "HouseModern.h"
-#include "HouseModern3F.h"
-#include "Road.h"
-
 // ================== GLOBAL VARIABLES ==================
 mat4 model = mat4(1.0f);   // Ma trận model gốc
 Scene* scene = nullptr;
@@ -227,27 +221,12 @@ int main(int argc, char** argv) {
 
     // ================== KHUNG CẢNH ==================
     scene->addShape(new House());
-    scene->addShape(
-        new TransformShape(
-            Translate(15.0f, 0.0f, 0.0f),
-            new HouseModern()
-        )
-    );
-    scene->addShape(
-        new TransformShape(
-            Translate(-15.0f, 0.0f, 0.0f),
-            new HouseModern3F()
-        )
-    );
-    scene->addShape(
-        new TransformShape(
-            Translate(0.0f, -0.25f, 30.0f) *
-            RotateY(90.0f),
-            new RoadWithTrees()
-        )
-    );
+    scene->addShape(new TransformShape(Translate(15.0f, 0.0f, 0.0f), new HouseModern()));
+    scene->addShape(new TransformShape(Translate(-15.0f, 0.0f, 0.0f), new HouseModern3F()));
+    scene->addShape(new TransformShape(Translate(0.0f, -0.25f, 30.0f) *RotateY(90.0f),new RoadWithTrees()));
 
     // ================== TẦNG 1 – PHÒNG KHÁCH ==================
+
 
     // ===== CAMERA SETUP ===== 
     camera.position = vec3(0.0f, 2.0f, 30.0f); // X (giữa), Y (cao tầm mắt người)
