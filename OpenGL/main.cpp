@@ -19,8 +19,14 @@
 mat4 model = mat4(1.0f);   // Ma trận model gốc
 Scene* scene = nullptr;
 Camera camera;
-bool keys[256]; // Mảng lưu trạng thái các phím (Đang nhấn hay đã thả).
-bool isSprinting = false;
+
+// Biến quản lý trạng thái
+bool keys[256]; 
+
+const int FIXED_W = 1280;
+const int FIXED_H = 800;
+bool isFullScrn = false;
+bool needToResetPos = false;
 
 // ================== SHADER ==================
 void shaderSetup() {
@@ -71,19 +77,19 @@ void updateCameraMovement() {
 
     // Phím W
     if (GetAsyncKeyState('W') & 0x8000)
-        camera.position += currentSpeed * front;
+        camera.position += currentSpeed * front * 1.15f;
 
     // Phím S
     if (GetAsyncKeyState('S') & 0x8000)
-        camera.position -= currentSpeed * front;
+        camera.position -= currentSpeed * front * 1.15f;
 
     // Phím A
     if (GetAsyncKeyState('A') & 0x8000)
-        camera.position -= currentSpeed * right;
+        camera.position -= currentSpeed * right * 0.8f;
 
     // Phím D
     if (GetAsyncKeyState('D') & 0x8000)
-        camera.position += currentSpeed * right;
+        camera.position += currentSpeed * right * 0.8f;
 
     // Phím Space (Lên) - VK_SPACE là mã phím Space
     if (GetAsyncKeyState(VK_SPACE) & 0x8000)
@@ -96,8 +102,18 @@ void updateCameraMovement() {
 
 // ================== DISPLAY ==================
 void display() {
+    // Cập nhật di chuyển
 	updateCameraMovement();
 
+    // Xử lý logic Reset vị trí cửa sổ (Delay 1 frame)
+    if (needToResetPos) {
+        int screenW = glutGet(GLUT_SCREEN_WIDTH);
+        int screenH = glutGet(GLUT_SCREEN_HEIGHT);
+        glutPositionWindow((screenW - FIXED_W) / 2, (screenH - FIXED_H) / 2);
+        needToResetPos = false; // Tắt cờ sau khi đã xử lý
+    }
+
+    // Vẽ hình
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // View
@@ -126,7 +142,6 @@ void display() {
 // ================== RESHAPE ==================
 void reshape(int width, int height) {
     glViewport(0, 0, width, height);
-    glutPostRedisplay();
 }
 
 // ================== KEYBOARD ==================
@@ -167,6 +182,23 @@ void mouseMotion(int x, int y) {
     glutWarpPointer(cx, cy);
 }
 
+// === HÀM XỬ LÝ PHÍM CHỨC NĂNG (F11) ===
+void specialInput(int key, int x, int y) {
+    if (key == GLUT_KEY_F11) {
+        isFullScrn = !isFullScrn;
+
+        if (isFullScrn) {
+            glutFullScreen();
+        }
+        else {
+            //Thay đổi kích thước ngay lập tức
+            glutReshapeWindow(FIXED_W, FIXED_H);
+			//Đặt cờ để reset vị trí trong hàm display
+            needToResetPos = true;
+        }
+    }
+}
+
 
 // ================== MAIN ==================
 int main(int argc, char** argv) {
@@ -174,8 +206,19 @@ int main(int argc, char** argv) {
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-    glutInitWindowSize(1000, 1000);
-    glutCreateWindow("Blinn-Phong Table - Hierarchical Model");
+
+    // --- CĂN GIỮA MÀN HÌNH LÚC KHỞI ĐỘNG ---
+    int screenW = glutGet(GLUT_SCREEN_WIDTH);
+    int screenH = glutGet(GLUT_SCREEN_HEIGHT);
+
+    // Tính toán vị trí dựa trên kích thước FIXED (1280x800)
+    int posX = (screenW - FIXED_W) / 2;
+    int posY = (screenH - FIXED_H) / 2;
+
+    glutInitWindowSize(FIXED_W, FIXED_H);
+    glutInitWindowPosition(posX, posY);
+
+    glutCreateWindow("HAUI - BÀI TẬP LỚN - ĐỒ HOẠ MÁY TÍNH - GROUP");
 
     // GLEW
     if (glewInit() != GLEW_OK) {
@@ -220,11 +263,12 @@ int main(int argc, char** argv) {
     // Đăng ký cả nhấn và thả
     glutKeyboardFunc(keyboardDown);
     glutKeyboardUpFunc(keyboardUp);
+    // Đăng ký hàm xử lý F11
+    glutSpecialFunc(specialInput);
 
     glutPassiveMotionFunc(mouseMotion);
 
     glutSetCursor(GLUT_CURSOR_NONE);
-
     std::cout << "Entering GLUT main loop..." << std::endl;
     glutMainLoop();
 
