@@ -98,6 +98,13 @@ namespace Materials {
         color4(0.20f, 0.30f, 0.20f, 1.0f),
         24.0f
     };
+    // ================== TOY SHOP RED ==================
+    const Material RedToy = {
+        color4(0.3, 0.0, 0.0, 1.0),    // ambient (đỏ đậm)
+        color4(0.9, 0.1, 0.1, 1.0),    // diffuse (đỏ tươi)
+        color4(0.6, 0.6, 0.6, 1.0),    // specular (độ bóng cao)
+        100.0f                         // độ sắc nét của ánh sáng phản chiếu
+    };
 
     const Material Sidewalk = {
         color4(0.55f, 0.55f, 0.5f, 1.0f),   // ambient

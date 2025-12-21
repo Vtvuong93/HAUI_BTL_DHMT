@@ -28,6 +28,9 @@
     <Filter Include="Source Files\objects\NguyenSyChinh">
       <UniqueIdentifier>{dc53c1f1-f719-49db-91c4-47e35d9ce0ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\objects\NguyenQuocDat">
+      <UniqueIdentifier>{609c780e-2869-42b2-9bcb-f95bba44045c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -83,6 +86,15 @@
     </ClCompile>
     <ClCompile Include="Tree.cpp">
       <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClCompile>
+    <ClCompile Include="BienHieu.cpp">
+      <Filter>Source Files\objects\NguyenQuocDat</Filter>
+    </ClCompile>
+    <ClCompile Include="PosterQuangCao.cpp">
+      <Filter>Source Files\objects\NguyenQuocDat</Filter>
+    </ClCompile>
+    <ClCompile Include="DenChieuSang.cpp">
+      <Filter>Source Files\objects\NguyenQuocDat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -159,6 +171,15 @@
     </ClInclude>
     <ClInclude Include="Tree.h">
       <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClInclude>
+    <ClInclude Include="BienHieu.h">
+      <Filter>Source Files\objects\NguyenQuocDat</Filter>
+    </ClInclude>
+    <ClInclude Include="PosterQuangCao.h">
+      <Filter>Source Files\objects\NguyenQuocDat</Filter>
+    </ClInclude>
+    <ClInclude Include="DenChieuSang.h">
+      <Filter>Source Files\objects\NguyenQuocDat</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

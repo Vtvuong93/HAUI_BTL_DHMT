@@ -124,6 +124,7 @@
     <ClCompile Include="Cone.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Cylinder.cpp" />
+    <ClCompile Include="DenChieuSang.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="House.cpp" />
     <ClCompile Include="HouseModern.cpp" />
@@ -133,6 +134,8 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Road.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="BienHieu.cpp" />
+    <ClCompile Include="PosterQuangCao.cpp" />
     <ClCompile Include="Stair.cpp" />
     <ClCompile Include="TransformShape.cpp" />
     <ClCompile Include="Tree.cpp" />
@@ -150,7 +153,10 @@
     <ClInclude Include="Cone.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Cylinder.h" />
+    <ClInclude Include="DenChieuSang.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="BienHieu.h" />
+    <ClInclude Include="PosterQuangCao.h" />
     <ClInclude Include="House.h" />
     <ClInclude Include="HouseModern.h" />
     <ClInclude Include="HouseModern3F.h" />
