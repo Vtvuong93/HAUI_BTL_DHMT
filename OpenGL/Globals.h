@@ -19,6 +19,9 @@
 #include "HouseModern3F.h"
 #include "Road.h"
 
+#include "Furniture_Vuong.h"
+#include "Toys_Vuong.h"
+
 // ================== BIẾN TOÀN CỤC ==================
 extern GLuint program;          // ID của shader program (tạo bởi InitShader)
 

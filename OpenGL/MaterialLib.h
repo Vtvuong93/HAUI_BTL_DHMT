@@ -61,10 +61,10 @@ namespace Materials {
 
     
     const Material ConcreteSage = {
-    color4(0.20, 0.24, 0.22, 1.0),
-    color4(0.55, 0.65, 0.60, 1.0),   // xanh xám nhạt
-    color4(0.12, 0.14, 0.13, 1.0),
-    20.0f
+        color4(0.20, 0.24, 0.22, 1.0),
+        color4(0.55, 0.65, 0.60, 1.0),   // xanh xám nhạt
+        color4(0.12, 0.14, 0.13, 1.0),
+        20.0f
     };
 
     // ===== CONCRETE BLUE =====
@@ -105,4 +105,34 @@ namespace Materials {
         color4(0.2f, 0.2f, 0.2f, 1.0f),     // specular
         16.0f
     };
+
+    // ================== GLASS (KÍNH) ==================
+    const Material Glass = {
+        color4(0.1, 0.1, 0.1, 1.0),
+        color4(0.8, 0.9, 1.0, 1.0),   // Hơi xanh nhạt
+        color4(0.9, 0.9, 0.9, 1.0),
+        128.0f
+    };
+
+    // ================== FABRIC (VẢI SOFA) ==================
+    const Material FabricRed = {
+        color4(0.3, 0.05, 0.05, 1.0),
+        color4(0.8, 0.2, 0.2, 1.0),   // Đỏ đô
+        color4(0.1, 0.1, 0.1, 1.0),   // Vải ít phản quang
+        10.0f
+    };
+
+    // ================== FABRIC (VẢI XÁM) ==================
+    const Material FabricGrey = {
+        color4(0.2, 0.2, 0.2, 1.0),
+        color4(0.6, 0.6, 0.6, 1.0),
+        color4(0.1, 0.1, 0.1, 1.0),
+        10.0f
+    };
+
+    // ================== TOY COLORS ==================
+    const Material ToyRed = { color4(0.2,0,0,1), color4(0.8,0.1,0.1,1), color4(0.5,0.5,0.5,1), 32.0f };
+    const Material ToyBlue = { color4(0,0,0.2,1), color4(0.1,0.3,0.9,1), color4(0.5,0.5,0.5,1), 32.0f };
+    const Material ToyYellow = { color4(0.2,0.2,0,1), color4(0.9,0.8,0.1,1), color4(0.5,0.5,0.5,1), 32.0f };
+    const Material ToyBlack = { color4(0,0,0,1), color4(0.1,0.1,0.1,1), color4(0.3,0.3,0.3,1), 32.0f };
 }

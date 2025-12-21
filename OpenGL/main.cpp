@@ -224,10 +224,80 @@ int main(int argc, char** argv) {
     scene->addShape(new TransformShape(Translate(0.0f, -0.25f, 30.0f) *RotateY(90.0f),new RoadWithTrees()));
 
     // ================== TẦNG 1 – PHÒNG KHÁCH ==================
+    // ===== NỘI THẤT (MỚI THÊM) =====
 
+    // -- Bộ Sofa giữa nhà --
+    // Quay 180 độ để hướng ra cửa, đặt giữa phòng
+    scene->addShape(new TransformShape(
+        Translate(0.0f, 0.0f, 0.0f) * RotateY(180),
+        new Sofa()
+    ));
+
+    // -- Bàn trà trước Sofa --
+    scene->addShape(new TransformShape(
+        Translate(0.0f, 0.0f, 1.5f), // Đặt trước sofa
+        new CoffeeTable()
+    ));
+
+    // -- Kệ tàu hỏa (Sát tường bên trái) --
+    // Tường trái ở x = -5.0f (vì width nhà là 10)
+    scene->addShape(new TransformShape(
+        Translate(-4.5f, 0.0f, 0.0f) * RotateY(90), // Xoay dọc theo tường
+        new WoodShelf()
+    ));
+
+    // -- Tủ kính (Góc tường phải phía sau) --
+    scene->addShape(new TransformShape(
+        Translate(4.0f, 0.0f, -8.0f) * RotateY(-45), // Đặt góc phòng
+        new GlassCabinet()
+	));
+
+    // ===== BÀN TRƯNG BÀY GIỮA PHÒNG =====
+    // Đặt lệch một chút so với bàn trà
+    scene->addShape(new TransformShape(
+        Translate(2.5f, 0.0f, 2.0f),
+        new DisplayTable()
+    ));
+
+    // ===== ĐẶT ĐỒ CHƠI LÊN BÀN TRƯNG BÀY =====
+    // Tàu hỏa trên bàn (Y = 0.8 là chiều cao bàn + 0.05 mặt bàn)
+    scene->addShape(new TransformShape(
+        Translate(2.5f, 0.85f, 2.0f) * Scale(1.5, 1.5, 1.5), // Scale to lên chút
+        new ToyTrain()
+    ));
+    // Robot đứng cạnh tàu hỏa
+    scene->addShape(new TransformShape(
+        Translate(3.0f, 0.85f, 2.0f) * RotateY(-45),
+        new ToyRobot()
+    ));
+
+    // ===== ĐẶT ĐỒ CHƠI LÊN KỆ GỖ (WoodShelf) =====
+    // Giả sử kệ gỗ đặt ở (-4.5f, 0, 0). Mỗi tầng cao khoảng 0.5f
+    // Tầng 1: Robot
+    scene->addShape(new TransformShape(
+        Translate(-4.5f, 0.55f, 0.0f) * RotateY(90),
+        new ToyRobot()
+    ));
+    // Tầng 2: Tàu hỏa
+    scene->addShape(new TransformShape(
+        Translate(-4.5f, 1.05f, 0.0f) * RotateY(90),
+        new ToyTrain()
+    ));
+    // Tầng 3: Robot khác
+    scene->addShape(new TransformShape(
+        Translate(-4.5f, 1.55f, 0.0f) * RotateY(90),
+        new ToyRobot()
+    ));
+
+    // ===== ĐẶT ĐỒ CHƠI VÀO TỦ KÍNH (GlassCabinet) =====
+    // Tủ kính ở (4.0f, 0.0f, -8.0f)
+    scene->addShape(new TransformShape(
+        Translate(4.0f, 0.6f, -8.0f) * RotateY(-45), // Tầng giữa tủ
+        new ToyTrain()
+    ));
 
     // ===== CAMERA SETUP ===== 
-    camera.position = vec3(0.0f, 2.0f, 30.0f); // X (giữa), Y (cao tầm mắt người)
+    camera.position = vec3(0.0f, 2.0f, 0.0f); // X (giữa), Y (cao tầm mắt người)
 
     // ===== REGISTER CALLBACKS =====
     glutDisplayFunc(display);

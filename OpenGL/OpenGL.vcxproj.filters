@@ -87,6 +87,12 @@
     <ClCompile Include="Tree.cpp">
       <Filter>Source Files\objects\NguyenSyChinh</Filter>
     </ClCompile>
+    <ClCompile Include="Furniture_Vuong.cpp">
+      <Filter>Source Files\objects\VuTheVuong</Filter>
+    </ClCompile>
+    <ClCompile Include="Toys_Vuong.cpp">
+      <Filter>Source Files\objects\VuTheVuong</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="fshader1.glsl">
@@ -162,6 +168,12 @@
     </ClInclude>
     <ClInclude Include="Tree.h">
       <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClInclude>
+    <ClInclude Include="Furniture_Vuong.h">
+      <Filter>Source Files\objects\VuTheVuong</Filter>
+    </ClInclude>
+    <ClInclude Include="Toys_Vuong.h">
+      <Filter>Source Files\objects\VuTheVuong</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
