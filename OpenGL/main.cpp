@@ -129,12 +129,11 @@ void timer(int value) {
     glutTimerFunc(1000 / FPS, timer, 0); 
 }
 
-// ================== RESHAPE ==================
+// ================== CALLBACKS ==================
 void reshape(int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-// ================== KEYBOARD ==================
 // Hàm khi nhấn phím
 void keyboardDown(unsigned char key, int x, int y) {
     keys[key] = true;
@@ -146,7 +145,6 @@ void keyboardUp(unsigned char key, int x, int y) {
     keys[key] = false;
 }
 
-// ================== MOUSE ==================
 void mouseMotion(int x, int y) {
     int cx = glutGet(GLUT_WINDOW_WIDTH) / 2;
     int cy = glutGet(GLUT_WINDOW_HEIGHT) / 2;
