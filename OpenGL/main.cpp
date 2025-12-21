@@ -15,14 +15,12 @@
 #include "HouseModern3F.h"
 #include "Road.h"
 
-// ================== CAMERA ==================
-Camera camera;
-int lastX = 800, lastY = 800;
-bool firstMouse = true;
-
 // ================== GLOBAL ==================
 mat4 model = mat4(1.0f);   // Ma trận model gốc
 Scene* scene = nullptr;
+Camera camera;
+bool keys[256]; // Mảng lưu trạng thái các phím (Đang nhấn hay đã thả).
+bool isSprinting = false;
 
 // ================== SHADER ==================
 void shaderSetup() {
@@ -55,8 +53,51 @@ void shaderSetup() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
+// ================ CẬP NHẬT DI CHUYỂN CAMERA ==================
+void updateCameraMovement() {
+    vec3 front = camera.getFront();
+    vec3 right = normalize(cross(front, vec3(0.0f, 1.0f, 0.0f)));
+
+    // ===== LOGIC TỐC ĐỘ (SỬA LẠI) =====
+    float walkSpeed = 0.05f;
+    float runSpeed = 0.20f;
+
+    // Kiểm tra trực tiếp phím Shift có đang được giữ hay không
+    // 0x8000 là bit kiểm tra trạng thái "Đang nhấn"
+    bool isShiftHeld = (GetAsyncKeyState(VK_SHIFT) & 0x8000);
+
+    // Tốc độ di chuyển
+    float currentSpeed = isShiftHeld ? runSpeed : walkSpeed;
+
+    // Phím W
+    if (GetAsyncKeyState('W') & 0x8000)
+        camera.position += currentSpeed * front;
+
+    // Phím S
+    if (GetAsyncKeyState('S') & 0x8000)
+        camera.position -= currentSpeed * front;
+
+    // Phím A
+    if (GetAsyncKeyState('A') & 0x8000)
+        camera.position -= currentSpeed * right;
+
+    // Phím D
+    if (GetAsyncKeyState('D') & 0x8000)
+        camera.position += currentSpeed * right;
+
+    // Phím Space (Lên) - VK_SPACE là mã phím Space
+    if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+        camera.position.y += currentSpeed * 0.5f;
+
+    // Phím C (Xuống)
+    if (GetAsyncKeyState('C') & 0x8000)
+        camera.position.y -= currentSpeed *0.5f;
+}
+
 // ================== DISPLAY ==================
 void display() {
+	updateCameraMovement();
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // View
@@ -77,6 +118,9 @@ void display() {
         scene->draw(model);
 
     glutSwapBuffers();
+
+    // QUAN TRỌNG: Yêu cầu vẽ lại ngay lập tức để animation mượt
+    glutPostRedisplay();
 }
 
 // ================== RESHAPE ==================
@@ -86,62 +130,41 @@ void reshape(int width, int height) {
 }
 
 // ================== KEYBOARD ==================
-void keyboard(unsigned char key, int, int) {
-    vec3 front = camera.getFront();
-    vec3 right = normalize(cross(front, vec3(0.0f, 1.0f, 0.0f)));
+// Hàm khi nhấn phím
+void keyboardDown(unsigned char key, int x, int y) {
+    keys[key] = true;
+    if (key == 27) exit(0); // ESC thoát
+}
 
-    switch (key) {
-    case 'w': camera.position += camera.speed * front; break;
-    case 's': camera.position -= camera.speed * front; break;
-    case 'a': camera.position -= camera.speed * right; break;
-    case 'd': camera.position += camera.speed * right; break;
-
-    case ' ': camera.position.y += camera.speed; break;
-    case 'c': camera.position.y -= camera.speed; break;
-
-    case 27: exit(EXIT_SUCCESS); // ESC
-    }
-
-    glutPostRedisplay();
+// Hàm khi thả phím 
+void keyboardUp(unsigned char key, int x, int y) {
+    keys[key] = false;
 }
 
 // ================== MOUSE ==================
 void mouseMotion(int x, int y) {
-    if (firstMouse) {
-        lastX = x;
-        lastY = y;
-        firstMouse = false;
-    }
+    int cx = glutGet(GLUT_WINDOW_WIDTH) / 2;
+    int cy = glutGet(GLUT_WINDOW_HEIGHT) / 2;
 
-    float dx = (float)(x - lastX);
-    float dy = (float)(lastY - y); // đảo trục Y
+    // Nếu vị trí chuột chính là tâm (do WarpPointer gây ra), bỏ qua không tính toán
+    if (x == cx && y == cy) return;
 
-    lastX = x;
-    lastY = y;
+    float dx = (float)(x - cx); // Tính toán so với tâm màn hình luôn
+    float dy = (float)(cy - y); // Đảo trục Y
 
     dx *= camera.sensitivity;
     dy *= camera.sensitivity;
 
-    // Chuột trái/phải → quay ngang (quay ra sau)
     camera.yaw += dx;
-
-    // Chuột lên/xuống → ngẩng / cúi
     camera.pitch += dy;
 
-    // ❗ Giới hạn pitch – KHÔNG cho lật
     if (camera.pitch > 89.0f)  camera.pitch = 89.0f;
     if (camera.pitch < -89.0f) camera.pitch = -89.0f;
 
-    // CẬP NHẬT vector camera
     camera.updateCameraVectors();
 
-    glutPostRedisplay();
-    int cx = glutGet(GLUT_WINDOW_WIDTH) / 2;
-    int cy = glutGet(GLUT_WINDOW_HEIGHT) / 2;
-
+    // Đưa chuột về lại tâm
     glutWarpPointer(cx, cy);
-    lastX = cx;
-    lastY = cy;
 }
 
 
@@ -151,7 +174,7 @@ int main(int argc, char** argv) {
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
-    glutInitWindowSize(800, 600);
+    glutInitWindowSize(1000, 1000);
     glutCreateWindow("Blinn-Phong Table - Hierarchical Model");
 
     // GLEW
@@ -165,7 +188,7 @@ int main(int argc, char** argv) {
     // ===== SCENE =====
     scene = new Scene();
 
-    // ================== NHÀ ==================
+    // ================== KHUNG CẢNH ==================
     scene->addShape(new House());
     scene->addShape(
         new TransformShape(
@@ -193,7 +216,11 @@ int main(int argc, char** argv) {
     // ===== CALLBACK =====
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
-    glutKeyboardFunc(keyboard);
+
+    // Đăng ký cả nhấn và thả
+    glutKeyboardFunc(keyboardDown);
+    glutKeyboardUpFunc(keyboardUp);
+
     glutPassiveMotionFunc(mouseMotion);
 
     glutSetCursor(GLUT_CURSOR_NONE);
