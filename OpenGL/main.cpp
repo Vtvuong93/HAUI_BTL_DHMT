@@ -73,8 +73,7 @@ void display() {
     // Model gốc
     glUniformMatrix4fv(model_loc, 1, GL_TRUE, model);
 
-    if (scene)
-        scene->draw(model);
+    if (scene) scene->draw(model);
 
     glutSwapBuffers();
 }
@@ -84,6 +83,7 @@ void reshape(int width, int height) {
     glViewport(0, 0, width, height);
     glutPostRedisplay();
 }
+
 
 // ================== KEYBOARD ==================
 void keyboard(unsigned char key, int, int) {
@@ -98,10 +98,10 @@ void keyboard(unsigned char key, int, int) {
 
     case ' ': camera.position.y += camera.speed; break;
     case 'c': camera.position.y -= camera.speed; break;
-
+    case 'q': if (!(rolledDoor >= 1.0f))  rolledDoor += 0.05f; break;
+    case 'Q': if (!(rolledDoor <= 0.0f)) rolledDoor -= 0.05f; break;
     case 27: exit(EXIT_SUCCESS); // ESC
     }
-
     glutPostRedisplay();
 }
 
@@ -152,6 +152,7 @@ int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
     glutInitWindowSize(800, 600);
+    glutInitWindowPosition(100, 150);
     glutCreateWindow("Blinn-Phong Table - Hierarchical Model");
 
     // GLEW

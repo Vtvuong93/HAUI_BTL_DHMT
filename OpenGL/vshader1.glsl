@@ -38,6 +38,5 @@ void main()
 	color.a = 1.0;
 
     gl_Position = Projection * View * Model * vPosition/vPosition.w;
-		
 }
 //

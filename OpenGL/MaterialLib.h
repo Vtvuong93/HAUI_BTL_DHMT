@@ -105,4 +105,10 @@ namespace Materials {
         color4(0.2f, 0.2f, 0.2f, 1.0f),     // specular
         16.0f
     };
+    const Material Glass = {
+        color4(0.1f, 0.1f, 0.1f, 1.0f),   // ambient (màu gần trong suốt)
+        color4(0.9f, 0.9f, 0.9f, 0.3f),   // diffuse (màu gần như trong suốt với độ mờ nhẹ)
+        color4(1.0f, 1.0f, 1.0f, 1.0f),   // specular (phản chiếu sáng mạnh)
+        128.0f                            // Shininess (giá trị cao, giúp tạo độ bóng cho kính)
+    };
 }
