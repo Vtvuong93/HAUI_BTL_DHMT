@@ -5,8 +5,6 @@
 #include "Angel.h"
 #include "Globals.h"
 
-#include "TransformShape.h"
-
 #include "Scene.h"
 #include "camera.h"
 
@@ -15,11 +13,9 @@
 #include "HouseModern3F.h"
 #include "Road.h"
 
-
-#include "BienHieu.h"
-#include "PosterQuangCao.h"
-#include "DenChieuSang.h"
-
+#include "ToyTrain.h"
+#include "ToyTrain1.h"
+#include "CycleRail.h"
 // ================== CAMERA ==================
 Camera camera;
 int lastX = 800, lastY = 800;
@@ -103,7 +99,10 @@ void keyboard(unsigned char key, int, int) {
 
     case ' ': camera.position.y += camera.speed; break;
     case 'c': camera.position.y -= camera.speed; break;
-
+    case 'o':   // mở
+        spin += 0.05f;
+        if (spin > 0.4f) spin = 0.4f;
+        break;
     case 27: exit(EXIT_SUCCESS); // ESC
     }
 
@@ -193,49 +192,26 @@ int main(int argc, char** argv) {
     );
 
     // ================== TẦNG 1 – PHÒNG KHÁCH ==================
-    // Biển hiệu
     scene->addShape(
         new TransformShape(
-            Translate(0.0f, 4.5f, 10.2f), // Tọa độ X=0 (theo nhà), Y=4.5 (tầng 2), Z=10.2 (mặt trước tường)
-            new BienHieu()
-        )
-    );
-    // Poster Quảng cáo Tàu hỏa 
-    scene->addShape(
-        new TransformShape(
-            Translate(3.5f, 4.0f, 10.2f) * Scale(0.8f, 0.8f, 1.0f),
-            new PosterQuangCao()
+            Translate(0.0f, 6.0f + 0.15f, 5.0f),
+            new ToyTrain(0.2f)
         )
     );
     scene->addShape(
         new TransformShape(
-            Translate(-3.5f, 4.0f, 10.2f) * Scale(0.8f, 0.8f, 1.0f),
-            new PosterQuangCao()
+            Translate(0.0f, 6.0f + 0.1f, 5.0f),
+            new CycleRail(3.0f, 100)
         )
     );
-    // Gắn đèn soi vào biển hiệu TOY
-    scene->addShape(new TransformShape(
-        Translate(0.0f, 5.9f, 11.0f) * // Đặt cao hơn biển hiệu
-        RotateX(180.0f),                // Quay đèn xuống dưới
-        new DenChieuSang()
-    ));
 
-     //Gắn một dàn đèn âm trần trong nhà
-    for (float x = -4.0f; x <= 4.0f; x += 4.0f) {
-        scene->addShape(new TransformShape(
-            Translate(x, 5.9f, 0.0f) * RotateX(180.0f),
-            new DenChieuSang()
-        ));
-    }
-    float zPositions[] = { -6.0f, 6.0f }; // Vị trí Z cho 2 dàn đèn mới
-    for (float z : zPositions) {
-        for (float x = -4.0f; x <= 4.0f; x += 4.0f) {
-            scene->addShape(new TransformShape(
-                Translate(x, 5.9f, z) * RotateX(180.0f),
-                new DenChieuSang()
-            ));
-        }
-    }
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 0.15f, 8.0f),
+            new ToyTrain1(0.2f)
+        )
+    );
+
 
     // ===== CALLBACK =====
     glutDisplayFunc(display);

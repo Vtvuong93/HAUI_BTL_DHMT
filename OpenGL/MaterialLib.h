@@ -98,18 +98,72 @@ namespace Materials {
         color4(0.20f, 0.30f, 0.20f, 1.0f),
         24.0f
     };
-    // ================== TOY SHOP RED ==================
-    const Material RedToy = {
-        color4(0.3, 0.0, 0.0, 1.0),    // ambient (đỏ đậm)
-        color4(0.9, 0.1, 0.1, 1.0),    // diffuse (đỏ tươi)
-        color4(0.6, 0.6, 0.6, 1.0),    // specular (độ bóng cao)
-        100.0f                         // độ sắc nét của ánh sáng phản chiếu
-    };
 
     const Material Sidewalk = {
         color4(0.55f, 0.55f, 0.5f, 1.0f),   // ambient
         color4(0.75f, 0.75f, 0.7f, 1.0f),   // diffuse (xám be sáng)
         color4(0.2f, 0.2f, 0.2f, 1.0f),     // specular
         16.0f
+    };
+
+    // ================== TOY RED ==================
+    const Material ToyRed = {
+        color4(0.20f, 0.05f, 0.05f, 1.0f),   // ambient
+        color4(0.75f, 0.15f, 0.15f, 1.0f),   // diffuse
+        color4(0.40f, 0.40f, 0.40f, 1.0f),   // specular
+        32.0f
+    };
+
+    // ================== TOY BLUE ==================
+    const Material ToyBlue = {
+        color4(0.05f, 0.08f, 0.20f, 1.0f),
+        color4(0.20f, 0.35f, 0.75f, 1.0f),
+        color4(0.30f, 0.30f, 0.40f, 1.0f),
+        28.0f
+    };
+
+    // ================== METAL GRAY ==================
+    const Material MetalGray = {
+        color4(0.20f, 0.20f, 0.20f, 1.0f),
+        color4(0.55f, 0.55f, 0.55f, 1.0f),
+        color4(0.75f, 0.75f, 0.75f, 1.0f),
+        64.0f
+    };
+
+    // ================== METAL DARK ==================
+    const Material MetalDark = {
+        color4(0.05f, 0.05f, 0.05f, 1.0f),
+        color4(0.20f, 0.20f, 0.20f, 1.0f),
+        color4(0.30f, 0.30f, 0.30f, 1.0f),
+        16.0f
+    };
+
+    // ================== RUBBER BLACK ==================
+    const Material RubberBlack = {
+        color4(0.02f, 0.02f, 0.02f, 1.0f),
+        color4(0.10f, 0.10f, 0.10f, 1.0f),
+        color4(0.05f, 0.05f, 0.05f, 1.0f),
+        8.0f
+    };
+
+    const Material ToyGreen = {
+    color4(0.05f, 0.15f, 0.10f, 1.0f),
+    color4(0.20f, 0.60f, 0.35f, 1.0f),
+    color4(0.25f, 0.25f, 0.25f, 1.0f),
+    32.0f
+    };
+
+    const Material ToyYellow = {
+        color4(0.25f, 0.20f, 0.05f, 1.0f),
+        color4(0.90f, 0.75f, 0.25f, 1.0f),
+        color4(0.30f, 0.30f, 0.30f, 1.0f),
+        24.0f
+    };
+
+    const Material TireBlack = {
+    color4(0.02f, 0.02f, 0.02f, 1.0f),
+    color4(0.08f, 0.08f, 0.08f, 1.0f),
+    color4(0.3f, 0.3f, 0.3f, 1.0f),
+    32.0f
     };
 }

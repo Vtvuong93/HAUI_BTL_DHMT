@@ -3,6 +3,7 @@
 #include "MaterialLib.h"
 #include "BalconyRailing.h"
 #include "Stair.h"
+#include "Globals.h"
 
 using namespace Angel;
 
@@ -26,6 +27,7 @@ House::House() {
     // ==================================================
     // =================== SÀN TẦNG 1 ===================
     // ==================================================
+
     parts.push_back(
         new TransformShape(
             Translate(0.0f, 0.0f, 0.0f) *
@@ -208,6 +210,7 @@ House::House() {
             new Cube()
         )
     );
+
 }
 
 House::~House() {
