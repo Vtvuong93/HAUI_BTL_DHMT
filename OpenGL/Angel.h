@@ -71,7 +71,6 @@ const GLfloat  DegreesToRadians = (GLfloat) M_PI / (GLfloat)180.0;
 #include "vec.h"
 #include "mat.h"
 #include "CheckError.h"
-#include "Windows.h"
 
 #define Print(x)  do { std::cerr << #x " = " << (x) << std::endl; } while(0)
 

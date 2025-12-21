@@ -1,30 +1,24 @@
-﻿#include <cstdlib>
-#include <iostream>
-#include <algorithm>   
-
-#include "Angel.h"
+﻿// ================== THƯ VIỆN TỔNG ==================
 #include "Globals.h"
 
-#include "TransformShape.h"
-
-#include "Scene.h"
-#include "camera.h"
-
+// ================== CÁC OBJECT TRONG SCENE ==================
 #include "house.h"
 #include "HouseModern.h"
 #include "HouseModern3F.h"
 #include "Road.h"
 
-// ================== GLOBAL ==================
+// ================== GLOBAL VARIABLES ==================
 mat4 model = mat4(1.0f);   // Ma trận model gốc
 Scene* scene = nullptr;
 Camera camera;
 
-// Biến quản lý trạng thái
-bool keys[256]; 
-
+// Cấu hình cửa sổ cố định
 const int FIXED_W = 1440;
 const int FIXED_H = 900;
+const int FPS = 100;
+
+// Trạng thái
+bool keys[256]; 
 bool isFullScrn = false;
 bool needToResetPos = false;
 
@@ -59,7 +53,7 @@ void shaderSetup() {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-// ================ CẬP NHẬT DI CHUYỂN CAMERA ==================
+// ================ DI CHUYỂN ==================
 void updateCameraMovement() {
     vec3 front = camera.getFront();
     vec3 right = normalize(cross(front, vec3(0.0f, 1.0f, 0.0f)));
@@ -113,10 +107,10 @@ void display() {
         needToResetPos = false; // Tắt cờ sau khi đã xử lý
     }
 
-    // Vẽ hình
+	// 2. Render
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // View
+    // Camera View
     mat4 view = camera.getViewMatrix();
     glUniformMatrix4fv(view_loc, 1, GL_TRUE, view);
 
@@ -127,16 +121,18 @@ void display() {
     mat4 projection = Perspective(45.0f, aspect, 0.1f, 100.0f);
     glUniformMatrix4fv(projection_loc, 1, GL_TRUE, projection);
 
-    // Model gốc
+	// Draw Scene
     glUniformMatrix4fv(model_loc, 1, GL_TRUE, model);
-
     if (scene)
         scene->draw(model);
 
     glutSwapBuffers();
+}
 
-    // QUAN TRỌNG: Yêu cầu vẽ lại ngay lập tức để animation mượt
-    glutPostRedisplay();
+// ================== TIMER (TỐI ƯU FPS) ==================
+void timer(int value) {
+    glutPostRedisplay();                 // Yêu cầu vẽ lại khung hình
+    glutTimerFunc(1000 / FPS, timer, 0); 
 }
 
 // ================== RESHAPE ==================
@@ -210,8 +206,6 @@ int main(int argc, char** argv) {
     // --- CĂN GIỮA MÀN HÌNH LÚC KHỞI ĐỘNG ---
     int screenW = glutGet(GLUT_SCREEN_WIDTH);
     int screenH = glutGet(GLUT_SCREEN_HEIGHT);
-
-    // Tính toán vị trí dựa trên kích thước FIXED (1280x800)
     int posX = (screenW - FIXED_W) / 2;
     int posY = (screenH - FIXED_H) / 2;
 
@@ -255,10 +249,10 @@ int main(int argc, char** argv) {
 
     // ================== TẦNG 1 – PHÒNG KHÁCH ==================
 
-    // ===== THIẾT LẬP VỊ TRÍ CAMERA BAN ĐẦU ===== 
+    // ===== CAMERA SETUP ===== 
     camera.position = vec3(0.0f, 2.0f, 30.0f); // X (giữa), Y (cao tầm mắt người)
 
-    // ===== CALLBACK =====
+    // ===== REGISTER CALLBACKS =====
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
 
@@ -266,6 +260,8 @@ int main(int argc, char** argv) {
 	glutKeyboardUpFunc(keyboardUp); // Thả phím
     glutSpecialFunc(specialInput); //F1
 	glutPassiveMotionFunc(mouseMotion); // Chuột di chuyển
+
+    glutTimerFunc(0, timer, 0); // set FPS
 
     glutSetCursor(GLUT_CURSOR_NONE);
     std::cout << "Entering GLUT main loop..." << std::endl;
