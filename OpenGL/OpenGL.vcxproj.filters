@@ -28,6 +28,9 @@
     <Filter Include="Source Files\objects\NguyenSyChinh">
       <UniqueIdentifier>{dc53c1f1-f719-49db-91c4-47e35d9ce0ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\objects\VuTheVuong">
+      <UniqueIdentifier>{c2b82b9b-956b-4ccf-9a8d-cecc10c78fa5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

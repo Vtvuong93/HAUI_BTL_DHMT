@@ -2,17 +2,16 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-// ================== THƯ VIỆN ĐỒ HỌA & PROJECT ==================
-#include "Angel.h"
-#include "TransformShape.h"
-#include "Scene.h"
-#include "camera.h"
-
 // ================== THƯ VIỆN CHUẨN ==================
 #include "Windows.h"
 #include <cstdlib>
 #include <algorithm> 
 
+// ================== THƯ VIỆN ĐỒ HỌA & PROJECT ==================
+#include "Angel.h"
+#include "TransformShape.h"
+#include "Scene.h"
+#include "camera.h"
 
 // Biến toàn cục cho shader program
 extern GLuint program;          // ID của shader program (tạo bởi InitShader)
