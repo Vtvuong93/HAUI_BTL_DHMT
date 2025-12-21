@@ -15,7 +15,7 @@ Camera camera;
 // Cấu hình cửa sổ cố định
 const int FIXED_W = 1440;
 const int FIXED_H = 900;
-const int FPS = 100;
+const int FPS = 60;
 
 // Trạng thái
 bool keys[256]; 
