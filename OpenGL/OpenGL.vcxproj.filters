@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\objects">
+      <UniqueIdentifier>{498c9135-5771-4a6f-bb7d-8e9cf9aa694f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core">
+      <UniqueIdentifier>{511b4273-aa65-4ed1-aed3-c53ac7dd7034}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\primitive">
+      <UniqueIdentifier>{9d74da37-082e-4155-bbfd-b435705969f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\camera">
+      <UniqueIdentifier>{dfa58864-b087-474e-8548-f6b4f066ebfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\objects\NguyenSyChinh">
+      <UniqueIdentifier>{dc53c1f1-f719-49db-91c4-47e35d9ce0ee}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InitShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Globals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Source Files\primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformShape.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>Source Files\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="House.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClCompile>
+    <ClCompile Include="Cylinder.cpp">
+      <Filter>Source Files\primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="Cone.cpp">
+      <Filter>Source Files\primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="TriangularPrism.cpp">
+      <Filter>Source Files\primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="BalconyRailing.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClCompile>
+    <ClCompile Include="Stair.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClCompile>
+    <ClCompile Include="HouseModern.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClCompile>
+    <ClCompile Include="HouseModern3F.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClCompile>
+    <ClCompile Include="Road.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClCompile>
+    <ClCompile Include="Tree.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fshader1.glsl">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="vshader1.glsl">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Angel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckError.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Source Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformShape.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialLib.h">
+      <Filter>Source Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Source Files\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="House.h">
+      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClInclude>
+    <ClInclude Include="Cylinder.h">
+      <Filter>Source Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="Cone.h">
+      <Filter>Source Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="TriangularPrism.h">
+      <Filter>Source Files\primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="BalconyRailing.h">
+      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClInclude>
+    <ClInclude Include="Stair.h">
+      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClInclude>
+    <ClInclude Include="HouseModern.h">
+      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClInclude>
+    <ClInclude Include="HouseModern3F.h">
+      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClInclude>
+    <ClInclude Include="Road.h">
+      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
+      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

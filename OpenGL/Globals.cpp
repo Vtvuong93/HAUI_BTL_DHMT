@@ -1,0 +1,9 @@
+﻿// Globals.cpp
+#include "Globals.h"
+
+// Định nghĩa thực tế các biến toàn cục (definition)
+// Đây là nơi cấp phát bộ nhớ cho chúng
+GLuint program;
+GLuint model_loc = 0;
+GLuint view_loc = 0;
+GLuint projection_loc = 0;
