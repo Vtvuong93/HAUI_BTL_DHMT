@@ -187,10 +187,10 @@ void keyboardDown(unsigned char key, int x, int y) {
         rolledDoor -= 0.05f;
 	}
     if (key == '/') {
-        drag += 0.05f;
+		if (!(drag >= 0.5f)) drag += 0.05f;
     }
     if (key == '?') {
-        drag -= 0.05f;
+		if (!(drag <= 0.05f)) drag -= 0.05f;
 	}
 }
 

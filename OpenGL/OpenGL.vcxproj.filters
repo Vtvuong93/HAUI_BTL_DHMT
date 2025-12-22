@@ -72,9 +72,6 @@
     <ClCompile Include="camera.cpp">
       <Filter>Source Files\camera</Filter>
     </ClCompile>
-    <ClCompile Include="House.cpp">
-      <Filter>Source Files\objects\NguyenSyChinh</Filter>
-    </ClCompile>
     <ClCompile Include="Cylinder.cpp">
       <Filter>Source Files\primitive</Filter>
     </ClCompile>
@@ -198,9 +195,6 @@
     </ClInclude>
     <ClInclude Include="camera.h">
       <Filter>Source Files\camera</Filter>
-    </ClInclude>
-    <ClInclude Include="House.h">
-      <Filter>Source Files\objects\NguyenSyChinh</Filter>
     </ClInclude>
     <ClInclude Include="Cylinder.h">
       <Filter>Source Files\primitive</Filter>
