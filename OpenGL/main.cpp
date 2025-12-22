@@ -15,6 +15,11 @@ const int FPS = 60;
 bool keys[256]; 
 bool isFullScrn = false;
 bool needToResetPos = false;
+bool isLightOn = true; // Trạng thái đèn (Mặc định là Bật)
+
+CeilingLamp* myLamp = nullptr; // Đối tượng đèn
+TransformShape* myCoffeeTable = nullptr;
+TransformShape* myGlassCabinet = nullptr;
 
 // ================== SHADER ==================
 void shaderSetup() {
@@ -101,24 +106,62 @@ void display() {
         needToResetPos = false; // Tắt cờ sau khi đã xử lý
     }
 
-	// 2. Render
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // === 1. GỬI ÁNH SÁNG DỰA TRÊN TRẠNG THÁI ===
+    if (isLightOn) {
+        // Ánh sáng mạnh (Bật)
+        color4 light_ambient(0.3f, 0.3f, 0.3f, 1.0f);
+        color4 light_diffuse(1.0f, 1.0f, 1.0f, 1.0f);
+        color4 light_specular(1.0f, 1.0f, 1.0f, 1.0f);
+        glUniform4fv(glGetUniformLocation(program, "LightAmbient"), 1, light_ambient);
+        glUniform4fv(glGetUniformLocation(program, "LightDiffuse"), 1, light_diffuse);
+        glUniform4fv(glGetUniformLocation(program, "LightSpecular"), 1, light_specular);
+    }
+    else {
+        // Ánh sáng yếu (Tắt - chỉ còn ánh sáng mờ ảo)
+        color4 light_ambient(0.05f, 0.05f, 0.05f, 1.0f); // Rất tối
+        color4 light_diffuse(0.1f, 0.1f, 0.1f, 1.0f);    // Hầu như không thấy màu
+        color4 light_specular(0.0f, 0.0f, 0.0f, 1.0f);   // Không bóng
+        glUniform4fv(glGetUniformLocation(program, "LightAmbient"), 1, light_ambient);
+        glUniform4fv(glGetUniformLocation(program, "LightDiffuse"), 1, light_diffuse);
+        glUniform4fv(glGetUniformLocation(program, "LightSpecular"), 1, light_specular);
+    }
 
     // Camera View
     mat4 view = camera.getViewMatrix();
     glUniformMatrix4fv(view_loc, 1, GL_TRUE, view);
 
     // Projection (FIX: theo aspect ratio)
-    float aspect = (float)glutGet(GLUT_WINDOW_WIDTH) /
-        (float)glutGet(GLUT_WINDOW_HEIGHT);
+    float aspect = (float)glutGet(GLUT_WINDOW_WIDTH) / (float)glutGet(GLUT_WINDOW_HEIGHT);
 
     mat4 projection = Perspective(45.0f, aspect, 0.1f, 100.0f);
     glUniformMatrix4fv(projection_loc, 1, GL_TRUE, projection);
-
-	// Draw Scene
     glUniformMatrix4fv(model_loc, 1, GL_TRUE, model);
-    if (scene)
-        scene->draw(model);
+
+    // Vẽ vật thể đặc trước
+    if (scene)  scene->draw(model);
+
+	// Vẽ đèn 
+    if (myLamp) {
+        mat4 lampModel = model * Translate(0.0f, 5.0f, 0.0f);
+        myLamp->draw(lampModel, isLightOn);
+    }
+
+    // === 3. VẼ VẬT THỂ TRONG SUỐT (TRANSPARENT) SAU CÙNG ===
+    
+    glEnable(GL_BLEND); // Bật chế độ pha trộn màu
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDepthMask(GL_FALSE); // Tắt ghi đè Z-buffer để vẽ trong suốt đúng
+
+    // Vẽ Bàn trà kính
+    if (myCoffeeTable) myCoffeeTable->draw(model);
+
+    // Vẽ Tủ kính
+    if (myGlassCabinet) myGlassCabinet->draw(model);
+
+    glDepthMask(GL_TRUE);
+    glDisable(GL_BLEND); // Tắt Blend sau khi vẽ xong
 
     glutSwapBuffers();
 }
@@ -138,6 +181,11 @@ void reshape(int width, int height) {
 void keyboardDown(unsigned char key, int x, int y) {
     keys[key] = true;
     if (key == 27) exit(0); // ESC thoát
+
+    // BẤM L ĐỂ BẬT/TẮT ĐÈN
+    if (key == 'l' || key == 'L') {
+        isLightOn = !isLightOn;
+    }
 }
 
 // Hàm khi thả phím 
@@ -216,6 +264,7 @@ int main(int argc, char** argv) {
 
     // ===== SCENE =====
     scene = new Scene();
+    myLamp = new CeilingLamp();
 
     // ================== KHUNG CẢNH ==================
     scene->addShape(new House());
@@ -233,24 +282,12 @@ int main(int argc, char** argv) {
         new Sofa()
     ));
 
-    // -- Bàn trà trước Sofa --
-    scene->addShape(new TransformShape(
-        Translate(0.0f, 0.0f, 1.5f), // Đặt trước sofa
-        new CoffeeTable()
-    ));
-
     // -- Kệ tàu hỏa (Sát tường bên trái) --
     // Tường trái ở x = -5.0f (vì width nhà là 10)
     scene->addShape(new TransformShape(
         Translate(-4.5f, 0.0f, 0.0f) * RotateY(90), // Xoay dọc theo tường
         new WoodShelf()
     ));
-
-    // -- Tủ kính (Góc tường phải phía sau) --
-    scene->addShape(new TransformShape(
-        Translate(4.0f, 0.0f, -8.0f) * RotateY(-45), // Đặt góc phòng
-        new GlassCabinet()
-	));
 
     // ===== BÀN TRƯNG BÀY GIỮA PHÒNG =====
     // Đặt lệch một chút so với bàn trà
@@ -265,6 +302,17 @@ int main(int argc, char** argv) {
         Translate(3.0f, 0.85f, 2.0f) * RotateY(-45),
         new ToyRobot()
     ));
+
+    myCoffeeTable = new TransformShape(
+        Translate(0.0f, 0.0f, 1.5f),
+        new CoffeeTable()
+    );
+
+    myGlassCabinet = new TransformShape(
+        Translate(4.0f, 0.0f, -8.0f) * RotateY(-45),
+        new GlassCabinet()
+    );
+
 
     // ===== ĐẶT ĐỒ CHƠI LÊN KỆ GỖ (WoodShelf) =====
     // Giả sử kệ gỗ đặt ở (-4.5f, 0, 0). Mỗi tầng cao khoảng 0.5f

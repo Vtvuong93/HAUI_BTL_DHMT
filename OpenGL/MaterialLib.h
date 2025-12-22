@@ -109,7 +109,7 @@ namespace Materials {
     // ================== GLASS (KÍNH) ==================
     const Material Glass = {
         color4(0.1, 0.1, 0.1, 1.0),
-        color4(0.8, 0.9, 1.0, 1.0),   // Hơi xanh nhạt
+        color4(0.8, 0.9, 1.0, 0.4),
         color4(0.9, 0.9, 0.9, 1.0),
         128.0f
     };
@@ -174,10 +174,10 @@ namespace Materials {
     };
 
     const Material ToyGreen = {
-    color4(0.05f, 0.15f, 0.10f, 1.0f),
-    color4(0.20f, 0.60f, 0.35f, 1.0f),
-    color4(0.25f, 0.25f, 0.25f, 1.0f),
-    32.0f
+        color4(0.05f, 0.15f, 0.10f, 1.0f),
+        color4(0.20f, 0.60f, 0.35f, 1.0f),
+        color4(0.25f, 0.25f, 0.25f, 1.0f),
+        32.0f
     };
 
     const Material ToyYellow = {
@@ -188,9 +188,25 @@ namespace Materials {
     };
 
     const Material TireBlack = {
-    color4(0.02f, 0.02f, 0.02f, 1.0f),
-    color4(0.08f, 0.08f, 0.08f, 1.0f),
-    color4(0.3f, 0.3f, 0.3f, 1.0f),
-    32.0f
+        color4(0.02f, 0.02f, 0.02f, 1.0f),
+        color4(0.08f, 0.08f, 0.08f, 1.0f),
+        color4(0.3f, 0.3f, 0.3f, 1.0f),
+        32.0f
+    };
+
+    // Đèn khi TẮT (Màu xám tối)
+    const Material LampOff = {
+        color4(0.2, 0.2, 0.2, 1.0),
+        color4(0.3, 0.3, 0.3, 1.0),
+        color4(0.5, 0.5, 0.5, 1.0),
+        32.0f
+    };
+
+    // Đèn khi BẬT (Màu trắng vàng rực rỡ, Ambient cao để tự sáng)
+    const Material LampOn = {
+        color4(1.0, 1.0, 0.8, 1.0), // Ambient cao -> Tự phát sáng
+        color4(1.0, 1.0, 0.8, 1.0), // Diffuse vàng sáng
+        color4(1.0, 1.0, 1.0, 1.0),
+        10.0f
     };
 }

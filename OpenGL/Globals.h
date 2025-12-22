@@ -26,6 +26,7 @@
 
 #include "Furniture_Vuong.h"
 #include "Toys_Vuong.h"
+#include "Lights.h"
 
 // ================== BIẾN TOÀN CỤC ==================
 extern GLuint program;          // ID của shader program (tạo bởi InitShader)

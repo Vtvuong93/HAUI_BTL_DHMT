@@ -11,8 +11,8 @@ uniform float Shininess;
 
 uniform mat4 Model;
 uniform mat4 View;
-
 uniform mat4 Projection;
+
 void main()
 {	
 //Mo hinh chieu sang Blinn - Phong (Phong sua doi)
@@ -35,7 +35,7 @@ void main()
 	if( dot(L, N) < 0.0 ) specular = vec4(0.0, 0.0, 0.0, 1.0);
 	
 	color = ambient + diffuse + specular;
-	color.a = 1.0;
+	color.a = DiffuseProduct.a;
 
     gl_Position = Projection * View * Model * vPosition/vPosition.w;
 		

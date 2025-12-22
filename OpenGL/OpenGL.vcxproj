@@ -132,6 +132,7 @@
     <ClCompile Include="HouseModern.cpp" />
     <ClCompile Include="HouseModern3F.cpp" />
     <ClCompile Include="InitShader.cpp" />
+    <ClCompile Include="Lights.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Road.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="House.h" />
     <ClInclude Include="HouseModern.h" />
     <ClInclude Include="HouseModern3F.h" />
+    <ClInclude Include="Lights.h" />
     <ClInclude Include="mat.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialLib.h" />
