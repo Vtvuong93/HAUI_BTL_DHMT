@@ -148,20 +148,11 @@ void display() {
         myLamp->draw(lampModel, isLightOn);
     }
 
-    // === 3. VẼ VẬT THỂ TRONG SUỐT (TRANSPARENT) SAU CÙNG ===
-    
-    glEnable(GL_BLEND); // Bật chế độ pha trộn màu
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glDepthMask(GL_FALSE); // Tắt ghi đè Z-buffer để vẽ trong suốt đúng
-
     // Vẽ Bàn trà kính
     if (myCoffeeTable) myCoffeeTable->draw(model);
 
     // Vẽ Tủ kính
     if (myGlassCabinet) myGlassCabinet->draw(model);
-
-    glDepthMask(GL_TRUE);
-    glDisable(GL_BLEND); // Tắt Blend sau khi vẽ xong
 
     glutSwapBuffers();
 }

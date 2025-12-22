@@ -34,14 +34,24 @@ CoffeeTable::~CoffeeTable() {
 }
 
 void CoffeeTable::draw(const mat4& model) const {
-    Materials::Wood.apply(); // Gỗ cho chân
+    // 1. VẼ CHÂN GỖ (Vật thể đặc - KHÔNG Blend)
+    // Đảm bảo tắt Blend để gỗ đặc
+    glDisable(GL_BLEND);
+    glDepthMask(GL_TRUE);
+
+    Materials::Wood.apply();
     for (auto p : woodParts) p->draw(model);
 
-    Materials::Glass.apply(); // Kính cho mặt
-    // Bật blend để kính trong suốt (nếu muốn)
+    // 2. VẼ MẶT KÍNH (Vật thể trong - CÓ Blend)
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDepthMask(GL_FALSE); // Tắt ghi độ sâu để nhìn xuyên qua kính
+
+    Materials::Glass.apply(); // Kính cho mặt
     for (auto p : glassParts) p->draw(model);
+
+    // 3. DỌN DẸP (Trả lại trạng thái gốc)
+    glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
 }
 
@@ -163,12 +173,22 @@ void DisplayTable::draw(const mat4& model) const {
 }
 
 void GlassCabinet::draw(const mat4& model) const {
-    Materials::Metal.apply(); // Khung kim loại
+    // 1. VẼ KHUNG KIM LOẠI (Vật thể đặc)
+    glDisable(GL_BLEND);
+    glDepthMask(GL_TRUE);
+
+    Materials::Metal.apply();
     for (auto p : frameParts) p->draw(model);
 
-    Materials::Glass.apply(); // Kính
+    // 2. VẼ CÁC TẤM KÍNH (Vật thể trong)
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDepthMask(GL_FALSE);
+
+    Materials::Glass.apply();
     for (auto p : glassParts) p->draw(model);
+
+    // 3. DỌN DẸP
+    glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
 }
