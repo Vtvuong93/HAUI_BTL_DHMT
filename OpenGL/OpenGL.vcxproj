@@ -121,6 +121,7 @@
   <ItemGroup>
     <ClCompile Include="BalconyRailing.cpp" />
     <ClCompile Include="camera.cpp" />
+    <ClCompile Include="CityInside.cpp" />
     <ClCompile Include="Cone.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CycleRail.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="BalconyRailing.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="CheckError.h" />
+    <ClInclude Include="CityInside.h" />
     <ClInclude Include="Cone.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CycleRail.h" />
