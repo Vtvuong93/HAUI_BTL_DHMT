@@ -177,6 +177,9 @@ void keyboardDown(unsigned char key, int x, int y) {
     if (key == 'l' || key == 'L') {
         isLightOn = !isLightOn;
     }
+    if (key == '9') {
+		g_trainMove = !g_trainMove;   // bật / tắt chuyển động
+    }
 }
 
 // Hàm khi thả phím 
@@ -347,6 +350,14 @@ int main(int argc, char** argv) {
         )
     );
 
+    //ray thang
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 0.15f, 6.0f),
+            new StraightRail()
+        )
+    );
+    
     
 
     // ===== CAMERA SETUP ===== 

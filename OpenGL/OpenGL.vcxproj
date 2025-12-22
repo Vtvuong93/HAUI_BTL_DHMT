@@ -138,6 +138,7 @@
     <ClCompile Include="Road.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Stair.cpp" />
+    <ClCompile Include="StraightRail.cpp" />
     <ClCompile Include="Toys_Vuong.cpp" />
     <ClCompile Include="ToyLocomotive.cpp" />
     <ClCompile Include="ToyLocomotive1.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="Stair.h" />
+    <ClInclude Include="StraightRail.h" />
     <ClInclude Include="ToyLocomotive.h" />
     <ClInclude Include="ToyLocomotive1.h" />
     <ClInclude Include="ToyTrain.h" />
