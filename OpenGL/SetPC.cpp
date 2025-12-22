@@ -92,8 +92,15 @@ SetPC::SetPC(float t_t) {
             new Cube()
         )
     );
+    // case
 
-
+    parts.push_back(
+        new TransformShape(
+            Translate(-m_w - 0.2, 0.5f, 0) *
+            Scale(0.4f, 1.0f, 0.8f),
+            new Cube()
+        )
+    );
 }
 SetPC:: ~SetPC() {
     for (auto p : parts) {
