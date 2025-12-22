@@ -100,7 +100,10 @@ void keyboard(unsigned char key, int, int) {
 
     case ' ': camera.position.y += camera.speed; break;
     case 'c': camera.position.y -= camera.speed; break;
-   
+    case '9':
+        g_trainMove = !g_trainMove;   // bật / tắt chuyển động
+        break;
+
     case 27: exit(EXIT_SUCCESS); // ESC
     }
 
