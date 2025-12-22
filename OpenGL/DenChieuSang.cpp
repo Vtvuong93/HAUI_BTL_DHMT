@@ -11,7 +11,7 @@ DenChieuSang::DenChieuSang() {
         new Cylinder()
     ));
 
-     //2. Thân ?èn r?i (Hình tr? dài h?n)
+    //2. Thân ?èn r?i (Hình tr? dài h?n)
     parts.push_back(new TransformShape(
         Translate(0.0f, -0.1f, 0.0f) * Scale(0.2f, 0.1f, 0.2f),
         new Cylinder()
@@ -36,7 +36,7 @@ void DenChieuSang::draw(const mat4& modelMatrix) const {
         else {
             // Ph?n bóng ?èn: S? d?ng v?t li?u sáng nh?t 
             Materials::Ceiling.apply();
-            
+
             glColor3f(1.0f, 1.0f, 1.0f);
         }
         parts[i]->draw(modelMatrix);

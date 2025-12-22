@@ -1,3 +1,4 @@
+#pragma once
 #ifndef BIENHIEU_H
 #define BIENHIEU_H
 

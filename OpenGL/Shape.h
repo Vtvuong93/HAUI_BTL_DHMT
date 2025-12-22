@@ -2,7 +2,6 @@
 #ifndef SHAPE_H
 #define SHAPE_H
 #include "Material.h"
-
 #include "Angel.h"
 typedef vec4 point4;
 typedef vec4 color4;

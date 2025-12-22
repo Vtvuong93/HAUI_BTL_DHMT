@@ -1,3 +1,4 @@
+#pragma once
 #ifndef DENCHIEUSANG_H
 #define DENCHIEUSANG_H
 

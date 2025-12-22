@@ -61,7 +61,7 @@ BienHieu::~BienHieu() {
 void BienHieu::draw(const mat4& modelMatrix) const {
     for (size_t i = 0; i < parts.size(); ++i) {
         if (i == 0) {
-            Materials::RedToy.apply(); // N?n bi?n màu ??
+            Materials::ToyRed.apply(); // N?n bi?n màu ??
         }
         else if (i < 3) {
             Materials::Metal.apply();  // Vi?n màu kim lo?i

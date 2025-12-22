@@ -1,3 +1,4 @@
+#pragma once
 #ifndef POSTERQUANGCAO_H
 #define POSTERQUANGCAO_H
 
