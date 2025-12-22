@@ -5,6 +5,7 @@
 #include "Stair.h"
 #include "Door.h"
 #include "CashierCounter.h"
+#include "StaffChair.h"
 
 using namespace Angel;
 
@@ -87,6 +88,12 @@ House::House() {
         )
     );
 
+    parts.push_back(
+        new TransformShape(
+            Translate(-4.0f, 0.105f, 6.8f) * RotateY(90),
+            new StaffChair()
+        )
+    );
     // (GÓC PHẢI PHÍA SAU → LỖ CẦU THANG, KHÔNG TẠO)
 
     // --------- BAN CÔNG PHÍA TRƯỚC ----------

@@ -1,29 +1,50 @@
-#include "StaffChair.h"
+﻿#include "StaffChair.h"
 #include "TransformShape.h"
 #include "MaterialLib.h"
 
 
 StaffChair::StaffChair() {
-    // chan ghe
+
+	float h = 0.9f;
+	// ngoi
     parts.push_back(
         new TransformShape(
-            Scale(0, 0, 0),
+            Translate(0.0f, h, 0.0f) *
+            Scale(0.8f, 0.12f, 0.8f),
             new Cube()
         )
     );
 
-
-
-
-    // mat ghe
+    // tua lung
     parts.push_back(
         new TransformShape(
-            Translate(0, 0, 0) *
-            Scale(0, 0, 0),
+            Translate(0.0f, h + 0.6f, -1.2 * tan(15 / 180 * 3.14) - 0.5f) *
+			RotateX(-15) *
+            Scale(0.7f, 1.2f, 0.12f),
             new Cube()
         )
     );
 
+	// chan
+    parts.push_back(
+        new TransformShape(
+            Translate(0.0f, h / 2, 0.0f) *
+            Scale(0.12f, h, 0.12f),
+            new Cube()
+        )
+    );
+
+    // chan de
+    parts.push_back(
+        new TransformShape(
+            Translate(0.0f, 0, 0.0f) *
+            Scale(0.6f, 0.06f, 0.6f),
+            new Cube()
+        )
+    );
+
+    // Star legs (5 legs) — kiểu đơn giản bằng cube; đặt đều quanh trục Y
+   
 
 }
 StaffChair:: ~StaffChair() {
@@ -34,12 +55,8 @@ StaffChair:: ~StaffChair() {
 
 void StaffChair::draw(const mat4& modelMatrix) const {
 
-
-    Materials::Plastic.apply();
-    parts.at(0)->draw(modelMatrix);
-
-    for (int i = 1; i < parts.size(); i++) {
-        Materials::Metal.apply();
+    for (int i = 0; i < parts.size(); i++) {
+        Materials::Wood.apply();
         parts.at(i)->draw(modelMatrix);
     }
 }
