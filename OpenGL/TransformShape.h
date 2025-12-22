@@ -1,4 +1,5 @@
-﻿#include "Shape.h"
+﻿#pragma once
+#include "Shape.h"
 #include "Angel.h"
 class TransformShape : public Shape {
 private:

@@ -31,6 +31,18 @@
     <Filter Include="Source Files\objects\VuTheVuong">
       <UniqueIdentifier>{c2b82b9b-956b-4ccf-9a8d-cecc10c78fa5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\objects\NguyenSyChinh\Scene">
+      <UniqueIdentifier>{d0ba80d1-ae5e-48d1-bd1f-12905a603029}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\objects\NguyenSyChinh\Train">
+      <UniqueIdentifier>{101db540-f4e9-4590-afbf-81847ce0ad8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\objects\NguyenSyChinh\Train1">
+      <UniqueIdentifier>{6632852e-3ac2-41ff-8724-be871a4ef61e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\objects\NguyenSyChinh\Rail">
+      <UniqueIdentifier>{24a20ace-3b40-4e41-b02f-e2cb2d5f3a4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -70,22 +82,52 @@
       <Filter>Source Files\primitive</Filter>
     </ClCompile>
     <ClCompile Include="BalconyRailing.cpp">
-      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+      <Filter>Source Files\objects\NguyenSyChinh\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Stair.cpp">
-      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    <ClCompile Include="House.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh\Scene</Filter>
     </ClCompile>
     <ClCompile Include="HouseModern.cpp">
-      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+      <Filter>Source Files\objects\NguyenSyChinh\Scene</Filter>
     </ClCompile>
     <ClCompile Include="HouseModern3F.cpp">
-      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+      <Filter>Source Files\objects\NguyenSyChinh\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Road.cpp">
-      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+      <Filter>Source Files\objects\NguyenSyChinh\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Stair.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Tree.cpp">
-      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+      <Filter>Source Files\objects\NguyenSyChinh\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ToyLocomotive.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh\Train</Filter>
+    </ClCompile>
+    <ClCompile Include="Wheel.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh\Train</Filter>
+    </ClCompile>
+    <ClCompile Include="ToyWagon.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh\Train</Filter>
+    </ClCompile>
+    <ClCompile Include="ToyTrain.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh\Train</Filter>
+    </ClCompile>
+    <ClCompile Include="ToyLocomotive1.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh\Train1</Filter>
+    </ClCompile>
+    <ClCompile Include="ToyWagon1.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh\Train1</Filter>
+    </ClCompile>
+    <ClCompile Include="ToyTrain1.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh\Train1</Filter>
+    </ClCompile>
+    <ClCompile Include="CycleRail.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh\Rail</Filter>
+    </ClCompile>
+    <ClCompile Include="CityInside.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh\Rail</Filter>
     </ClCompile>
     <ClCompile Include="Furniture_Vuong.cpp">
       <Filter>Source Files\objects\VuTheVuong</Filter>
@@ -152,22 +194,52 @@
       <Filter>Source Files\primitive</Filter>
     </ClInclude>
     <ClInclude Include="BalconyRailing.h">
-      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+      <Filter>Source Files\objects\NguyenSyChinh\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Stair.h">
-      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    <ClInclude Include="House.h">
+      <Filter>Source Files\objects\NguyenSyChinh\Scene</Filter>
     </ClInclude>
     <ClInclude Include="HouseModern.h">
-      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+      <Filter>Source Files\objects\NguyenSyChinh\Scene</Filter>
     </ClInclude>
     <ClInclude Include="HouseModern3F.h">
-      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+      <Filter>Source Files\objects\NguyenSyChinh\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Road.h">
-      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+      <Filter>Source Files\objects\NguyenSyChinh\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Stair.h">
+      <Filter>Source Files\objects\NguyenSyChinh\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Tree.h">
-      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+      <Filter>Source Files\objects\NguyenSyChinh\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ToyLocomotive.h">
+      <Filter>Source Files\objects\NguyenSyChinh\Train</Filter>
+    </ClInclude>
+    <ClInclude Include="Wheel.h">
+      <Filter>Source Files\objects\NguyenSyChinh\Train</Filter>
+    </ClInclude>
+    <ClInclude Include="ToyWagon.h">
+      <Filter>Source Files\objects\NguyenSyChinh\Train</Filter>
+    </ClInclude>
+    <ClInclude Include="ToyTrain.h">
+      <Filter>Source Files\objects\NguyenSyChinh\Train</Filter>
+    </ClInclude>
+    <ClInclude Include="ToyLocomotive1.h">
+      <Filter>Source Files\objects\NguyenSyChinh\Train1</Filter>
+    </ClInclude>
+    <ClInclude Include="ToyWagon1.h">
+      <Filter>Source Files\objects\NguyenSyChinh\Train1</Filter>
+    </ClInclude>
+    <ClInclude Include="ToyTrain1.h">
+      <Filter>Source Files\objects\NguyenSyChinh\Train1</Filter>
+    </ClInclude>
+    <ClInclude Include="CycleRail.h">
+      <Filter>Source Files\objects\NguyenSyChinh\Rail</Filter>
+    </ClInclude>
+    <ClInclude Include="CityInside.h">
+      <Filter>Source Files\objects\NguyenSyChinh\Rail</Filter>
     </ClInclude>
     <ClInclude Include="Furniture_Vuong.h">
       <Filter>Source Files\objects\VuTheVuong</Filter>
