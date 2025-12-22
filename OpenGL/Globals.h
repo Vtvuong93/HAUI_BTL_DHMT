@@ -37,4 +37,6 @@ extern GLuint model_loc;        // location của uniform mat4 Model
 extern GLuint view_loc;         // location của uniform mat4 View
 extern GLuint projection_loc;   // location của uniform mat4 Projection
 
+extern bool g_trainMove; // trạng thái di chuyển của tàu
+
 #endif 
