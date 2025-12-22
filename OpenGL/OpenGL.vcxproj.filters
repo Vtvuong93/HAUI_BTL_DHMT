@@ -39,6 +39,8 @@
     </Filter>
     <Filter Include="Source Files\objects\NguyenSyChinh\Rail">
       <UniqueIdentifier>{24a20ace-3b40-4e41-b02f-e2cb2d5f3a4d}</UniqueIdentifier>
+    <Filter Include="Source Files\objects\VuTheVuong">
+      <UniqueIdentifier>{c2b82b9b-956b-4ccf-9a8d-cecc10c78fa5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +124,12 @@
     </ClCompile>
     <ClCompile Include="CityInside.cpp">
       <Filter>Source Files\objects\NguyenSyChinh\Rail</Filter>
+    </ClCompile>
+    <ClCompile Include="Furniture_Vuong.cpp">
+      <Filter>Source Files\objects\VuTheVuong</Filter>
+    </ClCompile>
+    <ClCompile Include="Toys_Vuong.cpp">
+      <Filter>Source Files\objects\VuTheVuong</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +233,12 @@
     </ClInclude>
     <ClInclude Include="CityInside.h">
       <Filter>Source Files\objects\NguyenSyChinh\Rail</Filter>
+    </ClInclude>
+    <ClInclude Include="Furniture_Vuong.h">
+      <Filter>Source Files\objects\VuTheVuong</Filter>
+    </ClInclude>
+    <ClInclude Include="Toys_Vuong.h">
+      <Filter>Source Files\objects\VuTheVuong</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

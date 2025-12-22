@@ -126,6 +126,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CycleRail.cpp" />
     <ClCompile Include="Cylinder.cpp" />
+    <ClCompile Include="Furniture_Vuong.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="House.cpp" />
     <ClCompile Include="HouseModern.cpp" />
@@ -142,6 +143,7 @@
     <ClCompile Include="ToyTrain1.cpp" />
     <ClCompile Include="ToyWagon.cpp" />
     <ClCompile Include="ToyWagon1.cpp" />
+    <ClCompile Include="Toys_Vuong.cpp" />
     <ClCompile Include="TransformShape.cpp" />
     <ClCompile Include="Tree.cpp" />
     <ClCompile Include="TriangularPrism.cpp" />
@@ -161,6 +163,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CycleRail.h" />
     <ClInclude Include="Cylinder.h" />
+    <ClInclude Include="Furniture_Vuong.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="House.h" />
     <ClInclude Include="HouseModern.h" />
@@ -178,6 +181,7 @@
     <ClInclude Include="ToyTrain1.h" />
     <ClInclude Include="ToyWagon.h" />
     <ClInclude Include="ToyWagon1.h" />
+    <ClInclude Include="Toys_Vuong.h" />
     <ClInclude Include="TransformShape.h" />
     <ClInclude Include="Tree.h" />
     <ClInclude Include="TriangularPrism.h" />
