@@ -4,18 +4,18 @@
 
 #include "Shape.h"
 #include "Cube.h"
-#include "Cylinder.h" // Nếu bạn có cylinder làm chân bàn
+#include "Cylinder.h"
 #include <vector>
 
-// 1. Bàn trà phòng khách
+// 1. Bàn trà (Gỗ & Kính)
 class CoffeeTable : public Shape {
 public:
     CoffeeTable();
     ~CoffeeTable();
     void draw(const mat4& modelMatrix) const override;
 private:
-    std::vector<Shape*> woodParts; // Phần gỗ
-    std::vector<Shape*> glassParts; // Phần kính (mặt bàn)
+    std::vector<Shape*> woodParts;  // Phần gỗ
+    std::vector<Shape*> glassParts; // Phần kính
     void initGPUBuffers() override {}
 };
 
@@ -30,7 +30,7 @@ private:
     void initGPUBuffers() override {}
 };
 
-// 3. Kệ gỗ trưng bày tàu hỏa (Nhiều tầng)
+// 3. Kệ gỗ trưng bày
 class WoodShelf : public Shape {
 public:
     WoodShelf();
@@ -48,12 +48,12 @@ public:
     ~GlassCabinet();
     void draw(const mat4& modelMatrix) const override;
 private:
-    std::vector<Shape*> frameParts; // Khung
-    std::vector<Shape*> glassParts; // Kính
+    std::vector<Shape*> frameParts; // Khung kim loại
+    std::vector<Shape*> glassParts; // Các tấm kính
     void initGPUBuffers() override {}
 };
 
-// 5. Bàn trưng bày dài (Museum Table)
+// 5. Bàn trưng bày dài
 class DisplayTable : public Shape {
 public:
     DisplayTable();
