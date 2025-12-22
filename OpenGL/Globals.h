@@ -19,6 +19,11 @@
 #include "HouseModern3F.h"
 #include "Road.h"
 
+#include "ToyTrain.h"
+#include "ToyTrain1.h"
+#include "CycleRail.h"
+#include "CityInside.h"
+
 #include "Furniture_Vuong.h"
 #include "Toys_Vuong.h"
 
