@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifndef CYCLE_RAIL_H
 #define CYCLE_RAIL_H
 
@@ -7,7 +7,7 @@
 
 class CycleRail : public Shape {
 public:
-    CycleRail(float radius = 3.0f, int segments = 80);
+    CycleRail(float radius = 3.0f, int segments = 10);
     ~CycleRail();
 
     void draw(const mat4& modelMatrix) const override;

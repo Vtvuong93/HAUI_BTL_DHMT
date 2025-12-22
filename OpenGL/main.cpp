@@ -17,6 +17,7 @@
 #include "ToyTrain1.h"
 #include "CycleRail.h"
 #include "CityInside.h"
+#include "StraightRail.h"
 // ================== CAMERA ==================
 Camera camera;
 int lastX = 800, lastY = 800;
@@ -222,6 +223,14 @@ int main(int argc, char** argv) {
         )
     );
 
+    //ray thang
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 0.15f, 6.0f),
+            new StraightRail()
+        )
+    );
+    
 
     // ===== CALLBACK =====
     glutDisplayFunc(display);
