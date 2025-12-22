@@ -106,6 +106,7 @@ namespace Materials {
         16.0f
     };
 
+
     // ================== GLASS (KÍNH) ==================
     const Material Glass = {
         color4(0.1, 0.1, 0.1, 1.0),
@@ -132,6 +133,7 @@ namespace Materials {
 
     // ================== TOY COLORS ==================
     const Material ToyBlack = { color4(0,0,0,1), color4(0.1,0.1,0.1,1), color4(0.3,0.3,0.3,1), 32.0f };
+
 
     // ================== TOY RED ==================
     const Material ToyRed = {
@@ -192,5 +194,10 @@ namespace Materials {
     color4(0.08f, 0.08f, 0.08f, 1.0f),
     color4(0.3f, 0.3f, 0.3f, 1.0f),
     32.0f
+    const Material Glass = {
+        color4(0.1f, 0.1f, 0.1f, 1.0f),   // ambient (màu gần trong suốt)
+        color4(0.9f, 0.9f, 0.9f, 0.3f),   // diffuse (màu gần như trong suốt với độ mờ nhẹ)
+        color4(1.0f, 1.0f, 1.0f, 1.0f),   // specular (phản chiếu sáng mạnh)
+        128.0f                            // Shininess (giá trị cao, giúp tạo độ bóng cho kính)
     };
 }

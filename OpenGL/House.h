@@ -9,7 +9,6 @@ class House : public Shape {
 public:
     House();
     ~House();
-
     void draw(const mat4& modelMatrix) const override;
 
 private:

@@ -28,9 +28,12 @@
     <Filter Include="Source Files\objects\NguyenSyChinh">
       <UniqueIdentifier>{dc53c1f1-f719-49db-91c4-47e35d9ce0ee}</UniqueIdentifier>
     </Filter>
+
     <Filter Include="Source Files\objects\VuTheVuong">
       <UniqueIdentifier>{c2b82b9b-956b-4ccf-9a8d-cecc10c78fa5}</UniqueIdentifier>
     </Filter>
+
+
     <Filter Include="Source Files\objects\NguyenSyChinh\Scene">
       <UniqueIdentifier>{d0ba80d1-ae5e-48d1-bd1f-12905a603029}</UniqueIdentifier>
     </Filter>
@@ -42,6 +45,10 @@
     </Filter>
     <Filter Include="Source Files\objects\NguyenSyChinh\Rail">
       <UniqueIdentifier>{24a20ace-3b40-4e41-b02f-e2cb2d5f3a4d}</UniqueIdentifier>
+
+    <Filter Include="Source Files\objects\TongMinhHieu">
+      <UniqueIdentifier>{9b8c39d6-b219-460d-8be0-fd27f5d6326d}</UniqueIdentifier>
+
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -129,11 +136,27 @@
     <ClCompile Include="CityInside.cpp">
       <Filter>Source Files\objects\NguyenSyChinh\Rail</Filter>
     </ClCompile>
+
     <ClCompile Include="Furniture_Vuong.cpp">
       <Filter>Source Files\objects\VuTheVuong</Filter>
     </ClCompile>
     <ClCompile Include="Toys_Vuong.cpp">
       <Filter>Source Files\objects\VuTheVuong</Filter>
+
+    <ClCompile Include="Door.cpp">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClCompile>
+    <ClCompile Include="CashierCounter.cpp">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClCompile>
+    <ClCompile Include="SetPC.cpp">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClCompile>
+    <ClCompile Include="StaffChair.cpp">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawers.cpp">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -241,11 +264,27 @@
     <ClInclude Include="CityInside.h">
       <Filter>Source Files\objects\NguyenSyChinh\Rail</Filter>
     </ClInclude>
+
     <ClInclude Include="Furniture_Vuong.h">
       <Filter>Source Files\objects\VuTheVuong</Filter>
     </ClInclude>
     <ClInclude Include="Toys_Vuong.h">
       <Filter>Source Files\objects\VuTheVuong</Filter>
+
+    <ClInclude Include="Door.h">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClInclude>
+    <ClInclude Include="CashierCounter.h">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClInclude>
+    <ClInclude Include="SetPC.h">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClInclude>
+    <ClInclude Include="StaffChair.h">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawers.h">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
