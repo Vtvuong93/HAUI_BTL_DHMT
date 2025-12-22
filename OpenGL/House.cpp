@@ -77,11 +77,13 @@ House::House() {
             new BalconyRailing()
         )
     );
+
+    // quay thu ngan
     float table_h = 1.2f;
     parts.push_back(
         new TransformShape(
             Translate(0, table_h / 2, 5.0f) * RotateY(90),
-            new CashierCounter(2.0f, table_h, 1.2f)
+            new CashierCounter(4.0f, table_h, 1.2f)
         )
     );
     // (GÓC PHẢI PHÍA SAU → LỖ CẦU THANG, KHÔNG TẠO)
@@ -179,7 +181,7 @@ House::House() {
                 0.0f,
                 doorH / 2,
                 depth / 2),
-            new Door(doorW, doorH) // 
+            new Door(doorW, doorH, vec3(0, doorH / 2, 0.5)) // 
         )
     );
 

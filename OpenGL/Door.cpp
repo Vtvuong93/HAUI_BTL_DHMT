@@ -4,21 +4,27 @@
 
 #include "Globals.h"
 
-Door::Door(float w, float h){
-    this->h = h;
+Door::Door(float w, float h, vec3 pos0){
+    door_w = w;
+    door_h = h;
+    float thickness = 0.05f;
 	// Base
+    base_w = door_w * 1.1f, base_h = 1.0;
+    base_d = base_h;
+    pos = pos0;
+    std::cout << pos0;
     parts.push_back(
         new TransformShape(
-            Translate(0, h / 2 + 0.5f, 0.5f) * 
-            Scale(w + 0.05f, 1.0f, 1.0f),
+            Scale(base_w, base_h, base_d),
             new Cube()
         )
     );
 
     // door
-    std::cout << "thuc hien lai";
+    
     parts.push_back(
         new TransformShape(
+            
             Scale(w, h, 0.05f),
             new Cube()
         )
@@ -32,7 +38,12 @@ Door:: ~Door() {
 }
 
 void Door::draw(const mat4& modelMatrix) const {
+    mat4 model =  modelMatrix * Translate(pos) * Translate(0, base_h / 2, 0);
     Materials::Metal.apply();
-    parts.at(0)->draw(modelMatrix);
-    parts.at(1)->draw(modelMatrix * Translate(0, h * (1 - rolledDoor), 0) * Scale(1.0f, rolledDoor, 1.0f));
+    parts.at(0)->draw(model);
+    parts.at(1)->draw(model * 
+        Translate(0, door_h * (1 - rolledDoor) / 2, 0) * 
+        Translate(0, -door_h / 2 -base_h / 2,- base_d / 2 + thickness) *
+        Scale(1.0f, rolledDoor, 1.0f)
+    );
 }

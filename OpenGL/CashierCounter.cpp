@@ -10,16 +10,16 @@ CashierCounter::CashierCounter(float w, float h, float d) {
     // front face
     parts.push_back(
         new TransformShape(
-            Translate(0, h / 4 - thickness / 2, d / 2 - thickness / 2) *
-            Scale(w - 2 * thickness, h / 2, thickness),
+            Translate(0, 0, d / 2 - thickness / 2) *
+            Scale(w - 2 * thickness, h - thickness, thickness),
             new Cube()
         )
     );
     // up face
     parts.push_back(
         new TransformShape(
-            Translate(0, h/2 , 0) *
-            Scale(w, thickness, d),
+            Translate(0, h/2 , 0.0f) *
+            Scale(w + 0.3f, thickness, d),
             new Cube()
         )
     );
@@ -43,8 +43,8 @@ CashierCounter::CashierCounter(float w, float h, float d) {
     // ngan ban
     parts.push_back(
         new TransformShape(
-            Translate(0, h / 4 - thickness / 2, d * 0.15f - thickness) *
-            Scale(w - 2 * thickness, thickness, d / 3 * 2 ),
+            Translate(0, h / 4, 0) *
+            Scale(w - 2 * thickness, thickness, d),
             new Cube()
         )
     );
