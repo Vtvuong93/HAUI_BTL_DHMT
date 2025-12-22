@@ -8,5 +8,7 @@ GLuint model_loc = 0;
 GLuint view_loc = 0;
 GLuint projection_loc = 0;
 
+float spin = 0.5f;
 float rolledDoor = 1.0f;
 float drag = 0;
+
