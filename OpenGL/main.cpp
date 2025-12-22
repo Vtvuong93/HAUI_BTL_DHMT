@@ -5,8 +5,6 @@
 #include "Angel.h"
 #include "Globals.h"
 
-#include "TransformShape.h"
-
 #include "Scene.h"
 #include "camera.h"
 
@@ -15,6 +13,11 @@
 #include "HouseModern3F.h"
 #include "Road.h"
 
+#include "ToyTrain.h"
+#include "ToyTrain1.h"
+#include "CycleRail.h"
+#include "CityInside.h"
+#include "StraightRail.h"
 // ================== CAMERA ==================
 Camera camera;
 int lastX = 800, lastY = 800;
@@ -98,10 +101,16 @@ void keyboard(unsigned char key, int, int) {
 
     case ' ': camera.position.y += camera.speed; break;
     case 'c': camera.position.y -= camera.speed; break;
+
     case 'q': if (!(rolledDoor >= 1.0f))  rolledDoor += 0.05f; break;
     case 'Q': if (!(rolledDoor <= 0.0f)) rolledDoor -= 0.05f; break;
     case '/': if (!(drag >= 0.5f))  drag += 0.05f; break;
     case '?': if (!(drag <= 0.05f)) drag -= 0.05f; break;
+
+    case '9':
+        g_trainMove = !g_trainMove;   // bật / tắt chuyển động
+        break;
+
 
     case 27: exit(EXIT_SUCCESS); // ESC
     }
@@ -193,6 +202,42 @@ int main(int argc, char** argv) {
 
     // ================== TẦNG 1 – PHÒNG KHÁCH ==================
 
+    //mô hình tàu tầng 2
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 6.0f + 0.15f, 5.0f),
+            new ToyTrain(0.2f)
+        )
+    );
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 6.0f + 0.1f, 5.0f),
+            new CycleRail(3.0f, 100)
+        )
+    );
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 6.0f + 0.1f, 5.0f),
+            new CityInside(2.2f)   // < bán kính rail
+        )
+    );
+
+    //tàu mới 1 
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 0.15f, 8.0f),
+            new ToyTrain1(0.2f)
+        )
+    );
+
+    //ray thang
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 0.15f, 6.0f),
+            new StraightRail()
+        )
+    );
+    
 
     // ===== CALLBACK =====
     glutDisplayFunc(display);

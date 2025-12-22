@@ -121,9 +121,14 @@
   <ItemGroup>
     <ClCompile Include="BalconyRailing.cpp" />
     <ClCompile Include="camera.cpp" />
+
     <ClCompile Include="CashierCounter.cpp" />
+
+    <ClCompile Include="CityInside.cpp" />
+
     <ClCompile Include="Cone.cpp" />
     <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="CycleRail.cpp" />
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="Drawers.cpp" />
@@ -139,9 +144,17 @@
     <ClCompile Include="SetPC.cpp" />
     <ClCompile Include="StaffChair.cpp" />
     <ClCompile Include="Stair.cpp" />
+    <ClCompile Include="StraightRail.cpp" />
+    <ClCompile Include="ToyLocomotive.cpp" />
+    <ClCompile Include="ToyLocomotive1.cpp" />
+    <ClCompile Include="ToyTrain.cpp" />
+    <ClCompile Include="ToyTrain1.cpp" />
+    <ClCompile Include="ToyWagon.cpp" />
+    <ClCompile Include="ToyWagon1.cpp" />
     <ClCompile Include="TransformShape.cpp" />
     <ClCompile Include="Tree.cpp" />
     <ClCompile Include="TriangularPrism.cpp" />
+    <ClCompile Include="Wheel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fshader1.glsl" />
@@ -153,8 +166,10 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="CashierCounter.h" />
     <ClInclude Include="CheckError.h" />
+    <ClInclude Include="CityInside.h" />
     <ClInclude Include="Cone.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="CycleRail.h" />
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="Drawers.h" />
@@ -171,10 +186,18 @@
     <ClInclude Include="Shape.h" />
     <ClInclude Include="StaffChair.h" />
     <ClInclude Include="Stair.h" />
+    <ClInclude Include="StraightRail.h" />
+    <ClInclude Include="ToyLocomotive.h" />
+    <ClInclude Include="ToyLocomotive1.h" />
+    <ClInclude Include="ToyTrain.h" />
+    <ClInclude Include="ToyTrain1.h" />
+    <ClInclude Include="ToyWagon.h" />
+    <ClInclude Include="ToyWagon1.h" />
     <ClInclude Include="TransformShape.h" />
     <ClInclude Include="Tree.h" />
     <ClInclude Include="TriangularPrism.h" />
     <ClInclude Include="vec.h" />
+    <ClInclude Include="Wheel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
