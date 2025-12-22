@@ -1,29 +1,40 @@
-﻿#ifndef TOY_TRAIN_H
-#define TOY_TRAIN_H
+﻿#ifndef TOYTRAIN_H
+#define TOYTRAIN_H
 
 #include "Shape.h"
+#include "TransformShape.h"
+#include "ToyLocomotive.h"
+#include "ToyWagon.h"
 
-class ToyTrain : public Shape {
+using namespace Angel;
+
+class ToyTrain : public Shape
+{
 public:
-    ToyTrain(float s = 1.0f);
+    ToyTrain(float scale = 1.0f);
     ~ToyTrain();
 
     void draw(const mat4& modelMatrix) const override;
 
 private:
-    // ===== CÁC THÀNH PHẦN (PHÂN CẤP) =====
-    Shape* locomotive = nullptr;
-    Shape* wagon1 = nullptr;
-    Shape* wagon2 = nullptr;
-    Shape* wagon3 = nullptr;
+    /* ===== CÁC PHẦN CỦA TÀU ===== */
+    TransformShape* locomotive;
+    TransformShape* wagon1;
+    TransformShape* wagon2;
+    TransformShape* wagon3;
 
-    // ===== THAM SỐ CHUYỂN ĐỘNG =====
-    mutable float angle;         // góc quay trên ray tròn
-    float targetSpeed;           // tốc độ mục tiêu
-    mutable float currentSpeed;  // tốc độ hiện tại (làm mượt)
-    float scale;                 // tỉ lệ mô hình
+    /* ===== TRẠNG THÁI ===== */
+    mutable float angle;        // góc quay chung quanh tâm
+    float targetSpeed;
+    mutable float currentSpeed;
 
-    void initGPUBuffers() override {}  // Không cần buffer riêng
+    /* ===== BIẾN HÌNH HỌC ===== */
+    mutable vec3  locoPos, w1Pos, w2Pos, w3Pos;
+    mutable float locoRotY, w1RotY, w2RotY, w3RotY;
+
+    float scale;
+
+    void initGPUBuffers() override {}
 };
 
-#endif
+#endif // TOYTRAIN_H

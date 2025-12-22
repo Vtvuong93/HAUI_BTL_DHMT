@@ -8,4 +8,4 @@ GLuint model_loc = 0;
 GLuint view_loc = 0;
 GLuint projection_loc = 0;
 
-bool g_trainMove = false;
+float spin = 0.5f;

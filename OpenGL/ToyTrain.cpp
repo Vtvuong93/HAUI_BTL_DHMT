@@ -1,9 +1,5 @@
 ﻿#include "ToyTrain.h"
-#include "TransformShape.h"
-#include "ToyLocomotive.h"
-#include "ToyWagon.h"
 #include <cmath>
-#include "Globals.h"
 
 using namespace Angel;
 
@@ -22,6 +18,9 @@ ToyTrain::ToyTrain(float s)
     wagon1 = new TransformShape(mat4(1.0f), new ToyWagon(s));
     wagon2 = new TransformShape(mat4(1.0f), new ToyWagon(s));
     wagon3 = new TransformShape(mat4(1.0f), new ToyWagon(s));
+
+    locoPos = w1Pos = w2Pos = w3Pos = vec3(0.0f, 0.0f, 0.0f);
+    locoRotY = w1RotY = w2RotY = w3RotY = 0.0f;
 }
 
 /* =========================================================
@@ -36,49 +35,37 @@ ToyTrain::~ToyTrain()
 }
 
 /* =========================================================
-   VẼ – MÔ HÌNH PHÂN CẤP 
+   VẼ – SẮP XẾP THEO CUNG TRÒN & QUAY QUANH TÂM
    ========================================================= */
 void ToyTrain::draw(const mat4& modelMatrix) const
 {
-    /* ================== CẬP NHẬT CHUYỂN ĐỘNG ================== */
-    if (g_trainMove) {
-        currentSpeed += (targetSpeed - currentSpeed) * 0.05f;
-        angle += currentSpeed;
-    }
-    else {
-        currentSpeed = 0.0f;
-    }
+    /* ---------- TỐC ĐỘ QUAY ---------- */
+    currentSpeed += (targetSpeed - currentSpeed) * 0.05f;
+    angle += currentSpeed;
 
-    /* ================== ĐƯỜNG RAY TRÒN ================== */
-    const float R = 3.0f;
+    /* ---------- THÔNG SỐ HÌNH HỌC ---------- */
+    const float R = 3.0f;        // bán kính cung tròn
+    const float dTheta = 0.25f;  // độ cong giữa các toa
 
-    vec3 rootPos(
-        R * cos(angle),
-        0.0f,
-        R * sin(angle)
-    );
+    /* ---------- HÀM ĐẶT TOA TRÊN CUNG ---------- */
+    auto placeOnArc = [&](float theta, vec3& pos, float& rotY)
+        {
+            pos.x = R * cos(theta);
+            pos.z = R * sin(theta);
+            rotY = -theta * 180.0f / PI + 90.0f; // tiếp tuyến
+        };
 
-    float rootRotY = -angle * 180.0f / PI + 90.0f;
+    /* ---------- SẮP XẾP ĐẦU TÀU & TOA ---------- */
+    float dThetaLoco = 0.18f;  // nhỏ hơn dTheta
 
-    /* ================== ROOT TRANSFORM ================== */
-    mat4 root =
-        modelMatrix *
-        Translate(rootPos) *
-        RotateY(rootRotY);
+    placeOnArc(angle, locoPos, locoRotY);
+    placeOnArc(angle - dThetaLoco, w1Pos, w1RotY);
+    placeOnArc(angle - dThetaLoco - dTheta, w2Pos, w2RotY);
+    placeOnArc(angle - dThetaLoco - 2 * dTheta, w3Pos, w3RotY);
 
-    /* ================== VẼ ĐẦU TÀU ================== */
-    locomotive->draw(root);
-
-    /* ================== KHOẢNG CÁCH TOA ================== */
-    float wagonSpacing = 0.5f;
-
-    /* ================== VẼ TOA (PHÂN CẤP) ================== */
-    mat4 w1 = root * Translate(wagonSpacing, 0.0f, 0.0f) * RotateY(20);
-    wagon1->draw(w1);
-
-    mat4 w2 = w1 * Translate(1.5f * wagonSpacing, 0.0f, 0.0f) * RotateY(12);
-    wagon2->draw(w2);
-
-    mat4 w3 = w2 * Translate(1.55f * wagonSpacing, 0.0f, 0.0f) * RotateY(13);
-    wagon3->draw(w3);
+    /* ---------- VẼ ---------- */
+    locomotive->draw(modelMatrix * Translate(locoPos) * RotateY(locoRotY));
+    wagon1->draw(modelMatrix * Translate(w1Pos) * RotateY(w1RotY));
+    wagon2->draw(modelMatrix * Translate(w2Pos) * RotateY(w2RotY));
+    wagon3->draw(modelMatrix * Translate(w3Pos) * RotateY(w3RotY));
 }

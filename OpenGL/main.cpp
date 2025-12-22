@@ -15,7 +15,6 @@
 
 #include "ToyTrain.h"
 #include "ToyTrain1.h"
-#include "ToyLocomotive2.h"
 #include "CycleRail.h"
 #include "CityInside.h"
 // ================== CAMERA ==================
@@ -101,9 +100,7 @@ void keyboard(unsigned char key, int, int) {
 
     case ' ': camera.position.y += camera.speed; break;
     case 'c': camera.position.y -= camera.speed; break;
-    case '9':
-        g_trainMove = !g_trainMove;   // bật / tắt chuyển động
-        break;
+   
     case 27: exit(EXIT_SUCCESS); // ESC
     }
 
@@ -219,14 +216,6 @@ int main(int argc, char** argv) {
         new TransformShape(
             Translate(0.0f, 0.15f, 8.0f),
             new ToyTrain1(0.2f)
-        )
-    );
-
-    //tau moi 2
-    scene->addShape(
-        new TransformShape(
-            Translate(0.0f, 0.15f, 4.0f),
-            new ToyLocomotive2(0.2f)
         )
     );
 
