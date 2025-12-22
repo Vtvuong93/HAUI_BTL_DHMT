@@ -35,7 +35,7 @@ void main()
 	if( dot(L, N) < 0.0 ) specular = vec4(0.0, 0.0, 0.0, 1.0);
 	
 	color = ambient + diffuse + specular;
-	color.a = DiffuseProduct.a;
+	color.a = DiffuseProduct.a; 
 
     gl_Position = Projection * View * Model * vPosition/vPosition.w;
 		
