@@ -9,3 +9,4 @@ GLuint view_loc = 0;
 GLuint projection_loc = 0;
 
 float rolledDoor = 1.0f;
+float drag = 0;

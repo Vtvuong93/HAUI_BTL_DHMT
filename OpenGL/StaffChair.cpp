@@ -4,7 +4,18 @@
 
 
 StaffChair::StaffChair() {
-    // 
+    // chan ghe
+    parts.push_back(
+        new TransformShape(
+            Scale(0, 0, 0),
+            new Cube()
+        )
+    );
+
+
+
+
+    // mat ghe
     parts.push_back(
         new TransformShape(
             Translate(0, 0, 0) *
@@ -22,6 +33,8 @@ StaffChair:: ~StaffChair() {
 }
 
 void StaffChair::draw(const mat4& modelMatrix) const {
+
+
     Materials::Plastic.apply();
     parts.at(0)->draw(modelMatrix);
 

@@ -13,6 +13,7 @@ extern GLuint view_loc;         // location của uniform mat4 View
 extern GLuint projection_loc;   // location của uniform mat4 Projection
 
 extern float rolledDoor;
+extern float drag;
 
 // Nếu sau này bạn muốn thêm các uniform khác (ví dụ: NormalMatrix, Material, ...)
 // thì khai báo extern ở đây luôn để dễ quản lý

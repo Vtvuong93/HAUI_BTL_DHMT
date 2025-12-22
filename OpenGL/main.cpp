@@ -100,6 +100,9 @@ void keyboard(unsigned char key, int, int) {
     case 'c': camera.position.y -= camera.speed; break;
     case 'q': if (!(rolledDoor >= 1.0f))  rolledDoor += 0.05f; break;
     case 'Q': if (!(rolledDoor <= 0.0f)) rolledDoor -= 0.05f; break;
+    case '/': if (!(drag >= 0.5f))  drag += 0.05f; break;
+    case '?': if (!(drag <= 0.05f)) drag -= 0.05f; break;
+
     case 27: exit(EXIT_SUCCESS); // ESC
     }
     glutPostRedisplay();

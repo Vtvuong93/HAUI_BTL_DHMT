@@ -126,6 +126,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="Drawers.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="House.cpp" />
     <ClCompile Include="HouseModern.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="Door.h" />
+    <ClInclude Include="Drawers.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="House.h" />
     <ClInclude Include="HouseModern.h" />

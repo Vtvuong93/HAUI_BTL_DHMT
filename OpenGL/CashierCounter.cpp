@@ -2,6 +2,7 @@
 #include "TransformShape.h"
 #include "MaterialLib.h"
 #include "SetPC.h"
+#include "Drawers.h"
 
 CashierCounter::CashierCounter(float w, float h, float d) {
     float thickness = 0.05f;
@@ -40,12 +41,11 @@ CashierCounter::CashierCounter(float w, float h, float d) {
         )
     );
 
-    // ngan ban
+    // ngan keo
     parts.push_back(
         new TransformShape(
-            Translate(0, h / 4, 0) *
-            Scale(w - 2 * thickness, thickness, d),
-            new Cube()
+            Translate( - w / 4, h / 5, - thickness / 2) ,
+            new Drawers(w / 2, h, d - thickness, thickness)
         )
     );
 
@@ -58,8 +58,27 @@ CashierCounter::CashierCounter(float w, float h, float d) {
         )
     );
 
+    // ngan ban
+
+    parts.push_back(
+        new TransformShape(
+            Translate(0, h/5 - thickness, - thickness / 2) *
+            Scale(w - 2 * thickness, thickness, d - thickness),
+            new Cube()
+        )
+    );
+    parts.push_back(
+        new TransformShape(
+            Translate(- thickness / 2,  h/ 2 - h/5 + thickness / 2, - thickness / 2) *
+            Scale(thickness, h / 3 + thickness / 4, d - thickness),
+            new Cube()
+        )
+    );
 
 }
+
+
+
 CashierCounter:: ~CashierCounter() {
     for (auto p : parts) {
         delete p;

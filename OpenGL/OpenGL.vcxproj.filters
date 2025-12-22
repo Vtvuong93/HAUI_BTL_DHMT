@@ -99,6 +99,9 @@
     <ClCompile Include="StaffChair.cpp">
       <Filter>Source Files\objects\TongMinhHieu</Filter>
     </ClCompile>
+    <ClCompile Include="Drawers.cpp">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="fshader1.glsl">
@@ -185,6 +188,9 @@
       <Filter>Source Files\objects\TongMinhHieu</Filter>
     </ClInclude>
     <ClInclude Include="StaffChair.h">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawers.h">
       <Filter>Source Files\objects\TongMinhHieu</Filter>
     </ClInclude>
   </ItemGroup>

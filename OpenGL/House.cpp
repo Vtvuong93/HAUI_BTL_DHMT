@@ -82,10 +82,11 @@ House::House() {
     float table_h = 1.2f;
     parts.push_back(
         new TransformShape(
-            Translate(0, table_h / 2, 5.0f) * RotateY(90),
+            Translate(-2.6f, table_h / 2, 7.8f) * RotateY(90),
             new CashierCounter(4.0f, table_h, 1.2f)
         )
     );
+
     // (GÓC PHẢI PHÍA SAU → LỖ CẦU THANG, KHÔNG TẠO)
 
     // --------- BAN CÔNG PHÍA TRƯỚC ----------
