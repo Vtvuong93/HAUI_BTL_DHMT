@@ -28,6 +28,9 @@
     <Filter Include="Source Files\objects\NguyenSyChinh">
       <UniqueIdentifier>{dc53c1f1-f719-49db-91c4-47e35d9ce0ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\objects\NguyenQuocDat">
+      <UniqueIdentifier>{609c780e-2869-42b2-9bcb-f95bba44045c}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\objects\VuTheVuong">
       <UniqueIdentifier>{c2b82b9b-956b-4ccf-9a8d-cecc10c78fa5}</UniqueIdentifier>
     </Filter>
@@ -149,6 +152,21 @@
     </ClCompile>
     <ClCompile Include="Drawers.cpp">
       <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClCompile>
+    <ClCompile Include="BienHieu.cpp">
+      <Filter>Source Files\objects\NguyenQuocDat</Filter>
+    </ClCompile>
+    <ClCompile Include="DenChieuSang.cpp">
+      <Filter>Source Files\objects\NguyenQuocDat</Filter>
+    </ClCompile>
+    <ClCompile Include="Lights.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StraightRail.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PosterQuangCao.cpp">
+      <Filter>Source Files\objects\NguyenQuocDat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -273,6 +291,21 @@
     </ClInclude>
     <ClInclude Include="Drawers.h">
       <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClInclude>
+    <ClInclude Include="BienHieu.h">
+      <Filter>Source Files\objects\NguyenQuocDat</Filter>
+    </ClInclude>
+    <ClInclude Include="DenChieuSang.h">
+      <Filter>Source Files\objects\NguyenQuocDat</Filter>
+    </ClInclude>
+    <ClInclude Include="Lights.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StraightRail.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PosterQuangCao.h">
+      <Filter>Source Files\objects\NguyenQuocDat</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

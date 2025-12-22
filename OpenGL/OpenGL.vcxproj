@@ -120,6 +120,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BalconyRailing.cpp" />
+    <ClCompile Include="BienHieu.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="CashierCounter.cpp" />
     <ClCompile Include="CityInside.cpp" />
@@ -127,6 +128,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CycleRail.cpp" />
     <ClCompile Include="Cylinder.cpp" />
+    <ClCompile Include="DenChieuSang.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="Drawers.cpp" />
     <ClCompile Include="Furniture_Vuong.cpp" />
@@ -138,6 +140,7 @@
     <ClCompile Include="Lights.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="PosterQuangCao.cpp" />
     <ClCompile Include="Road.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SetPC.cpp" />
@@ -163,6 +166,7 @@
   <ItemGroup>
     <ClInclude Include="Angel.h" />
     <ClInclude Include="BalconyRailing.h" />
+    <ClInclude Include="BienHieu.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="CashierCounter.h" />
     <ClInclude Include="CheckError.h" />
@@ -171,6 +175,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CycleRail.h" />
     <ClInclude Include="Cylinder.h" />
+    <ClInclude Include="DenChieuSang.h" />
     <ClInclude Include="Furniture_Vuong.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="Drawers.h" />
@@ -182,6 +187,7 @@
     <ClInclude Include="mat.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialLib.h" />
+    <ClInclude Include="PosterQuangCao.h" />
     <ClInclude Include="Road.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SetPC.h" />

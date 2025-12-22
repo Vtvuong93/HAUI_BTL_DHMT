@@ -370,7 +370,49 @@ int main(int argc, char** argv) {
         )
     );
     
-    
+    // Biển hiệu
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 4.5f, 10.2f), // Tọa độ X=0 (theo nhà), Y=4.5 (tầng 2), Z=10.2 (mặt trước tường)
+            new BienHieu()
+        )
+    );
+    // Poster Quảng cáo Tàu hỏa 
+    scene->addShape(
+        new TransformShape(
+            Translate(3.5f, 4.0f, 10.2f)* Scale(0.8f, 0.8f, 1.0f),
+            new PosterQuangCao()
+        )
+    );
+    scene->addShape(
+        new TransformShape(
+            Translate(-3.5f, 4.0f, 10.2f)* Scale(0.8f, 0.8f, 1.0f),
+            new PosterQuangCao()
+        )
+    );
+    // Gắn đèn soi vào biển hiệu TOY
+    scene->addShape(new TransformShape(
+        Translate(0.0f, 5.9f, 11.0f)* // Đặt cao hơn biển hiệu
+        RotateX(180.0f),                // Quay đèn xuống dưới
+        new DenChieuSang()
+    ));
+
+    //Gắn một dàn đèn âm trần trong nhà
+    for (float x = -4.0f; x <= 4.0f; x += 4.0f) {
+        scene->addShape(new TransformShape(
+            Translate(x, 5.9f, 0.0f) * RotateX(180.0f),
+            new DenChieuSang()
+        ));
+    }
+    float zPositions[] = { -6.0f, 6.0f }; // Vị trí Z cho 2 dàn đèn mới
+    for (float z : zPositions) {
+        for (float x = -4.0f; x <= 4.0f; x += 4.0f) {
+            scene->addShape(new TransformShape(
+                Translate(x, 5.9f, z) * RotateX(180.0f),
+                new DenChieuSang()
+            ));
+        }
+    }
 
     // ===== CAMERA SETUP ===== 
     camera.position = vec3(0.0f, 2.0f, 0.0f); // X (giữa), Y (cao tầm mắt người)

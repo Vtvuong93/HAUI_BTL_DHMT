@@ -25,6 +25,10 @@
 #include "CityInside.h"
 #include "StraightRail.h"
 
+#include "BienHieu.h"
+#include "PosterQuangCao.h"
+#include "DenChieuSang.h"
+
 #include "Furniture_Vuong.h"
 #include "Toys_Vuong.h"
 #include "Lights.h"
