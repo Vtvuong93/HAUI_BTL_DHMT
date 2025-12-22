@@ -180,6 +180,18 @@ void keyboardDown(unsigned char key, int x, int y) {
     if (key == '9') {
 		g_trainMove = !g_trainMove;   // bật / tắt chuyển động
     }
+    if (key == 'q') {
+        rolledDoor += 0.05f;
+    }
+    if (key == 'Q') {
+        rolledDoor -= 0.05f;
+	}
+    if (key == '/') {
+        drag += 0.05f;
+    }
+    if (key == '?') {
+        drag -= 0.05f;
+	}
 }
 
 // Hàm khi thả phím 

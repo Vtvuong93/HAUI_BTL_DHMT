@@ -3,6 +3,9 @@
 #include "MaterialLib.h"
 #include "BalconyRailing.h"
 #include "Stair.h"
+#include "Door.h"
+#include "CashierCounter.h"
+#include "StaffChair.h"
 #include "Globals.h"
 
 using namespace Angel;
@@ -75,6 +78,22 @@ House::House() {
                 depth / 2 + balconyD - 0.075f   // mép ngoài ban công
             ),
             new BalconyRailing()
+        )
+    );
+
+    // quay thu ngan
+    float table_h = 1.2f;
+    parts.push_back(
+        new TransformShape(
+            Translate(-2.6f, table_h / 2, 7.8f) * RotateY(90),
+            new CashierCounter(4.0f, table_h, 1.2f)
+        )
+    );
+
+    parts.push_back(
+        new TransformShape(
+            Translate(-4.0f, 0.105f, 6.8f) * RotateY(90),
+            new StaffChair()
         )
     );
     // (GÓC PHẢI PHÍA SAU → LỖ CẦU THANG, KHÔNG TẠO)
@@ -166,7 +185,17 @@ House::House() {
             new Cube()
         )
     );
+    parts.push_back(
+        new TransformShape(
+            Translate(
+                0.0f,
+                doorH / 2,
+                depth / 2),
+            new Door(doorW, doorH, vec3(0, doorH / 2, 0.5)) // 
+        )
+    );
 
+    // stair 
     parts.push_back(
         new TransformShape(
             Translate(
@@ -210,7 +239,6 @@ House::House() {
             new Cube()
         )
     );
-
 }
 
 House::~House() {

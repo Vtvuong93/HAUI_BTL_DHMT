@@ -38,6 +38,5 @@ void main()
 	color.a = DiffuseProduct.a; 
 
     gl_Position = Projection * View * Model * vPosition/vPosition.w;
-		
 }
 //

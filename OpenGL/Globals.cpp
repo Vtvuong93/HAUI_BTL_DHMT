@@ -8,4 +8,7 @@ GLuint model_loc = 0;
 GLuint view_loc = 0;
 GLuint projection_loc = 0;
 
+float rolledDoor = 1.0f;
+float drag = 0;
+
 bool g_trainMove = false;   // mặc định: đứng yên

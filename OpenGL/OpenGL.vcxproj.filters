@@ -43,6 +43,9 @@
     <Filter Include="Source Files\objects\NguyenSyChinh\Rail">
       <UniqueIdentifier>{24a20ace-3b40-4e41-b02f-e2cb2d5f3a4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\objects\TongMinhHieu">
+      <UniqueIdentifier>{9b8c39d6-b219-460d-8be0-fd27f5d6326d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -134,6 +137,21 @@
     </ClCompile>
     <ClCompile Include="Toys_Vuong.cpp">
       <Filter>Source Files\objects\VuTheVuong</Filter>
+    </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClCompile>
+    <ClCompile Include="CashierCounter.cpp">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClCompile>
+    <ClCompile Include="SetPC.cpp">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClCompile>
+    <ClCompile Include="StaffChair.cpp">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawers.cpp">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -246,6 +264,21 @@
     </ClInclude>
     <ClInclude Include="Toys_Vuong.h">
       <Filter>Source Files\objects\VuTheVuong</Filter>
+    </ClInclude>
+    <ClInclude Include="Door.h">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClInclude>
+    <ClInclude Include="CashierCounter.h">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClInclude>
+    <ClInclude Include="SetPC.h">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClInclude>
+    <ClInclude Include="StaffChair.h">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawers.h">
+      <Filter>Source Files\objects\TongMinhHieu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
