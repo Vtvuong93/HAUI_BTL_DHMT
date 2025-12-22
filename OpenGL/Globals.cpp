@@ -12,3 +12,5 @@ float rolledDoor = 1.0f;
 float drag = 0;
 
 bool g_trainMove = false;   // mặc định: đứng yên
+
+float twistKey = 0.0f;

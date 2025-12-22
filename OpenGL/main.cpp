@@ -192,6 +192,13 @@ void keyboardDown(unsigned char key, int x, int y) {
 	if (key == '?') {
 		if (!(drag <= 0.05f)) drag -= 0.05f;
 	}
+	if (key == '=') {
+		if (!(twistKey >= 90.0f)) twistKey += 5.0f;
+	}
+	if (key == '+') {
+		if (!(twistKey <= 0.0f)) twistKey -= 5.0f;
+	}
+
 }
 
 // Hàm khi thả phím 

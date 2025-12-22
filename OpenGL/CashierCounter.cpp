@@ -1,4 +1,4 @@
-#include "CashierCounter.h"
+﻿#include "CashierCounter.h"
 #include "TransformShape.h"
 #include "MaterialLib.h"
 #include "SetPC.h"
