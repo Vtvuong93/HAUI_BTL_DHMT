@@ -288,51 +288,51 @@ int main(int argc, char** argv) {
         new Sofa()
     ));
 
-    // -- Kệ tàu hỏa (Sát tường bên trái) --
-    // Tường trái ở x = -5.0f (vì width nhà là 10)
-    scene->addShape(new TransformShape(
-        Translate(-4.5f, 0.0f, 0.0f) * RotateY(90), // Xoay dọc theo tường
-        new WoodShelf()
-    ));
+    //// -- Kệ tàu hỏa (Sát tường bên trái) --
+    //// Tường trái ở x = -5.0f (vì width nhà là 10)
+    //scene->addShape(new TransformShape(
+    //    Translate(-4.5f, 0.0f, 0.0f) * RotateY(90), // Xoay dọc theo tường
+    //    new WoodShelf()
+    //));
 
-    // ===== BÀN TRƯNG BÀY GIỮA PHÒNG =====
-    // Đặt lệch một chút so với bàn trà
-    scene->addShape(new TransformShape(
-        Translate(2.5f, 0.0f, 2.0f),
-        new DisplayTable()
-    ));
+    //// ===== BÀN TRƯNG BÀY GIỮA PHÒNG =====
+    //// Đặt lệch một chút so với bàn trà
+    //scene->addShape(new TransformShape(
+    //    Translate(2.5f, 0.0f, 2.0f),
+    //    new DisplayTable()
+    //));
 
    
-    // Robot đứng cạnh tàu hỏa
-    scene->addShape(new TransformShape(
-        Translate(3.0f, 0.85f, 2.0f) * RotateY(-45),
-        new ToyRobot()
-    ));
+    //// Robot đứng cạnh tàu hỏa
+    //scene->addShape(new TransformShape(
+    //    Translate(3.0f, 0.85f, 2.0f) * RotateY(-45),
+    //    new ToyRobot()
+    //));
 
-    myCoffeeTable = new TransformShape(
-        Translate(0.0f, 0.0f, 1.5f),
-        new CoffeeTable()
-    );
+    //myCoffeeTable = new TransformShape(
+    //    Translate(0.0f, 0.0f, 1.5f),
+    //    new CoffeeTable()
+    //);
 
-    myGlassCabinet = new TransformShape(
-        Translate(4.0f, 0.0f, -8.0f) * RotateY(-45),
-        new GlassCabinet()
-    );
+    //myGlassCabinet = new TransformShape(
+    //    Translate(4.0f, 0.0f, -8.0f) * RotateY(-45),
+    //    new GlassCabinet()
+    //);
 
 
-    // ===== ĐẶT ĐỒ CHƠI LÊN KỆ GỖ (WoodShelf) =====
-    // Giả sử kệ gỗ đặt ở (-4.5f, 0, 0). Mỗi tầng cao khoảng 0.5f
-    // Tầng 1: Robot
-    scene->addShape(new TransformShape(
-        Translate(-4.5f, 0.55f, 0.0f) * RotateY(90),
-        new ToyRobot()
-    ));
+    //// ===== ĐẶT ĐỒ CHƠI LÊN KỆ GỖ (WoodShelf) =====
+    //// Giả sử kệ gỗ đặt ở (-4.5f, 0, 0). Mỗi tầng cao khoảng 0.5f
+    //// Tầng 1: Robot
+    //scene->addShape(new TransformShape(
+    //    Translate(-4.5f, 0.55f, 0.0f) * RotateY(90),
+    //    new ToyRobot()
+    //));
    
-    // Tầng 3: Robot khác
-    scene->addShape(new TransformShape(
-        Translate(-4.5f, 1.55f, 0.0f) * RotateY(90),
-        new ToyRobot()
-    ));
+    //// Tầng 3: Robot khác
+    //scene->addShape(new TransformShape(
+    //    Translate(-4.5f, 1.55f, 0.0f) * RotateY(90),
+    //    new ToyRobot()
+    //));
 
     //mô hình tàu tầng 2
     scene->addShape(
@@ -359,6 +359,30 @@ int main(int argc, char** argv) {
         new TransformShape(
             Translate(0.0f, 0.15f, 8.0f),
             new ToyTrain1(0.2f)
+        )
+    );
+
+    //dau tau 2
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 0.15f, 6.0f),
+            new ToyLocomotive2(0.2f)
+        )
+    );
+
+    //dau tau 3
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 0.15f, 4.0f),
+            new ToyLocomotive3(0.2f)
+        )
+    );
+
+    //dau tau 4
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 0.15f, 2.0f),
+            new ToyLocomotive4(0.2f)
         )
     );
 

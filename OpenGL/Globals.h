@@ -24,6 +24,9 @@
 #include "CycleRail.h"
 #include "CityInside.h"
 #include "StraightRail.h"
+#include "ToyLocomotive2.h"
+#include "ToyLocomotive3.h"
+#include "ToyLocomotive4.h"
 
 #include "BienHieu.h"
 #include "PosterQuangCao.h"
