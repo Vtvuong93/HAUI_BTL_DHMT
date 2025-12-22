@@ -140,6 +140,7 @@
     <ClCompile Include="ToyLocomotive1.cpp" />
     <ClCompile Include="ToyTrain.cpp" />
     <ClCompile Include="ToyTrain1.cpp" />
+    <ClCompile Include="ToyLocomotive2.cpp" />
     <ClCompile Include="ToyWagon.cpp" />
     <ClCompile Include="ToyWagon1.cpp" />
     <ClCompile Include="TransformShape.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="ToyLocomotive1.h" />
     <ClInclude Include="ToyTrain.h" />
     <ClInclude Include="ToyTrain1.h" />
+    <ClInclude Include="ToyLocomotive2.h" />
     <ClInclude Include="ToyWagon.h" />
     <ClInclude Include="ToyWagon1.h" />
     <ClInclude Include="TransformShape.h" />

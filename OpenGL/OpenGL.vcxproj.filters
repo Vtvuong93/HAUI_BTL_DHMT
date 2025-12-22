@@ -123,6 +123,9 @@
     <ClCompile Include="CityInside.cpp">
       <Filter>Source Files\objects\NguyenSyChinh\Rail</Filter>
     </ClCompile>
+    <ClCompile Include="ToyLocomotive2.cpp">
+      <Filter>Source Files\objects\NguyenSyChinh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="fshader1.glsl">
@@ -225,6 +228,9 @@
     </ClInclude>
     <ClInclude Include="CityInside.h">
       <Filter>Source Files\objects\NguyenSyChinh\Rail</Filter>
+    </ClInclude>
+    <ClInclude Include="ToyLocomotive2.h">
+      <Filter>Source Files\objects\NguyenSyChinh</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
