@@ -5,7 +5,7 @@
 
 StaffChair::StaffChair() {
 
-	float h = 0.9f;
+	float h = 0.7f;
 	// ngoi
     parts.push_back(
         new TransformShape(

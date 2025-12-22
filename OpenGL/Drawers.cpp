@@ -17,6 +17,8 @@ Drawers::Drawers(float _w, float _h, float _d, float _t) {
             new Cube()
         )
     );
+
+    //
     parts.push_back(
         new TransformShape(
             Translate(w / 2 - t / 2, h / 2, 0) *

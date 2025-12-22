@@ -53,7 +53,7 @@ CashierCounter::CashierCounter(float w, float h, float d) {
     // PC
     parts.push_back(
         new TransformShape(
-            Translate(w / 4, h / 2, 0),
+            Translate(0, h / 2, 0),
             new SetPC(thickness)
         )
     );
