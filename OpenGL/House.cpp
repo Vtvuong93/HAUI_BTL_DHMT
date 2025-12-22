@@ -191,7 +191,7 @@ House::House() {
                 0.0f,
                 doorH / 2,
                 depth / 2),
-            new Door(doorW, doorH, vec3(0, doorH / 2, 0.5)) // 
+            new Door(doorW, doorH, Translate(0, doorH / 2, 0.5) * RotateY(30)) // 
         )
     );
 
