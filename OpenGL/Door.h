@@ -21,9 +21,9 @@ private:
 
     float base_w = door_w * 1.1f, base_h = 1.0f;
     float base_d = base_h;
-    vec3 pos;
+    mat4 pos;
 public:
-    Door(float w, float h, vec3 pos0);
+    Door(float w, float h, mat4 pos0);
     ~Door();
 
     void draw(const mat4& modelMatrix) const override;

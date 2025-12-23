@@ -12,7 +12,7 @@ const int FIXED_H = 900;
 const int FPS = 60;
 
 // Trạng thái
-bool keys[256]; 
+bool keys[256];
 bool isFullScrn = false;
 bool needToResetPos = false;
 bool isLightOn = true; // Trạng thái đèn (Mặc định là Bật)
@@ -23,19 +23,19 @@ TransformShape* myGlassCabinet = nullptr;
 
 // ================== SHADER ==================
 void shaderSetup() {
-    std::cout << "Loading shaders..." << std::endl;
+	std::cout << "Loading shaders..." << std::endl;
 
-    program = InitShader("vshader1.glsl", "fshader1.glsl");
-    if (program == 0) {
-        std::cerr << "ERROR: Shader program failed!" << std::endl;
-        exit(EXIT_FAILURE);
-    }
+	program = InitShader("vshader1.glsl", "fshader1.glsl");
+	if (program == 0) {
+		std::cerr << "ERROR: Shader program failed!" << std::endl;
+		exit(EXIT_FAILURE);
+	}
 
-    glUseProgram(program);
+	glUseProgram(program);
 
-    model_loc = glGetUniformLocation(program, "Model");
-    view_loc = glGetUniformLocation(program, "View");
-    projection_loc = glGetUniformLocation(program, "Projection");
+	model_loc = glGetUniformLocation(program, "Model");
+	view_loc = glGetUniformLocation(program, "View");
+	projection_loc = glGetUniformLocation(program, "Projection");
 
     // --- ÁNH SÁNG BLINN-PHONG ---
     point4 light_position(0.0f, 3.0f, 5.0f, 1.0f);
@@ -43,26 +43,26 @@ void shaderSetup() {
     color4 light_diffuse(1.0f, 1.0f, 1.0f, 1.0f);
     color4 light_specular(1.0f, 1.0f, 1.0f, 1.0f);
 
-    glUniform4fv(glGetUniformLocation(program, "LightPosition"), 1, light_position);
-    glUniform4fv(glGetUniformLocation(program, "LightAmbient"), 1, light_ambient);
-    glUniform4fv(glGetUniformLocation(program, "LightDiffuse"), 1, light_diffuse);
-    glUniform4fv(glGetUniformLocation(program, "LightSpecular"), 1, light_specular);
+	glUniform4fv(glGetUniformLocation(program, "LightPosition"), 1, light_position);
+	glUniform4fv(glGetUniformLocation(program, "LightAmbient"), 1, light_ambient);
+	glUniform4fv(glGetUniformLocation(program, "LightDiffuse"), 1, light_diffuse);
+	glUniform4fv(glGetUniformLocation(program, "LightSpecular"), 1, light_specular);
 
-    glEnable(GL_DEPTH_TEST);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glEnable(GL_DEPTH_TEST);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 // ================ DI CHUYỂN CAMERA ==================
 void updateCameraMovement() {
-    vec3 front = camera.getFront();
-    vec3 right = normalize(cross(front, vec3(0.0f, 1.0f, 0.0f)));
+	vec3 front = camera.getFront();
+	vec3 right = normalize(cross(front, vec3(0.0f, 1.0f, 0.0f)));
 
     float walkSpeed = 0.05f;
     float runSpeed = 0.20f;
     bool isShiftHeld = (GetAsyncKeyState(VK_SHIFT) & 0x8000);
 
-    // Tốc độ di chuyển
-    float currentSpeed = isShiftHeld ? runSpeed : walkSpeed;
+	// Tốc độ di chuyển
+	float currentSpeed = isShiftHeld ? runSpeed : walkSpeed;
 
 	// Phím A, S, D, W
     if (GetAsyncKeyState('W') & 0x8000)        camera.position += currentSpeed * front;
@@ -89,7 +89,7 @@ void display() {
         needToResetPos = false; // Tắt cờ sau khi đã xử lý
     }
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // --- Gửi ánh sáng dựa trên trạng thái ---
     if (isLightOn) {
@@ -114,9 +114,9 @@ void display() {
     glUniformMatrix4fv(view_loc, 1, GL_TRUE, view);
     float aspect = (float)glutGet(GLUT_WINDOW_WIDTH) / (float)glutGet(GLUT_WINDOW_HEIGHT);
 
-    mat4 projection = Perspective(45.0f, aspect, 0.1f, 100.0f);
-    glUniformMatrix4fv(projection_loc, 1, GL_TRUE, projection);
-    glUniformMatrix4fv(model_loc, 1, GL_TRUE, model);
+	mat4 projection = Perspective(45.0f, aspect, 0.1f, 100.0f);
+	glUniformMatrix4fv(projection_loc, 1, GL_TRUE, projection);
+	glUniformMatrix4fv(model_loc, 1, GL_TRUE, model);
 
     // Vẽ vật thể 
     if (scene)  scene->draw(model);
@@ -127,7 +127,7 @@ void display() {
     if (myCoffeeTable) myCoffeeTable->draw(model);
     if (myGlassCabinet) myGlassCabinet->draw(model);
 
-    glutSwapBuffers();
+	glutSwapBuffers();
 }
 
 // ================== TIMER (TỐI ƯU FPS) ==================
@@ -163,8 +163,8 @@ void mouseMotion(int x, int y) {
     camera.yaw += dx;
     camera.pitch += dy;
 
-    if (camera.pitch > 89.0f)  camera.pitch = 89.0f;
-    if (camera.pitch < -89.0f) camera.pitch = -89.0f;
+	if (camera.pitch > 89.0f)  camera.pitch = 89.0f;
+	if (camera.pitch < -89.0f) camera.pitch = -89.0f;
 
     camera.updateCameraVectors();
     glutWarpPointer(cx, cy);
@@ -181,10 +181,10 @@ void specialInput(int key, int x, int y) {
 
 // ================== MAIN ==================
 int main(int argc, char** argv) {
-    std::cout << "Starting program..." << std::endl;
+	std::cout << "Starting program..." << std::endl;
 
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 
     // --- Căn giữa màn hình lúc khởi động ---
     int screenW = glutGet(GLUT_SCREEN_WIDTH);
@@ -201,16 +201,16 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
-    shaderSetup();
+	shaderSetup();
 
     scene = new Scene();
     myLamp = new CeilingLamp();
 
-    // ================== KHUNG CẢNH ==================
-    scene->addShape(new House());
-    scene->addShape(new TransformShape(Translate(15.0f, 0.0f, 0.0f), new HouseModern()));
-    scene->addShape(new TransformShape(Translate(-15.0f, 0.0f, 0.0f), new HouseModern3F()));
-    scene->addShape(new TransformShape(Translate(0.0f, -0.25f, 30.0f) *RotateY(90.0f),new RoadWithTrees()));
+	// ================== KHUNG CẢNH ==================
+	scene->addShape(new House());
+	scene->addShape(new TransformShape(Translate(15.0f, 0.0f, 0.0f), new HouseModern()));
+	scene->addShape(new TransformShape(Translate(-15.0f, 0.0f, 0.0f), new HouseModern3F()));
+	scene->addShape(new TransformShape(Translate(0.0f, -0.25f, 30.0f) * RotateY(90.0f), new RoadWithTrees()));
 
     // ================== TẦNG 1 ==================
     // --- Bộ Sofa --- 
@@ -290,33 +290,33 @@ int main(int argc, char** argv) {
     //    new ToyRobot()
     //));
 
-    //mô hình tàu tầng 2
-    scene->addShape(
-        new TransformShape(
-            Translate(0.0f, 6.0f + 0.15f, 5.0f),
-            new ToyTrain(0.2f)
-        )
-    );
-    scene->addShape(
-        new TransformShape(
-            Translate(0.0f, 6.0f + 0.1f, 5.0f),
-            new CycleRail(3.0f, 100)
-        )
-    );
-    scene->addShape(
-        new TransformShape(
-            Translate(0.0f, 6.0f + 0.1f, 5.0f),
-            new CityInside(2.2f)   // < bán kính rail
-        )
-    );
+	//mô hình tàu tầng 2
+	scene->addShape(
+		new TransformShape(
+			Translate(0.0f, 6.0f + 0.15f, 5.0f),
+			new ToyTrain(0.2f)
+		)
+	);
+	scene->addShape(
+		new TransformShape(
+			Translate(0.0f, 6.0f + 0.1f, 5.0f),
+			new CycleRail(3.0f, 100)
+		)
+	);
+	scene->addShape(
+		new TransformShape(
+			Translate(0.0f, 6.0f + 0.1f, 5.0f),
+			new CityInside(2.2f)   // < bán kính rail
+		)
+	);
 
-    //tàu mới 1 
-    scene->addShape(
-        new TransformShape(
-            Translate(0.0f, 0.15f, 8.0f),
-            new ToyTrain1(0.2f)
-        )
-    );
+	//tàu mới 1 
+	scene->addShape(
+		new TransformShape(
+			Translate(0.0f, 0.15f, 8.0f),
+			new ToyTrain1(0.2f)
+		)
+	);
 
     //dau tau 2
     scene->addShape(
@@ -397,10 +397,10 @@ int main(int argc, char** argv) {
 	glutPassiveMotionFunc(mouseMotion); 
     glutTimerFunc(0, timer, 0); // set FPS
 
-    glutSetCursor(GLUT_CURSOR_NONE);
-    std::cout << "Entering GLUT main loop..." << std::endl;
-    glutMainLoop();
+	glutSetCursor(GLUT_CURSOR_NONE);
+	std::cout << "Entering GLUT main loop..." << std::endl;
+	glutMainLoop();
 
-    delete scene;
-    return 0;
+	delete scene;
+	return 0;
 }
