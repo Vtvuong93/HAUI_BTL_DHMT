@@ -229,6 +229,7 @@ int main(int argc, char** argv) {
     // --- Hệ Robot --- 
     scene->addShape(new TransformShape(Translate(3.0f, 0.85f, 2.0f) * RotateY(-45),new ToyRobot()));
 
+    // ================== TẦNG 2 ==================
     // === MÔ HÌNH TÀU HOẢ & RAY ===
     scene->addShape(new TransformShape(Translate(0.0f, 7.4f, 4.0f) * Scale(0.75f), new ToyTrain(0.2f)));
     scene->addShape(new TransformShape(Translate(0.0f, 7.35f, 4.0f) * Scale(0.75f), new CycleRail(3.0f, 100)));
@@ -238,12 +239,13 @@ int main(int argc, char** argv) {
     scene->addShape(new TransformShape(Translate(0.0f, 0.15f, 6.0f), new StraightRail()));
 
     // === BIỂN HIỆU & POSTER ===
-    scene->addShape(new TransformShape(Translate(0.0f, 4.5f, 10.2f), new BienHieu()));
+    scene->addShape(new TransformShape(Translate(0.0f, 6.75f, 13.0f) * Scale(2.4f, 1.0f, 1.0f), new BienHieu()));
     scene->addShape(new TransformShape(Translate(3.5f, 4.0f, 10.2f) * Scale(0.8f, 0.8f, 1.0f), new PosterQuangCao()));
     scene->addShape(new TransformShape(Translate(-3.5f, 4.0f, 10.2f) * Scale(0.8f, 0.8f, 1.0f), new PosterQuangCao()));
 
     // === HỆ THỐNG ĐÈN ===
-    scene->addShape(new TransformShape(Translate(0.0f, 5.9f, 11.0f) * RotateX(180.0f), new DenChieuSang())); // Đèn soi biển hiệu
+    // Đèn soi biển hiệu
+    scene->addShape(new TransformShape(Translate(0.0f, 5.9f, 11.5f) * RotateX(180.0f), new DenChieuSang()));
 
     // Đèn âm trần (dàn 1)
     for (float x = -4.0f; x <= 4.0f; x += 4.0f)
