@@ -148,6 +148,8 @@ void keyboardDown(unsigned char key, int x, int y) {
     if (key == 'Q') { if (!(rolledDoor <= 0.0f)) rolledDoor -= 0.05f; }
     if (key == '/') { if (!(drag >= 0.5f)) drag += 0.05f; }
     if (key == '?') { if (!(drag <= 0.05f)) drag -= 0.05f;}
+    if (key == '=') { if (!(twistKey >= 90.0f)) twistKey += 5.0f; }
+    if (key == '+') { if (!(twistKey <= 0.0f)) twistKey -= 5.0f; }
 }
 
 void keyboardUp(unsigned char key, int x, int y) { keys[key] = false; }
