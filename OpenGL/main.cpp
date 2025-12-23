@@ -219,8 +219,20 @@ int main(int argc, char** argv) {
     // --- Hệ bàn ---
     scene->addShape(new TransformShape(Translate(2.5f, 0.0f, 2.0f), new DisplayTable()));
 
+    //// -- Kệ tàu hỏa (Sát tường bên trái) --
+    //// Tường trái ở x = -5.0f (vì width nhà là 10)
+    //scene->addShape(new TransformShape(
+    //    Translate(-4.5f, 0.0f, 0.0f) * RotateY(90), // Xoay dọc theo tường
+    //    new WoodShelf()
+    //));
     myCoffeeTable = new TransformShape(Translate(0.0f, 0.0f, 1.5f), new CoffeeTable());
 
+    //// ===== BÀN TRƯNG BÀY GIỮA PHÒNG =====
+    //// Đặt lệch một chút so với bàn trà
+    //scene->addShape(new TransformShape(
+    //    Translate(2.5f, 0.0f, 2.0f),
+    //    new DisplayTable()
+    //));
     myGlassCabinet = new TransformShape(Translate(4.0f, 0.0f, -8.0f) * RotateY(-45), new GlassCabinet());
 
     // --- Hệ kệ gỗ ---
@@ -228,15 +240,29 @@ int main(int argc, char** argv) {
 
     // --- Hệ Robot --- 
     scene->addShape(new TransformShape(Translate(3.0f, 0.85f, 2.0f) * RotateY(-45),new ToyRobot()));
+   
+    //// Robot đứng cạnh tàu hỏa
+    //scene->addShape(new TransformShape(
+    //    Translate(3.0f, 0.85f, 2.0f) * RotateY(-45),
+    //    new ToyRobot()
+    //));
 
     // ================== TẦNG 2 ==================
     // === MÔ HÌNH TÀU HOẢ & RAY ===
     scene->addShape(new TransformShape(Translate(0.0f, 7.4f, 4.0f) * Scale(0.75f), new ToyTrain(0.2f)));
     scene->addShape(new TransformShape(Translate(0.0f, 7.35f, 4.0f) * Scale(0.75f), new CycleRail(3.0f, 100)));
     scene->addShape(new TransformShape(Translate(0.0f, 7.35f, 4.0f) * Scale(0.75f), new CityInside(2.2f)));
+    //myCoffeeTable = new TransformShape(
+    //    Translate(0.0f, 0.0f, 1.5f),
+    //    new CoffeeTable()
+    //);
 
     scene->addShape(new TransformShape(Translate(0.0f, 0.15f, 8.0f), new ToyTrain1(0.2f)));
     scene->addShape(new TransformShape(Translate(0.0f, 0.15f, 6.0f), new StraightRail()));
+    //myGlassCabinet = new TransformShape(
+    //    Translate(4.0f, 0.0f, -8.0f) * RotateY(-45),
+    //    new GlassCabinet()
+    //);
 
     // === BIỂN HIỆU & POSTER ===
     scene->addShape(new TransformShape(Translate(0.0f, 6.75f, 13.0f) * Scale(2.4f, 1.0f, 1.0f), new BienHieu()));
@@ -250,7 +276,106 @@ int main(int argc, char** argv) {
     // Đèn âm trần (dàn 1)
     for (float x = -4.0f; x <= 4.0f; x += 4.0f)
         scene->addShape(new TransformShape(Translate(x, 5.9f, 0.0f) * RotateX(180.0f), new DenChieuSang()));
+    //// ===== ĐẶT ĐỒ CHƠI LÊN KỆ GỖ (WoodShelf) =====
+    //// Giả sử kệ gỗ đặt ở (-4.5f, 0, 0). Mỗi tầng cao khoảng 0.5f
+    //// Tầng 1: Robot
+    //scene->addShape(new TransformShape(
+    //    Translate(-4.5f, 0.55f, 0.0f) * RotateY(90),
+    //    new ToyRobot()
+    //));
+   
+    //// Tầng 3: Robot khác
+    //scene->addShape(new TransformShape(
+    //    Translate(-4.5f, 1.55f, 0.0f) * RotateY(90),
+    //    new ToyRobot()
+    //));
 
+    //mô hình tàu tầng 2
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 6.0f + 0.15f, 5.0f),
+            new ToyTrain(0.2f)
+        )
+    );
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 6.0f + 0.1f, 5.0f),
+            new CycleRail(3.0f, 100)
+        )
+    );
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 6.0f + 0.1f, 5.0f),
+            new CityInside(2.2f)   // < bán kính rail
+        )
+    );
+
+    //tàu mới 1 
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 0.15f, 8.0f),
+            new ToyTrain1(0.2f)
+        )
+    );
+
+    //dau tau 2
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 0.15f, 6.0f),
+            new ToyLocomotive2(0.2f)
+        )
+    );
+
+    //dau tau 3
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 0.15f, 4.0f),
+            new ToyLocomotive3(0.2f)
+        )
+    );
+
+    //dau tau 4
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 0.15f, 2.0f),
+            new ToyLocomotive4(0.2f)
+        )
+    );
+
+    //ray thang
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 0.15f, 6.0f),
+            new StraightRail()
+        )
+    );
+    
+    // Biển hiệu
+    scene->addShape(
+        new TransformShape(
+            Translate(0.0f, 4.5f, 10.2f), // Tọa độ X=0 (theo nhà), Y=4.5 (tầng 2), Z=10.2 (mặt trước tường)
+            new BienHieu()
+        )
+    );
+    // Poster Quảng cáo Tàu hỏa 
+    scene->addShape(
+        new TransformShape(
+            Translate(3.5f, 4.0f, 10.2f)* Scale(0.8f, 0.8f, 1.0f),
+            new PosterQuangCao()
+        )
+    );
+    scene->addShape(
+        new TransformShape(
+            Translate(-3.5f, 4.0f, 10.2f)* Scale(0.8f, 0.8f, 1.0f),
+            new PosterQuangCao()
+        )
+    );
+    // Gắn đèn soi vào biển hiệu TOY
+    scene->addShape(new TransformShape(
+        Translate(0.0f, 5.9f, 11.0f)* // Đặt cao hơn biển hiệu
+        RotateX(180.0f),                // Quay đèn xuống dưới
+        new DenChieuSang()
+    ));
     // Đèn âm trần (dàn 2 & 3)
     float zPositions[] = { -6.0f, 6.0f };
     for (float z : zPositions)

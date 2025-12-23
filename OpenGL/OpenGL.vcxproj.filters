@@ -49,6 +49,9 @@
     <Filter Include="Source Files\objects\TongMinhHieu">
       <UniqueIdentifier>{9b8c39d6-b219-460d-8be0-fd27f5d6326d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\objects\NguyenThanhHung">
+      <UniqueIdentifier>{9b75eec5-c352-4ecd-9bcd-a1f6ba19c1ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -167,6 +170,15 @@
     </ClCompile>
     <ClCompile Include="PosterQuangCao.cpp">
       <Filter>Source Files\objects\NguyenQuocDat</Filter>
+    </ClCompile>
+    <ClCompile Include="ToyLocomotive2.cpp">
+      <Filter>Source Files\objects\NguyenThanhHung</Filter>
+    </ClCompile>
+    <ClCompile Include="ToyLocomotive3.cpp">
+      <Filter>Source Files\objects\NguyenThanhHung</Filter>
+    </ClCompile>
+    <ClCompile Include="ToyLocomotive4.cpp">
+      <Filter>Source Files\objects\NguyenThanhHung</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -306,6 +318,15 @@
     </ClInclude>
     <ClInclude Include="PosterQuangCao.h">
       <Filter>Source Files\objects\NguyenQuocDat</Filter>
+    </ClInclude>
+    <ClInclude Include="ToyLocomotive2.h">
+      <Filter>Source Files\objects\NguyenThanhHung</Filter>
+    </ClInclude>
+    <ClInclude Include="ToyLocomotive3.h">
+      <Filter>Source Files\objects\NguyenThanhHung</Filter>
+    </ClInclude>
+    <ClInclude Include="ToyLocomotive4.h">
+      <Filter>Source Files\objects\NguyenThanhHung</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
