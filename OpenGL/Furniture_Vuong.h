@@ -64,4 +64,15 @@ private:
     void initGPUBuffers() override {}
 };
 
+// 6. Bàn tròn
+class RoundTable : public Shape {
+public:
+	RoundTable();
+    ~RoundTable();
+    void draw(const mat4& modelMatrix) const override;
+private:
+    std::vector<Shape*> parts;
+    void initGPUBuffers() override {}
+};
+
 #endif

@@ -165,3 +165,27 @@ void DisplayTable::draw(const mat4& model) const {
     Materials::ConcreteBeige.apply();
     for (auto p : parts) p->draw(model);
 }
+
+// ================== 6. BÀN TRÒN (ROUND TABLE) ==================
+RoundTable::RoundTable() {
+    float radius = 5.0f;   // Bán kính mặt bàn (Đường kính 1.2m)
+    float height = 1.2f;  // Chiều cao bàn
+    float thick = 0.1f;   // Độ dày mặt bàn
+    float legR = 2.5f;    // Bán kính chân trụ
+
+    // 1. Mặt bàn 
+    parts.push_back(new TransformShape(Translate(0, height, 0) * Scale(radius, thick, radius), new Cylinder()));
+
+    // 2. Chân trụ giữa 
+    parts.push_back(new TransformShape(Translate(0, height / 2, 0) * Scale(legR, height, legR),new Cylinder()));
+
+    // 3. Đế chân bàn 
+    parts.push_back(new TransformShape(Translate(0, 0.05f, 0) * Scale(radius * 0.6f, thick, radius * 0.6f), new Cylinder()));
+}
+
+RoundTable::~RoundTable() { for (auto p : parts) delete p; }
+
+void RoundTable::draw(const mat4& model) const {
+    Materials::ConcreteBeige.apply();
+    for (auto p : parts) p->draw(model);
+}

@@ -230,9 +230,10 @@ int main(int argc, char** argv) {
     scene->addShape(new TransformShape(Translate(3.0f, 0.85f, 2.0f) * RotateY(-45),new ToyRobot()));
 
     // === MÔ HÌNH TÀU HOẢ & RAY ===
-    scene->addShape(new TransformShape(Translate(0.0f, 6.15f, 5.0f), new ToyTrain(0.2f)));
-    scene->addShape(new TransformShape(Translate(0.0f, 6.1f, 5.0f), new CycleRail(3.0f, 100)));
-    scene->addShape(new TransformShape(Translate(0.0f, 6.1f, 5.0f), new CityInside(2.2f)));
+    scene->addShape(new TransformShape(Translate(0.0f, 7.4f, 4.0f) * Scale(0.75f), new ToyTrain(0.2f)));
+    scene->addShape(new TransformShape(Translate(0.0f, 7.35f, 4.0f) * Scale(0.75f), new CycleRail(3.0f, 100)));
+    scene->addShape(new TransformShape(Translate(0.0f, 7.35f, 4.0f) * Scale(0.75f), new CityInside(2.2f)));
+
     scene->addShape(new TransformShape(Translate(0.0f, 0.15f, 8.0f), new ToyTrain1(0.2f)));
     scene->addShape(new TransformShape(Translate(0.0f, 0.15f, 6.0f), new StraightRail()));
 
@@ -253,6 +254,9 @@ int main(int argc, char** argv) {
     for (float z : zPositions)
         for (float x = -4.0f; x <= 4.0f; x += 4.0f)
             scene->addShape(new TransformShape(Translate(x, 5.9f, z) * RotateX(180.0f), new DenChieuSang()));
+
+    // ===== BÀN TRÒN TRÊN TẦNG 2 =====
+    scene->addShape(new TransformShape(Translate(0.0f, 6.1f, 4.0f),new RoundTable()));
 
     // ===== CAMERA SETUP ===== 
     camera.position = vec3(0.0f, 2.0f, 0.0f);
