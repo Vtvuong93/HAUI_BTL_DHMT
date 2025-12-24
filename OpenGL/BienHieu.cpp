@@ -33,6 +33,21 @@ BienHieu::BienHieu() {
             new Cube()
         )
     );
+
+    // Vien 2 ben
+    parts.push_back(
+        new TransformShape(
+            Translate(-(bangW/2 + 0.05f), 0, 0) * Scale(0.1f, bangH + 0.2f, bangT + 0.05f),
+            new Cube()
+        )
+	);
+    parts.push_back(
+        new TransformShape(
+            Translate(bangW/2 + 0.05f, 0, 0) * Scale(0.1f, bangH + 0.2f, bangT + 0.05f),
+            new Cube()
+        )
+	);
+
     // --- THÊM CH? "TOY" (V? b?ng các kh?i Cube nh?) ---
     float netDay = 0.05f; // ?? dày nét ch?
     float chuZ = bangT / 2 + 0.01f; // ??y ch? lên m?t tr??c bi?n hi?u
@@ -63,8 +78,8 @@ void BienHieu::draw(const mat4& modelMatrix) const {
         if (i == 0) {
             Materials::ToyRed.apply(); // N?n bi?n màu ??
         }
-        else if (i < 3) {
-            Materials::Metal.apply();  // Vi?n màu kim lo?i
+        else if (i < 6) {
+            Materials::MetalGray.apply();  // Vi?n màu kim lo?i
         }
         else {
             Materials::ConcreteBeige.apply(); // Ch? "TOY" màu vàng nh?t

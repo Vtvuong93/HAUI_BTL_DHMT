@@ -20,7 +20,7 @@ float glassCabinetOpen = 0.0f;
 float mainDoorOpen = 0.0f;         
 
 std::vector<GlassCabinet*> cabinetList;     
-std::vector<TransformShape*> cabinetDrawList; 
+std::vector<TransformShape*> cabinetDrawList;
 
 CeilingLamp* myLamp = nullptr; // Đối tượng đèn
 TransformShape* myGlassCoffeeTable = nullptr;
@@ -127,8 +127,12 @@ void display() {
     // Vẽ vật thể 
     if (scene)  scene->draw(model);
     if (myLamp) {
-        mat4 lampModel = model * Translate(0.0f, 5.0f, 0.0f);
-        myLamp->draw(lampModel, isLightOn);
+        mat4 lampPos3 = model * Translate(4.5f, 4.0f, 0.0f);
+		mat4 lampPos2 = model * Translate(4.5f, 4.0f, 4.0f);
+		mat4 lampPos1 = model * Translate(4.5f, 4.0f, 8.0f);
+        myLamp->draw(lampPos1, isLightOn);
+		myLamp->draw(lampPos2, isLightOn);
+		myLamp->draw(lampPos3, isLightOn);
     }
     if (myGlassCoffeeTable) myGlassCoffeeTable->draw(model);
 	// Vẽ tủ kính
@@ -137,8 +141,10 @@ void display() {
 
     if (myMainDoor) {
         myMainDoor->openFactor = mainDoorOpen;
-        mat4 doorPos = model * Translate(0.0f, 0.0f, 10.0f);
-        myMainDoor->draw(doorPos);
+        mat4 doorPos1 = model * Translate(0.0f, 0.0f, 10.0f);
+		mat4 doorPos2 = model * Translate(0.0f, 6.0f, 10.0f);
+        myMainDoor->draw(doorPos1);
+		myMainDoor->draw(doorPos2);
     }
 
 	glutSwapBuffers();
@@ -229,7 +235,6 @@ int main(int argc, char** argv) {
 	shaderSetup();
 
     scene = new Scene();
-    myLamp = new CeilingLamp();
 
     // ================== KHUNG CẢNH & NGOẠI CẢNH ==================
     scene->addShape(new House());
@@ -237,61 +242,83 @@ int main(int argc, char** argv) {
     scene->addShape(new TransformShape(Translate(-15.0f, 0.0f, 0.0f), new HouseModern3F()));
     scene->addShape(new TransformShape(Translate(0.0f, -0.25f, 30.0f) * RotateY(90.0f), new RoadWithTrees()));
 
+    myLamp = new CeilingLamp();
 	myMainDoor = new SlidingGlassDoor();
 
     // ================== TẦNG 1 (Ground Floor - Y ~ 0.0f -> 2.0f) ==================
 
     // --- Nội thất chính (Sofa, Bàn, Kệ) ---
-    scene->addShape(new TransformShape(Translate(0.0f, 0.0f, 0.0f) * RotateY(180), new Sofa()));
-    scene->addShape(new TransformShape(Translate(2.5f, 0.0f, 2.0f), new DisplayTable()));
-    myGlassCoffeeTable = new TransformShape(Translate(0.0f, 0.0f, 1.5f), new CoffeeTable());
+    scene->addShape(new TransformShape(Translate(0.0f, 0.15f, 0.0f) * RotateY(90) * Scale(2.5f, 1.5f, 3.0f), new DisplayTable()));
+    scene->addShape(new TransformShape(Translate(0.5f, 1.47f, 1.5f) * RotateY(90), new ToyTrain1(0.2f)));      // Tàu mới 1
+    scene->addShape(new TransformShape(Translate(-0.5f, 1.47f, 1.5f) * RotateY(90), new ToyLocomotive2(0.2f))); // Đầu tàu 2
+    scene->addShape(new TransformShape(Translate(-0.5f, 1.47f, -1.0f) * RotateY(90), new ToyLocomotive3(0.2f))); // Đầu tàu 3
+    scene->addShape(new TransformShape(Translate(0.5f, 1.47f, -1.5f) * RotateY(90), new ToyLocomotive4(0.2f))); // Đầu tàu 4
+
+    scene->addShape(new TransformShape(Translate(0.5f, 1.45f, 2.3f) * RotateY(90), new StraightRail()));       // Ray thẳng
+    scene->addShape(new TransformShape(Translate(-0.5f, 1.45f, 2.3f) * RotateY(90), new StraightRail()));       // Ray thẳng
+    scene->addShape(new TransformShape(Translate(0.5f, 1.45f, -0.3f) * RotateY(90), new StraightRail()));       // Ray thẳng
+    scene->addShape(new TransformShape(Translate(-0.5f, 1.45f, -0.3f) * RotateY(90), new StraightRail()));       // Ray thẳng
     
+    for (int i = 0; i < 3; i++) {
+        float baseZ = 8.0f - i * 4.0f;
+        mat4 cabinetMatrix = Translate(4.5f, 0.15f, baseZ) * RotateY(-90);
+
+        // 2. Đặt tàu vào từng tầng 
+        // --- Tầng 1 (Đáy tủ) ---
+        scene->addShape(new TransformShape(
+            cabinetMatrix * Translate(-0.2f, 0.1f, 0.0f) * Scale(1.0f),
+            new ToyLocomotive2(0.2f)
+        ));
+
+        // --- Tầng 2 (Đợt kính giữa) ---
+        scene->addShape(new TransformShape(
+            cabinetMatrix * Translate(-0.2f, 0.8f, 0.0f) * Scale(1.2f),
+            new ToyLocomotive3(0.2f)
+        ));
+
+        // --- Tầng 3 (Đợt kính cao) ---
+        scene->addShape(new TransformShape(
+            cabinetMatrix * Translate(-0.2f, 1.65f, 0.0f) * Scale(1.2f),
+            new ToyLocomotive4(0.2f)
+        ));
+    }
+
     // ===== Tủ kính 1 =====
     GlassCabinet* cab1 = new GlassCabinet();
-    TransformShape* cab1Pos = new TransformShape( Translate(4.0f, 0.08f, -8.0f) * RotateY(-90), cab1);
+    TransformShape* cab1Pos = new TransformShape( Translate(4.4f, 0.1f, 8.0f) * RotateY(-90), cab1);
     cabinetList.push_back(cab1);   
     cabinetDrawList.push_back(cab1Pos); 
 
-    // ===== Tủ kính 1 =====
+    // ===== Tủ kính 2 =====
     GlassCabinet* cab2 = new GlassCabinet();
-    TransformShape* cab2Pos = new TransformShape( Translate(-4.0f, 0.08f, -8.0f) * RotateY(90) , cab2);
+    TransformShape* cab2Pos = new TransformShape( Translate(4.4f, 0.1f, 4.0f) * RotateY(-90) , cab2);
     cabinetList.push_back(cab2);
     cabinetDrawList.push_back(cab2Pos);
 
-    // --- Robot & Đồ chơi rải rác tầng 1 ---
-    scene->addShape(new TransformShape(Translate(3.0f, 0.85f, 2.0f) * RotateY(-45), new ToyRobot()));
+    // ===== Tủ kính 3 =====
+    GlassCabinet* cab3 = new GlassCabinet();
+    TransformShape* cab3Pos = new TransformShape(Translate(4.4f, 0.1f, 0.0f) * RotateY(-90), cab3);
+    cabinetList.push_back(cab3);
+    cabinetDrawList.push_back(cab3Pos);
 
-    // --- Hệ thống Tàu hỏa dưới sàn (Y = 0.15f) ---
-    scene->addShape(new TransformShape(Translate(0.0f, 0.15f, 8.0f), new ToyTrain1(0.2f)));      // Tàu mới 1
-    scene->addShape(new TransformShape(Translate(0.0f, 0.15f, 6.0f), new ToyLocomotive2(0.2f))); // Đầu tàu 2
-    scene->addShape(new TransformShape(Translate(0.0f, 0.15f, 4.0f), new ToyLocomotive3(0.2f))); // Đầu tàu 3
-    scene->addShape(new TransformShape(Translate(0.0f, 0.15f, 2.0f), new ToyLocomotive4(0.2f))); // Đầu tàu 4
-    scene->addShape(new TransformShape(Translate(0.0f, 0.15f, 6.0f), new StraightRail()));       // Ray thẳng
-
-   
-
-    // --- 3. KHU KỆ GỖ (WALL OF TOYS) - TƯỜNG TRÁI ---
-    // Nhân bản 3 kệ gỗ xếp dọc tường trái (X = -4.5)
+     // --- 3. KHU KỆ GỖ (WALL OF TOYS) - TƯỜNG TRÁI ---
     // Mỗi kệ cách nhau 3.2m (vì kệ rộng 3m)
-    float shelfZ[] = { -5.0f, -1.5f, 2.0f };
+    float shelfZ[] = { -6.5f, -2.0f, 2.5f };
 
     for (int i = 0; i < 3; i++) {
         // Vẽ kệ
-        scene->addShape(new TransformShape(Translate(-4.8f, 0.0f, shelfZ[i]) * RotateY(90), new WoodShelf()));
-
+        scene->addShape(new TransformShape(Translate(-4.5f, 0.05f, shelfZ[i]) * RotateY(90), new WoodShelf()));
         // --- Tự động xếp đồ chơi lên kệ ---
-        // Mỗi kệ có 4 tầng (Y: 0.55, 1.05, 1.55, 2.05)
-        for (int floor = 1; floor <= 4; floor++) {
-            float yToy = 0.05f + floor * 0.5f;
-
+        for (int floor = 0; floor <= 3; floor++) {
+            float yToy = 0.15f + floor *1.18f;
             // Tầng lẻ: Xếp Robot
-            if (floor % 2 != 0) {
-                scene->addShape(new TransformShape(Translate(-4.8f, yToy, shelfZ[i] - 1.0f) * RotateY(90), new ToyRobot()));
-                scene->addShape(new TransformShape(Translate(-4.8f, yToy, shelfZ[i] + 1.0f) * RotateY(90), new ToyRobot()));
+            if (floor % 2 == 0) {
+                scene->addShape(new TransformShape(Translate(-4.4f, yToy, shelfZ[i] - 1.0f) * RotateY(90), new ToyRobot()));
+                scene->addShape(new TransformShape(Translate(-4.4f, yToy , shelfZ[i] + 1.0f) * RotateY(90), new ToyRobot()));
             }
             // Tầng chẵn: Xếp Đầu tàu hỏa
             else {
-                scene->addShape(new TransformShape(Translate(-4.8f, yToy, shelfZ[i]) * RotateY(90) * Scale(0.8f), new ToyLocomotive2(0.2f)));
+                scene->addShape(new TransformShape(Translate(-4.4f, yToy, shelfZ[i] + 1.0f) * RotateY(90) * Scale(1.2f), new ToyTrain1(0.2f)));
             }
         }
     }
@@ -299,23 +326,27 @@ int main(int argc, char** argv) {
 
     // ================== TẦNG 2 (Upper Floor - Y ~ 4.0f -> 7.5f) ==================
     // --- Bàn tròn trung tâm tầng 2 (Y = 6.1f) ---
-    scene->addShape(new TransformShape(Translate(0.0f, 6.1f, 4.0f), new RoundTable()));
-
+    scene->addShape(new TransformShape(Translate(0.0f, 6.1f, 4.5f), new RoundTable()));
+    scene->addShape(new TransformShape(Translate(4.15f, 6.1f, -2.5f) * RotateY(-90) * Scale(2.5f, 1.5f, 2.0f), new Sofa()));
+    scene->addShape(new TransformShape(Translate(1.0f, 6.1f, -6.0f) * Scale(1.5f, 1.5f, 2.0f), new Sofa()));
+    myGlassCoffeeTable = new TransformShape(Translate(1.0f, 6.1f, -2.5f) * RotateY(-90) * Scale(2.5f, 1.5f, 2.0f), new CoffeeTable());
+     
     // --- Set Tàu hỏa trên cao (Set 1 - Y ~ 7.4f) ---
-    scene->addShape(new TransformShape(Translate(0.0f, 7.4f, 4.0f) * Scale(0.75f), new ToyTrain(0.2f)));
-    scene->addShape(new TransformShape(Translate(0.0f, 7.35f, 4.0f) * Scale(0.75f), new CycleRail(3.0f, 100)));
-    scene->addShape(new TransformShape(Translate(0.0f, 7.35f, 4.0f) * Scale(0.75f), new CityInside(2.2f)));
+    scene->addShape(new TransformShape(Translate(0.0f, 7.4f, 4.5f) * Scale(0.75f), new ToyTrain(0.2f)));
+    scene->addShape(new TransformShape(Translate(0.0f, 7.35f, 4.5f) * Scale(0.75f), new CycleRail(3.0f, 100)));
+    scene->addShape(new TransformShape(Translate(0.0f, 7.35f, 4.5f) * Scale(0.75f), new CityInside(2.2f)));
 
     // --- Biển hiệu & Trang trí tường (Y ~ 4.0f -> 6.75f) ---
-    scene->addShape(new TransformShape(Translate(0.0f, 6.75f, 13.0f) * Scale(2.4f, 1.0f, 1.0f), new BienHieu())); 
+    // ben ngoai
+    scene->addShape(new TransformShape(Translate(0.0f, 11.25f, 10.0f) * Scale(2.4f, 1.0f, 1.0f), new BienHieu())); // to
+    scene->addShape(new TransformShape(Translate(0.0f, 5.2f, 11.0f) * Scale(1.05f, 0.85f , 1.0f), new BienHieu()));
     scene->addShape(new TransformShape(Translate(3.5f, 4.0f, 10.2f) * Scale(0.8f, 0.8f, 1.0f), new PosterQuangCao()));
     scene->addShape(new TransformShape(Translate(-3.5f, 4.0f, 10.2f) * Scale(0.8f, 0.8f, 1.0f), new PosterQuangCao()));
 
 
     // ================== HỆ THỐNG ĐÈN (Trần nhà & Soi tranh) ==================
-
     // --- Đèn soi biển hiệu (Y = 5.9f) ---
-    scene->addShape(new TransformShape(Translate(0.0f, 5.9f, 11.5f) * RotateX(180.0f), new DenChieuSang()));
+    scene->addShape(new TransformShape(Translate(0.0f, 5.9f, 12.0f) * RotateX(180.0f), new DenChieuSang()));
 
     // --- Đèn âm trần (Chạy vòng lặp tạo lưới đèn) ---
     // Dàn 1 (Z = 0)

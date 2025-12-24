@@ -71,8 +71,8 @@ void Sofa::draw(const mat4& model) const {
 
 // ================== 3. KỆ GỖ TRƯNG BÀY ==================
 WoodShelf::WoodShelf() {
-    float w = 3.0f, h = 2.0f, d = 0.4f, thick = 0.05f;
-    int numShelves = 4;
+    float w = 4.0f, h = 3.5f, d = 0.75f, thick = 0.05f;
+    int numShelves = 3;
 
     // 2 Tấm bên hông & Tấm lưng
     parts.push_back(new TransformShape(Translate(-w / 2 + thick / 2, h / 2, 0) * Scale(thick, h, d), new Cube()));
@@ -84,7 +84,7 @@ WoodShelf::WoodShelf() {
     for (int i = 0; i <= numShelves; i++) {
         float y = i * gap + thick / 2;
         if (i == 0) y = thick / 2; // Đáy sát đất
-        parts.push_back(new TransformShape(Translate(0, y, 0) * Scale(w - 2 * thick, thick, d), new Cube()));
+        parts.push_back(new TransformShape(Translate(0, y, 0) * Scale(w, thick, d), new Cube()));
     }
 }
 
@@ -99,7 +99,7 @@ void WoodShelf::draw(const mat4& model) const {
 // 4. TỦ KÍNH TRƯNG BÀY
 // =========================================================
 GlassCabinet::GlassCabinet() {
-    float w = 1.0f; float h = 1.8f; float d = 0.5f;
+    float w = 3.5f; float h = 2.5f; float d = 1.0f;
     float thick = 0.05f;
 
     // --- 1. PHẦN TĨNH (KHUNG + KÍNH CỐ ĐỊNH) ---
@@ -145,7 +145,7 @@ GlassCabinet::~GlassCabinet() {
 
 // HÀM DRAW MỚI CÓ LOGIC XOAY CỬA
 void GlassCabinet::draw(const mat4& model) const {
-    float w = 1.0f; float d = 0.5f;
+    float w = 3.5f; float d = 1.0f;
 
 	// Tạo ma trận biến đổi cho cửa trái và cửa phải dựa trên góc mở
     float angleDeg = this->openAngle * 120.0f;
