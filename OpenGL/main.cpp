@@ -163,6 +163,20 @@ void timer(int value) {
 // ================== CALLBACKS ==================
 void reshape(int width, int height) {   glViewport(0, 0, width, height);    }
 
+bool isMouseCaptured = true;
+void captureMouse() {
+    isMouseCaptured = true;
+    glutSetCursor(GLUT_CURSOR_NONE);
+
+    int cx = glutGet(GLUT_WINDOW_WIDTH) / 2;
+    int cy = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+    glutWarpPointer(cx, cy);
+}
+
+void releaseMouse() {
+    isMouseCaptured = false;
+    glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+}
 void keyboardDown(unsigned char key, int x, int y) {
     keys[key] = true;
     if (key == 27) exit(0); // ESC thoát
@@ -206,27 +220,60 @@ void keyboardDown(unsigned char key, int x, int y) {
 	// Mở cửa chính
     if (key == 'o') { if (mainDoorOpen < 1.0f) mainDoorOpen += 0.05f; }
     if (key == 'O') { if (mainDoorOpen > 0.0f) mainDoorOpen -= 0.05f; }
+
+    if (key == 'm' || key == 'M') {
+        if (isMouseCaptured)
+            releaseMouse();
+        else
+            captureMouse();
+    }
 }
 
 void keyboardUp(unsigned char key, int x, int y) { keys[key] = false; }
 
+
+
+
+
+
+//void mouseMotion(int x, int y) {
+//    int cx = glutGet(GLUT_WINDOW_WIDTH) / 2;
+//    int cy = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+//    if (x == cx && y == cy) return;
+//
+//    float dx = (float)(x - cx) * camera.sensitivity;
+//    float dy = (float)(cy - y) * camera.sensitivity; // Đảo trục Y
+//
+//    camera.yaw += dx;
+//    camera.pitch += dy;
+//
+//	if (camera.pitch > 89.0f)  camera.pitch = 89.0f;
+//	if (camera.pitch < -89.0f) camera.pitch = -89.0f;
+//
+//    camera.updateCameraVectors();
+//    glutWarpPointer(cx, cy);
+//}
+
 void mouseMotion(int x, int y) {
+    if (!isMouseCaptured) return;
+
     int cx = glutGet(GLUT_WINDOW_WIDTH) / 2;
     int cy = glutGet(GLUT_WINDOW_HEIGHT) / 2;
     if (x == cx && y == cy) return;
 
     float dx = (float)(x - cx) * camera.sensitivity;
-    float dy = (float)(cy - y) * camera.sensitivity; // Đảo trục Y
+    float dy = (float)(cy - y) * camera.sensitivity;
 
     camera.yaw += dx;
     camera.pitch += dy;
 
-	if (camera.pitch > 89.0f)  camera.pitch = 89.0f;
-	if (camera.pitch < -89.0f) camera.pitch = -89.0f;
+    if (camera.pitch > 89.0f)  camera.pitch = 89.0f;
+    if (camera.pitch < -89.0f) camera.pitch = -89.0f;
 
     camera.updateCameraVectors();
     glutWarpPointer(cx, cy);
 }
+
 
 void specialInput(int key, int x, int y) {
     if (key == GLUT_KEY_F11) {
@@ -276,15 +323,15 @@ int main(int argc, char** argv) {
 
     // --- Nội thất chính (Sofa, Bàn, Kệ) ---
     scene->addShape(new TransformShape(Translate(0.0f, 0.15f, 0.0f) * RotateY(90) * Scale(2.5f, 1.5f, 3.0f), new DisplayTable()));
-    scene->addShape(new TransformShape(Translate(0.5f, 1.47f, 1.5f) * RotateY(90), new ToyTrain1(0.2f)));      // Tàu mới 1
-    scene->addShape(new TransformShape(Translate(-0.5f, 1.47f, 1.5f) * RotateY(90), new ToyLocomotive2(0.2f))); // Đầu tàu 2
-    scene->addShape(new TransformShape(Translate(-0.5f, 1.47f, -1.0f) * RotateY(90), new ToyLocomotive3(0.2f))); // Đầu tàu 3
-    scene->addShape(new TransformShape(Translate(0.5f, 1.47f, -1.5f) * RotateY(90), new ToyLocomotive4(0.2f))); // Đầu tàu 4
+    scene->addShape(new TransformShape(Translate(0.5f, 1.58f, 1.8f) *  RotateY(90), new ToyTrain1(0.2f)));      // Tàu mới 1
+    scene->addShape(new TransformShape(Translate(-0.5f, 1.58f, 1.5f) * RotateY(90), new ToyLocomotive2(0.2f))); // Đầu tàu 2
+    scene->addShape(new TransformShape(Translate(-0.5f, 1.58f, -1.0f) * RotateY(90), new ToyLocomotive3(0.2f))); // Đầu tàu 3
+    scene->addShape(new TransformShape(Translate(0.5f, 1.58f, -1.5f) * RotateY(90), new ToyLocomotive4(0.2f))); // Đầu tàu 4
 
-    scene->addShape(new TransformShape(Translate(0.5f, 1.45f, 2.3f) * RotateY(90), new StraightRail()));       // Ray thẳng
-    scene->addShape(new TransformShape(Translate(-0.5f, 1.45f, 2.3f) * RotateY(90), new StraightRail()));       // Ray thẳng
+    scene->addShape(new TransformShape(Translate(0.5f, 1.45f, 2.3f) *Scale(1, 1, 1.3) * RotateY(90), new StraightRail()));       // Ray thẳng
+    scene->addShape(new TransformShape(Translate(-0.5f, 1.45f, 2.3f)  * RotateY(90), new StraightRail()));       // Ray thẳng
     scene->addShape(new TransformShape(Translate(0.5f, 1.45f, -0.3f) * RotateY(90), new StraightRail()));       // Ray thẳng
-    scene->addShape(new TransformShape(Translate(-0.5f, 1.45f, -0.3f) * RotateY(90), new StraightRail()));       // Ray thẳng
+    scene->addShape(new TransformShape(Translate(-0.5f, 1.45f, -0.3f)  * RotateY(90), new StraightRail()));       // Ray thẳng
     
     for (int i = 0; i < 3; i++) {
         float baseZ = 8.0f - i * 4.0f;
@@ -412,8 +459,8 @@ int main(int argc, char** argv) {
     glutSpecialFunc(specialInput); 
 	glutPassiveMotionFunc(mouseMotion); 
     glutTimerFunc(0, timer, 0); // set FPS
-
-	glutSetCursor(GLUT_CURSOR_NONE);
+    captureMouse();
+	//glutSetCursor(GLUT_CURSOR_NONE);
 	std::cout << "Entering GLUT main loop..." << std::endl;
 	glutMainLoop();
 
