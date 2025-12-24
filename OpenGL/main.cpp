@@ -130,9 +130,13 @@ void display() {
         mat4 lampPos3 = model * Translate(4.5f, 4.0f, 0.0f);
 		mat4 lampPos2 = model * Translate(4.5f, 4.0f, 4.0f);
 		mat4 lampPos1 = model * Translate(4.5f, 4.0f, 8.0f);
+		mat4 lampPos4 = model * Translate(-4.5f, 10.5f, 3.0f) * RotateY(180);
+		mat4 lampPos5 = model * Translate(-4.5f, 10.5f, -3.0f) * RotateY(180);
         myLamp->draw(lampPos1, isLightOn);
 		myLamp->draw(lampPos2, isLightOn);
 		myLamp->draw(lampPos3, isLightOn);
+		myLamp->draw(lampPos4, isLightOn);
+		myLamp->draw(lampPos5, isLightOn);
     }
     if (myGlassCoffeeTable) myGlassCoffeeTable->draw(model);
 	// Vẽ tủ kính
@@ -163,7 +167,30 @@ void keyboardDown(unsigned char key, int x, int y) {
     keys[key] = true;
     if (key == 27) exit(0); // ESC thoát
 	if (key == 'l' || key == 'L') { isLightOn = !isLightOn; } // Bật/tắt đèn
-	if (key == '9') { g_trainMove = !g_trainMove; } // Bật/tắt di chuyển tàu
+
+	if (key == '1') { 
+        g_trainMove = !g_trainMove;
+        if (g_trainMove) {
+			g_TrainMove1 = false;
+			g_TrainMove2 = false;
+        }
+    } 
+    if (key == '2') { 
+        g_TrainMove1 = !g_TrainMove1; 
+        if (g_TrainMove1) { 
+            g_TrainMove2 = false;
+		    g_trainMove = false;
+        }
+
+    }
+    if (key == '3') { 
+        g_TrainMove2 = !g_TrainMove2; 
+        if (g_TrainMove2) {
+			g_TrainMove1 = false;
+			g_trainMove = false;
+        }
+    }
+
 	// Mở đóng cửa cuốn
     if (key == 'Q') { if (!(rolledDoor >= 1.0f)) rolledDoor += 0.05f; }
     if (key == 'q') { if (!(rolledDoor <= 0.0f)) rolledDoor -= 0.05f; }
@@ -338,10 +365,15 @@ int main(int argc, char** argv) {
 
     // --- Biển hiệu & Trang trí tường (Y ~ 4.0f -> 6.75f) ---
     // ben ngoai
-    scene->addShape(new TransformShape(Translate(0.0f, 11.25f, 10.0f) * Scale(2.4f, 1.0f, 1.0f), new BienHieu())); // to
+    scene->addShape(new TransformShape(Translate(0.0f, 11.25f, 10.2f) * Scale(2.4f, 1.0f, 1.0f), new BienHieu())); // to
     scene->addShape(new TransformShape(Translate(0.0f, 5.2f, 11.0f) * Scale(1.05f, 0.85f , 1.0f), new BienHieu()));
     scene->addShape(new TransformShape(Translate(3.5f, 4.0f, 10.2f) * Scale(0.8f, 0.8f, 1.0f), new PosterQuangCao()));
     scene->addShape(new TransformShape(Translate(-3.5f, 4.0f, 10.2f) * Scale(0.8f, 0.8f, 1.0f), new PosterQuangCao()));
+
+    scene->addShape(new TransformShape(Translate(-1.5f, 2.5f, -9.8f) * Scale(1.5), new PosterQuangCao()));
+    scene->addShape(new TransformShape(Translate(-5.0f, 9.0f, 3.0f) * RotateY(90)* Scale( 1.2f), new PosterQuangCao()));
+    scene->addShape(new TransformShape(Translate(-5.0f, 9.0f, -3.0f) * RotateY(90) * Scale( 1.2f), new PosterQuangCao()));
+    
 
 
     // ================== HỆ THỐNG ĐÈN (Trần nhà & Soi tranh) ==================
@@ -359,6 +391,15 @@ int main(int argc, char** argv) {
         for (float x = -4.0f; x <= 4.0f; x += 4.0f)
             scene->addShape(new TransformShape(Translate(x, 5.9f, z) * RotateX(180.0f), new DenChieuSang()));
 
+    // --- Đèn âm trần (Chạy vòng lặp tạo lưới đèn) ---
+    // Dàn 1 (Z = 0)
+    for (float x = -4.0f; x <= 4.0f; x += 4.0f)
+        scene->addShape(new TransformShape(Translate(x, 11.9f, 0.0f) * RotateX(180.0f), new DenChieuSang()));
+
+    // Dàn 2 & 3 (Z = -6 và Z = 6
+    for (float z : zPositions)
+        for (float x = -4.0f; x <= 4.0f; x += 4.0f)
+            scene->addShape(new TransformShape(Translate(x, 11.9f, z) * RotateX(180.0f), new DenChieuSang()));
 
     // ===== CAMERA SETUP ===== 
     camera.position = vec3(0.0f, 2.0f, 0.0f);

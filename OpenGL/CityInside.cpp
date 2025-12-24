@@ -78,7 +78,7 @@ CityInside::CityInside(float radius)
     objects.push_back(
         new TransformShape(
             Translate(1.0f, 0.2f, 1.3f) *
-            Scale(0.25f, 0.4f, 0.25f),
+            Scale(0.25f, 0.5f, 0.25f),
             new Cube()
         )
     );

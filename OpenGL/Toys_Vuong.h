@@ -19,4 +19,14 @@ private:
     void initGPUBuffers() override {}
 };
 
+class DieuCay : public Shape {
+public:
+    DieuCay();
+    ~DieuCay();
+	void draw(const mat4& modelMatrix) const override;
+private:
+    std::vector<Shape*> parts;
+	void initGPUBuffers() override {}
+};
+
 #endif

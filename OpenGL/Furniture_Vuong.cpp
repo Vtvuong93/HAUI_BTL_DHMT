@@ -321,3 +321,46 @@ void SlidingGlassDoor::draw(const mat4& model) const {
     glDepthMask(GL_TRUE);
     glDisable(GL_BLEND);
 }
+
+
+// ================== WALL PICTURE (TRANH TREO TƯỜNG) ==================
+WallPicture::WallPicture(float w, float h) {
+    this->width = w;
+    this->height = h;
+    float frameW = 0.05f; // Độ rộng bản gỗ khung
+    float thick = 0.03f;  // Độ dày khung
+
+    // --- 1. KHUNG TRANH (GỖ) ---
+    // Cạnh trên
+    frameParts.push_back(new TransformShape(Translate(0, h / 2 - frameW / 2, 0) * Scale(w, frameW, thick), new Cube()));
+    // Cạnh dưới
+    frameParts.push_back(new TransformShape(Translate(0, -h / 2 + frameW / 2, 0) * Scale(w, frameW, thick), new Cube()));
+    // Cạnh trái
+    frameParts.push_back(new TransformShape(Translate(-w / 2 + frameW / 2, 0, 0) * Scale(frameW, h - 2 * frameW, thick), new Cube()));
+    // Cạnh phải
+    frameParts.push_back(new TransformShape(Translate(w / 2 - frameW / 2, 0, 0) * Scale(frameW, h - 2 * frameW, thick), new Cube()));
+
+    // --- 2. PHẦN TRANH (CANVAS) ---
+    // Nằm lọt thỏm bên trong khung, mỏng hơn khung một chút
+    // Nếu bạn có texture Mona Lisa, hãy bind texture trước khi vẽ phần này
+    canvasParts.push_back(new TransformShape(Translate(0, 0, 0) * Scale(w - 2 * frameW, h - 2 * frameW, 0.01f), new Cube()));
+}
+
+WallPicture::~WallPicture() {
+    for (auto p : frameParts) delete p;
+    for (auto p : canvasParts) delete p;
+}
+
+void WallPicture::draw(const mat4& model) const {
+    // 1. Vẽ Khung Gỗ
+    Materials::Wood.apply(); // Khung màu gỗ nâu
+    for (auto p : frameParts) p->draw(model);
+
+    // 2. Vẽ Tranh
+    // Nếu chưa có texture, ta dùng màu trắng hoặc màu kem để tượng trưng
+    // Nếu có texture: gọi glBindTexture(...) ở đây
+    Materials::Plastic.apply(); // Tạm dùng Plastic màu sáng
+    // Hoặc bạn có thể định nghĩa Materials::MonaLisaColor nếu muốn màu cụ thể
+
+    for (auto p : canvasParts) p->draw(model);
+}

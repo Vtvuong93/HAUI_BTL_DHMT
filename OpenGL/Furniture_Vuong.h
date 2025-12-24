@@ -108,4 +108,19 @@ private:
 
     void initGPUBuffers() override {}
 };
+
+// 8. Tranh treo tường (Khung gỗ + Tranh)
+class WallPicture : public Shape {
+public:
+    WallPicture(float w, float h); // Cho phép tùy chỉnh kích thước
+    ~WallPicture();
+    void draw(const mat4& modelMatrix) const override;
+
+private:
+    float width, height;
+    std::vector<Shape*> frameParts; // Khung tranh
+    std::vector<Shape*> canvasParts; // Phần tranh (nơi dán ảnh)
+
+    void initGPUBuffers() override {}
+};
 #endif

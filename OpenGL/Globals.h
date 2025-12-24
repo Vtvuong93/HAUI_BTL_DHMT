@@ -45,8 +45,11 @@ extern GLuint view_loc;         // location của uniform mat4 View
 extern GLuint projection_loc;   // location của uniform mat4 Projection
 
 extern bool g_trainMove; // trạng thái di chuyển của tàu
+extern bool g_TrainMove1; // trạng thái di chuyển phần đầu tàu
+extern bool g_TrainMove2; // trạng thái di chuyển phần sau tàu
 extern float rolledDoor;
 extern float drag;
 extern float twistKey;
+
 
 #endif 

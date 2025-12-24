@@ -25,3 +25,15 @@ void ToyRobot::draw(const mat4& model) const {
     Materials::ToyYellow.apply(); // Áp dụng màu vàng
     for (auto p : parts) p->draw(model);
 }
+
+// ==================== Dieu cay =======================
+DieuCay::DieuCay() {
+    parts.push_back(new TransformShape(Translate(4.0, 6.1, 10.0) * Scale(0.2, 1.0, 0.2), new Cylinder()));
+}
+
+DieuCay::~DieuCay() { for (auto p : parts) delete p; }
+
+void DieuCay::draw(const mat4& modelMatrix) const {
+    Materials::Wood.apply(); 
+    for (auto p : parts) p->draw(modelMatrix);
+}

@@ -16,7 +16,7 @@ public:
 
 private:
     std::vector<Shape*> steps;
-
+    std::vector<Shape*> lancan;
     void initGPUBuffers() override {} // Staircase không có buffer riêng
 };
 

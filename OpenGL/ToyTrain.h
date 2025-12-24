@@ -26,7 +26,6 @@ private:
 
     /* ===== TRẠNG THÁI ===== */
     mutable float angle;        // góc quay chung quanh tâm
-    float targetSpeed;
     mutable float currentSpeed;
 
     /* ===== BIẾN HÌNH HỌC ===== */
