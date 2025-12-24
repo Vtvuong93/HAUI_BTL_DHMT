@@ -46,10 +46,21 @@ class GlassCabinet : public Shape {
 public:
     GlassCabinet();
     ~GlassCabinet();
+    float openAngle = 0.0f; // Góc mở cửa
     void draw(const mat4& modelMatrix) const override;
+
 private:
-    std::vector<Shape*> frameParts; // Khung kim loại
-    std::vector<Shape*> glassParts; // Các tấm kính
+    std::vector<Shape*> frameParts;       // Khung tĩnh
+    std::vector<Shape*> staticGlassParts; // Kính tĩnh (lưng, hông)
+
+    // CỬA TRÁI
+    std::vector<Shape*> leftDoorGlass;    // Phần kính cửa trái
+    std::vector<Shape*> leftDoorHandle;   // Phần tay nắm cửa trái
+
+    // CỬA PHẢI
+    std::vector<Shape*> rightDoorGlass;   // Phần kính cửa phải
+    std::vector<Shape*> rightDoorHandle;  // Phần tay nắm cửa phải
+
     void initGPUBuffers() override {}
 };
 
@@ -69,10 +80,32 @@ class RoundTable : public Shape {
 public:
 	RoundTable();
     ~RoundTable();
+    void draw(const mat4& modelMatrix, float openAngle) const;
     void draw(const mat4& modelMatrix) const override;
 private:
     std::vector<Shape*> parts;
     void initGPUBuffers() override {}
 };
 
+// 7. Cửa kính trượt
+class SlidingGlassDoor : public Shape {
+public:
+    SlidingGlassDoor();
+    ~SlidingGlassDoor();
+    float openFactor = 0.0f;
+    void draw(const mat4& modelMatrix) const override;
+private:
+    // Khung bao ngoài (Cố định)
+    std::vector<Shape*> fixedFrame;
+
+    // Cánh trái (Khung + Tay nắm + Kính)
+    std::vector<Shape*> leftDoorFrame;   // Phần đặc
+    std::vector<Shape*> leftDoorGlass;   // Phần kính
+
+    // Cánh phải (Khung + Tay nắm + Kính)
+    std::vector<Shape*> rightDoorFrame;  // Phần đặc
+    std::vector<Shape*> rightDoorGlass;  // Phần kính
+
+    void initGPUBuffers() override {}
+};
 #endif

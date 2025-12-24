@@ -49,5 +49,4 @@ extern float rolledDoor;
 extern float drag;
 extern float twistKey;
 
-
 #endif 

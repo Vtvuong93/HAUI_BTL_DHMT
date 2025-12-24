@@ -15,11 +15,17 @@ const int FPS = 60;
 bool keys[256];
 bool isFullScrn = false;
 bool needToResetPos = false;
-bool isLightOn = true; // Trạng thái đèn (Mặc định là Bật)
+bool isLightOn = true; 
+float glassCabinetOpen = 0.0f; 
+float mainDoorOpen = 0.0f;         
+
+std::vector<GlassCabinet*> cabinetList;     
+std::vector<TransformShape*> cabinetDrawList; 
 
 CeilingLamp* myLamp = nullptr; // Đối tượng đèn
 TransformShape* myGlassCoffeeTable = nullptr;
-TransformShape* myGlassCabinet = nullptr;
+SlidingGlassDoor* myMainDoor = nullptr; // Con trỏ quản lý cửa chính
+
 
 // ================== SHADER ==================
 void shaderSetup() {
@@ -125,7 +131,15 @@ void display() {
         myLamp->draw(lampModel, isLightOn);
     }
     if (myGlassCoffeeTable) myGlassCoffeeTable->draw(model);
-    if (myGlassCabinet) myGlassCabinet->draw(model);
+	// Vẽ tủ kính
+    for (auto cab : cabinetList) { cab->openAngle = glassCabinetOpen; }
+    for (auto cabDraw : cabinetDrawList) { cabDraw->draw(model); }
+
+    if (myMainDoor) {
+        myMainDoor->openFactor = mainDoorOpen;
+        mat4 doorPos = model * Translate(0.0f, 0.0f, 10.0f);
+        myMainDoor->draw(doorPos);
+    }
 
 	glutSwapBuffers();
 }
@@ -144,10 +158,21 @@ void keyboardDown(unsigned char key, int x, int y) {
     if (key == 27) exit(0); // ESC thoát
 	if (key == 'l' || key == 'L') { isLightOn = !isLightOn; } // Bật/tắt đèn
 	if (key == '9') { g_trainMove = !g_trainMove; } // Bật/tắt di chuyển tàu
+	// Mở đóng cửa cuốn
     if (key == 'Q') { if (!(rolledDoor >= 1.0f)) rolledDoor += 0.05f; }
     if (key == 'q') { if (!(rolledDoor <= 0.0f)) rolledDoor -= 0.05f; }
+    // Kéo trượt ngăn kéo
     if (key == '/') { if (!(drag >= 0.5f)) drag += 0.05f; }
     if (key == '?') { if (!(drag <= 0.05f)) drag -= 0.05f;}
+    // Xoay chìa khoá
+    if (key == '=') { if (!(twistKey >= 90.0f)) twistKey += 5.0f; }
+    if (key == '+') { if (!(twistKey <= 0.0f)) twistKey -= 5.0f; }
+	// Mở kính tủ
+    if (key == '-') { if (!(glassCabinetOpen >= 0.65f)) glassCabinetOpen += 0.05f; }
+	if (key == '_') { if (!(glassCabinetOpen <= 0.05f)) glassCabinetOpen -= 0.05f; }
+	// Mở cửa chính
+    if (key == 'o') { if (mainDoorOpen < 1.0f) mainDoorOpen += 0.05f; }
+    if (key == 'O') { if (mainDoorOpen > 0.0f) mainDoorOpen -= 0.05f; }
 }
 
 void keyboardUp(unsigned char key, int x, int y) { keys[key] = false; }
@@ -212,15 +237,26 @@ int main(int argc, char** argv) {
     scene->addShape(new TransformShape(Translate(-15.0f, 0.0f, 0.0f), new HouseModern3F()));
     scene->addShape(new TransformShape(Translate(0.0f, -0.25f, 30.0f) * RotateY(90.0f), new RoadWithTrees()));
 
+	myMainDoor = new SlidingGlassDoor();
 
     // ================== TẦNG 1 (Ground Floor - Y ~ 0.0f -> 2.0f) ==================
 
     // --- Nội thất chính (Sofa, Bàn, Kệ) ---
     scene->addShape(new TransformShape(Translate(0.0f, 0.0f, 0.0f) * RotateY(180), new Sofa()));
     scene->addShape(new TransformShape(Translate(2.5f, 0.0f, 2.0f), new DisplayTable()));
-    scene->addShape(new TransformShape(Translate(-4.5f, 0.0f, 0.0f) * RotateY(90), new WoodShelf()));
     myGlassCoffeeTable = new TransformShape(Translate(0.0f, 0.0f, 1.5f), new CoffeeTable());
-    myGlassCabinet = new TransformShape(Translate(4.0f, 0.0f, -8.0f) * RotateY(-45), new GlassCabinet());
+    
+    // ===== Tủ kính 1 =====
+    GlassCabinet* cab1 = new GlassCabinet();
+    TransformShape* cab1Pos = new TransformShape( Translate(4.0f, 0.08f, -8.0f) * RotateY(-90), cab1);
+    cabinetList.push_back(cab1);   
+    cabinetDrawList.push_back(cab1Pos); 
+
+    // ===== Tủ kính 1 =====
+    GlassCabinet* cab2 = new GlassCabinet();
+    TransformShape* cab2Pos = new TransformShape( Translate(-4.0f, 0.08f, -8.0f) * RotateY(90) , cab2);
+    cabinetList.push_back(cab2);
+    cabinetDrawList.push_back(cab2Pos);
 
     // --- Robot & Đồ chơi rải rác tầng 1 ---
     scene->addShape(new TransformShape(Translate(3.0f, 0.85f, 2.0f) * RotateY(-45), new ToyRobot()));
@@ -231,6 +267,34 @@ int main(int argc, char** argv) {
     scene->addShape(new TransformShape(Translate(0.0f, 0.15f, 4.0f), new ToyLocomotive3(0.2f))); // Đầu tàu 3
     scene->addShape(new TransformShape(Translate(0.0f, 0.15f, 2.0f), new ToyLocomotive4(0.2f))); // Đầu tàu 4
     scene->addShape(new TransformShape(Translate(0.0f, 0.15f, 6.0f), new StraightRail()));       // Ray thẳng
+
+   
+
+    // --- 3. KHU KỆ GỖ (WALL OF TOYS) - TƯỜNG TRÁI ---
+    // Nhân bản 3 kệ gỗ xếp dọc tường trái (X = -4.5)
+    // Mỗi kệ cách nhau 3.2m (vì kệ rộng 3m)
+    float shelfZ[] = { -5.0f, -1.5f, 2.0f };
+
+    for (int i = 0; i < 3; i++) {
+        // Vẽ kệ
+        scene->addShape(new TransformShape(Translate(-4.8f, 0.0f, shelfZ[i]) * RotateY(90), new WoodShelf()));
+
+        // --- Tự động xếp đồ chơi lên kệ ---
+        // Mỗi kệ có 4 tầng (Y: 0.55, 1.05, 1.55, 2.05)
+        for (int floor = 1; floor <= 4; floor++) {
+            float yToy = 0.05f + floor * 0.5f;
+
+            // Tầng lẻ: Xếp Robot
+            if (floor % 2 != 0) {
+                scene->addShape(new TransformShape(Translate(-4.8f, yToy, shelfZ[i] - 1.0f) * RotateY(90), new ToyRobot()));
+                scene->addShape(new TransformShape(Translate(-4.8f, yToy, shelfZ[i] + 1.0f) * RotateY(90), new ToyRobot()));
+            }
+            // Tầng chẵn: Xếp Đầu tàu hỏa
+            else {
+                scene->addShape(new TransformShape(Translate(-4.8f, yToy, shelfZ[i]) * RotateY(90) * Scale(0.8f), new ToyLocomotive2(0.2f)));
+            }
+        }
+    }
 
 
     // ================== TẦNG 2 (Upper Floor - Y ~ 4.0f -> 7.5f) ==================
