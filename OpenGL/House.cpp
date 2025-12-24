@@ -248,7 +248,7 @@ House::~House() {
 
 void House::draw(const mat4& modelMatrix) const {
     for (auto p : parts) {
-        Materials::ConcreteSage.apply();
+        Materials::ConcreteBlue.apply();
         p->draw(modelMatrix);
     }
 }

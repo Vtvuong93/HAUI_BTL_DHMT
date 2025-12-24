@@ -38,10 +38,10 @@ PosterQuangCao::~PosterQuangCao() {
 
 void PosterQuangCao::draw(const mat4& modelMatrix) const {
     for (size_t i = 0; i < parts.size(); ++i) {
-        if (i == 0) Materials::WallPaint.apply();      // N?n Poster tr?ng
+        if (i == 0) Materials::ConcreteBeige.apply();      // N?n Poster tr?ng
         else if (i == 1) Materials::Plastic.apply();    // Thân tàu xanh
         else if (i == 2 || i == 3) Materials::ToyRed.apply(); // Bu?ng lái & Mái ??
-        else if (i == 4) Materials::Metal.apply();      // ?ng khói xám
+        else if (i == 4) Materials::ToyBlack.apply();      // ?ng khói xám
         else Materials::ConcreteDark.apply();           // Bánh xe ?en
 
         parts[i]->draw(modelMatrix);
