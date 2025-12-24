@@ -402,7 +402,7 @@ int main(int argc, char** argv) {
             scene->addShape(new TransformShape(Translate(x, 11.9f, z) * RotateX(180.0f), new DenChieuSang()));
 
     // ===== CAMERA SETUP ===== 
-    camera.position = vec3(0.0f, 2.0f, 0.0f);
+    camera.position = vec3(0.0f, 2.0f, 30.0f);
 
     // ===== REGISTER CALLBACKS =====
     glutDisplayFunc(display);
