@@ -14,7 +14,6 @@ public:
     // Thêm tham số isOn để biết vẽ đèn sáng hay tối
     void draw(const mat4& modelMatrix, bool isOn) const;
 
-    // Override hàm draw cũ (không dùng đến nhưng phải có để khớp class cha)
     void draw(const mat4& modelMatrix) const override {};
 
 private:

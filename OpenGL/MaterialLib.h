@@ -109,7 +109,7 @@ namespace Materials {
     // ================== GLASS (KÍNH) ==================
     const Material Glass = {
         color4(0.1, 0.1, 0.1, 1.0),
-        color4(0.8, 0.9, 1.0, 0.3),
+        color4(0.8, 0.9, 1.0, 0.2),
         color4(0.9, 0.9, 0.9, 1.0),
         128.0f
     };

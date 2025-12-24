@@ -4,7 +4,7 @@
 
 #include "Globals.h"
 
-Door::Door(float w, float h, vec3 pos0){
+Door::Door(float w, float h, mat4 pos0){
     door_w = w;
     door_h = h;
     float thickness = 0.05f;
@@ -38,8 +38,8 @@ Door:: ~Door() {
 }
 
 void Door::draw(const mat4& modelMatrix) const {
-    mat4 model =  modelMatrix * Translate(pos) * Translate(0, base_h / 2, 0);
-    Materials::Metal.apply();
+    mat4 model =  modelMatrix * pos * Translate(0, base_h / 2, 0);
+    Materials::ConcreteBeige.apply();
     parts.at(0)->draw(model);
     parts.at(1)->draw(model * 
         Translate(0, door_h * (1 - rolledDoor) / 2, 0) * 

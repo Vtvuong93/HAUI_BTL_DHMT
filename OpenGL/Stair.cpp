@@ -31,6 +31,13 @@ Stair::Stair(float floorHeight) {
                 new Cube()
             )
         );
+        steps.push_back(
+            new TransformShape(
+                Translate(xBase - 1.15, y + 0.75, z) *
+                Scale(0.1, 1.5, 0.1),
+                new Cube()
+            )
+        );
         y += stepH;
         z -= stepD;   // QUAN TRỌNG: đi vào trong
     }
@@ -57,9 +64,56 @@ Stair::Stair(float floorHeight) {
                 new Cube()
             )
         );
+        steps.push_back(
+            new TransformShape(
+                Translate(x , y + 0.75, z + 1.15) *
+                Scale(0.1, 1.5, 0.1),
+                new Cube()
+            )
+		);
+
         y += stepH;
         x -= stepD;   // rẽ trái
     }
+
+    for (int i = 0; i < secondRun + 5; i++) {
+        steps.push_back(
+            new TransformShape(
+                Translate(x + stepD, y + 0.6, z + 1.5) *
+                Scale(0.1, 1.5, 0.1),
+                new Cube()
+            )
+        );
+        x += stepD;   // rẽ trái
+    }
+
+
+    lancan.push_back(
+        new TransformShape(
+            Translate(xBase - 1.15, y - 3.1 , z + 3.5) *
+			RotateX(-53.5) *
+            Scale(0.2, secondRun * 0.55, 0.15),
+            new Cube()
+        )
+	);
+
+    lancan.push_back(
+        new TransformShape(
+            Translate(xBase - 3.1, y - 0.1, z + 1.15) *
+			RotateZ(-126.5) *
+            Scale(0.2, secondRun * 0.55, 0.15),
+            new Cube()
+        )
+    );
+
+    lancan.push_back(
+        new TransformShape(
+            Translate(-stepD - 0.2, y + 1.3, z + 1.5) *
+            RotateZ (90) *
+            Scale(0.2, secondRun * 0.7, 0.15),
+            new Cube()
+        )
+    );
 }
 
 Stair::~Stair() {
@@ -68,7 +122,11 @@ Stair::~Stair() {
 }
 
 void Stair::draw(const mat4& modelMatrix) const {
-    Materials::Wood.apply();
+    Materials::MetalDark.apply();
     for (auto s : steps)
+        s->draw(modelMatrix);
+
+    Materials::ConcreteBeige.apply();
+    for (auto s : lancan)
         s->draw(modelMatrix);
 }

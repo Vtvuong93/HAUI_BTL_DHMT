@@ -10,7 +10,6 @@ constexpr float PI = 3.14159265359f;
    ========================================================= */
 ToyTrain::ToyTrain(float s)
     : angle(0.0f),
-    targetSpeed(0.003f),
     currentSpeed(0.0f),
     scale(s)
 {
@@ -41,10 +40,21 @@ ToyTrain::~ToyTrain()
 
 void ToyTrain::draw(const mat4& modelMatrix) const
 {
+	float targetSpeed1 = 0.005f; 
+	float targetSpeed2 = 0.02f;
+	float targetSpeed3 = 0.04f;
     /* ================== CẬP NHẬT CHUYỂN ĐỘNG ================== */
     if (g_trainMove) {
-        currentSpeed += (targetSpeed - currentSpeed) * 0.05f;
+        currentSpeed += (targetSpeed1 - currentSpeed) * 0.05f;
         angle += currentSpeed;
+    }
+    else if (g_TrainMove1) {
+        currentSpeed += (targetSpeed2 - currentSpeed) * 0.05f;
+		angle += currentSpeed;
+    }
+    else if (g_TrainMove2) {
+        currentSpeed += (targetSpeed3 - currentSpeed) * 0.05f;
+		angle += currentSpeed;
     }
     else {
         currentSpeed = 0.0f;

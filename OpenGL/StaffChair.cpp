@@ -56,7 +56,7 @@ StaffChair:: ~StaffChair() {
 void StaffChair::draw(const mat4& modelMatrix) const {
 
     for (int i = 0; i < parts.size(); i++) {
-        Materials::Wood.apply();
+        Materials::MetalGray.apply();
         parts.at(i)->draw(modelMatrix);
     }
 }

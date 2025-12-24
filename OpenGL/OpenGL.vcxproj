@@ -138,6 +138,7 @@
     <ClCompile Include="HouseModern3F.cpp" />
     <ClCompile Include="InitShader.cpp" />
     <ClCompile Include="Lights.cpp" />
+    <ClCompile Include="ToyLocomotive2.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="PosterQuangCao.cpp" />
@@ -147,6 +148,8 @@
     <ClCompile Include="StaffChair.cpp" />
     <ClCompile Include="Stair.cpp" />
     <ClCompile Include="StraightRail.cpp" />
+    <ClCompile Include="ToyLocomotive3.cpp" />
+    <ClCompile Include="ToyLocomotive4.cpp" />
     <ClCompile Include="Toys_Vuong.cpp" />
     <ClCompile Include="ToyLocomotive.cpp" />
     <ClCompile Include="ToyLocomotive1.cpp" />
@@ -184,6 +187,7 @@
     <ClInclude Include="HouseModern.h" />
     <ClInclude Include="HouseModern3F.h" />
     <ClInclude Include="Lights.h" />
+    <ClInclude Include="ToyLocomotive2.h" />
     <ClInclude Include="mat.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialLib.h" />
@@ -197,6 +201,8 @@
     <ClInclude Include="StraightRail.h" />
     <ClInclude Include="ToyLocomotive.h" />
     <ClInclude Include="ToyLocomotive1.h" />
+    <ClInclude Include="ToyLocomotive3.h" />
+    <ClInclude Include="ToyLocomotive4.h" />
     <ClInclude Include="ToyTrain.h" />
     <ClInclude Include="ToyTrain1.h" />
     <ClInclude Include="ToyWagon.h" />

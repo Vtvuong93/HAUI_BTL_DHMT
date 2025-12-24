@@ -12,93 +12,82 @@ const int FIXED_H = 900;
 const int FPS = 60;
 
 // Trạng thái
-bool keys[256]; 
+bool keys[256];
 bool isFullScrn = false;
 bool needToResetPos = false;
-bool isLightOn = true; // Trạng thái đèn (Mặc định là Bật)
+bool isLightOn = true; 
+float glassCabinetOpen = 0.0f; 
+float mainDoorOpen = 0.0f;         
+
+std::vector<GlassCabinet*> cabinetList;     
+std::vector<TransformShape*> cabinetDrawList;
 
 CeilingLamp* myLamp = nullptr; // Đối tượng đèn
-TransformShape* myCoffeeTable = nullptr;
-TransformShape* myGlassCabinet = nullptr;
+TransformShape* myGlassCoffeeTable = nullptr;
+SlidingGlassDoor* myMainDoor = nullptr; // Con trỏ quản lý cửa chính
+
 
 // ================== SHADER ==================
 void shaderSetup() {
-    std::cout << "Loading shaders..." << std::endl;
+	std::cout << "Loading shaders..." << std::endl;
 
-    program = InitShader("vshader1.glsl", "fshader1.glsl");
-    if (program == 0) {
-        std::cerr << "ERROR: Shader program failed!" << std::endl;
-        exit(EXIT_FAILURE);
-    }
+	program = InitShader("vshader1.glsl", "fshader1.glsl");
+	if (program == 0) {
+		std::cerr << "ERROR: Shader program failed!" << std::endl;
+		exit(EXIT_FAILURE);
+	}
 
-    glUseProgram(program);
+	glUseProgram(program);
 
-    model_loc = glGetUniformLocation(program, "Model");
-    view_loc = glGetUniformLocation(program, "View");
-    projection_loc = glGetUniformLocation(program, "Projection");
+	model_loc = glGetUniformLocation(program, "Model");
+	view_loc = glGetUniformLocation(program, "View");
+	projection_loc = glGetUniformLocation(program, "Projection");
 
-    // ===== ÁNH SÁNG BLINN-PHONG =====
+    // --- ÁNH SÁNG BLINN-PHONG ---
     point4 light_position(0.0f, 3.0f, 5.0f, 1.0f);
     color4 light_ambient(0.3f, 0.3f, 0.3f, 1.0f);
     color4 light_diffuse(1.0f, 1.0f, 1.0f, 1.0f);
     color4 light_specular(1.0f, 1.0f, 1.0f, 1.0f);
 
-    glUniform4fv(glGetUniformLocation(program, "LightPosition"), 1, light_position);
-    glUniform4fv(glGetUniformLocation(program, "LightAmbient"), 1, light_ambient);
-    glUniform4fv(glGetUniformLocation(program, "LightDiffuse"), 1, light_diffuse);
-    glUniform4fv(glGetUniformLocation(program, "LightSpecular"), 1, light_specular);
+	glUniform4fv(glGetUniformLocation(program, "LightPosition"), 1, light_position);
+	glUniform4fv(glGetUniformLocation(program, "LightAmbient"), 1, light_ambient);
+	glUniform4fv(glGetUniformLocation(program, "LightDiffuse"), 1, light_diffuse);
+	glUniform4fv(glGetUniformLocation(program, "LightSpecular"), 1, light_specular);
 
-    glEnable(GL_DEPTH_TEST);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glEnable(GL_DEPTH_TEST);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-// ================ DI CHUYỂN ==================
+// ================ DI CHUYỂN CAMERA ==================
 void updateCameraMovement() {
-    vec3 front = camera.getFront();
-    vec3 right = normalize(cross(front, vec3(0.0f, 1.0f, 0.0f)));
+	vec3 front = camera.getFront();
+	vec3 right = normalize(cross(front, vec3(0.0f, 1.0f, 0.0f)));
 
-    // ===== LOGIC TỐC ĐỘ (SỬA LẠI) =====
-    float walkSpeed = 0.05f;
-    float runSpeed = 0.20f;
-
-    // Kiểm tra trực tiếp phím Shift có đang được giữ hay không
-    // 0x8000 là bit kiểm tra trạng thái "Đang nhấn"
+    float walkSpeed = 0.04f;
+    float runSpeed = 0.2f;
     bool isShiftHeld = (GetAsyncKeyState(VK_SHIFT) & 0x8000);
 
-    // Tốc độ di chuyển
-    float currentSpeed = isShiftHeld ? runSpeed : walkSpeed;
+	// Tốc độ di chuyển
+	float currentSpeed = isShiftHeld ? runSpeed : walkSpeed;
 
-    // Phím W
-    if (GetAsyncKeyState('W') & 0x8000)
-        camera.position += currentSpeed * front;
-
-    // Phím S
-    if (GetAsyncKeyState('S') & 0x8000)
-        camera.position -= currentSpeed * front;
-
-    // Phím A
-    if (GetAsyncKeyState('A') & 0x8000)
-        camera.position -= currentSpeed * right * 0.8f;
-
-    // Phím D
-    if (GetAsyncKeyState('D') & 0x8000)
-        camera.position += currentSpeed * right * 0.8f;
+	// Phím A, S, D, W
+    if (GetAsyncKeyState('W') & 0x8000)        camera.position += currentSpeed * front;
+    if (GetAsyncKeyState('S') & 0x8000)        camera.position -= currentSpeed * front;
+    if (GetAsyncKeyState('A') & 0x8000)        camera.position -= currentSpeed * right * 0.8f;
+    if (GetAsyncKeyState('D') & 0x8000)        camera.position += currentSpeed * right * 0.8f;
 
     // Phím Space (Lên) - VK_SPACE là mã phím Space
-    if (GetAsyncKeyState(VK_SPACE) & 0x8000)
-        camera.position.y += currentSpeed * 0.5f;
+    if (GetAsyncKeyState(VK_SPACE) & 0x8000)   camera.position.y += currentSpeed * 0.5f;
 
     // Phím C (Xuống)
-    if (GetAsyncKeyState('C') & 0x8000)
-        camera.position.y -= currentSpeed *0.5f;
+    if (GetAsyncKeyState('C') & 0x8000)        camera.position.y -= currentSpeed *0.5f;
 }
 
 // ================== DISPLAY ==================
 void display() {
-    // Cập nhật di chuyển
-	updateCameraMovement();
+	updateCameraMovement(); // Cập nhật di chuyển
 
-    // Xử lý logic Reset vị trí cửa sổ (Delay 1 frame)
+    // --- Xử lý logic Reset vị trí cửa sổ (Delay 1 frame) ---
     if (needToResetPos) {
         int screenW = glutGet(GLUT_SCREEN_WIDTH);
         int screenH = glutGet(GLUT_SCREEN_HEIGHT);
@@ -106,11 +95,10 @@ void display() {
         needToResetPos = false; // Tắt cờ sau khi đã xử lý
     }
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // === 1. GỬI ÁNH SÁNG DỰA TRÊN TRẠNG THÁI ===
+    // --- Gửi ánh sáng dựa trên trạng thái ---
     if (isLightOn) {
-        // Ánh sáng mạnh (Bật)
         color4 light_ambient(0.3f, 0.3f, 0.3f, 1.0f);
         color4 light_diffuse(1.0f, 1.0f, 1.0f, 1.0f);
         color4 light_specular(1.0f, 1.0f, 1.0f, 1.0f);
@@ -119,319 +107,316 @@ void display() {
         glUniform4fv(glGetUniformLocation(program, "LightSpecular"), 1, light_specular);
     }
     else {
-        // Ánh sáng yếu (Tắt - chỉ còn ánh sáng mờ ảo)
-        color4 light_ambient(0.05f, 0.05f, 0.05f, 1.0f); // Rất tối
-        color4 light_diffuse(0.1f, 0.1f, 0.1f, 1.0f);    // Hầu như không thấy màu
-        color4 light_specular(0.0f, 0.0f, 0.0f, 1.0f);   // Không bóng
+        color4 light_ambient(0.05f, 0.05f, 0.05f, 1.0f); 
+        color4 light_diffuse(0.1f, 0.1f, 0.1f, 1.0f);    
+        color4 light_specular(0.0f, 0.0f, 0.0f, 1.0f);   
         glUniform4fv(glGetUniformLocation(program, "LightAmbient"), 1, light_ambient);
         glUniform4fv(glGetUniformLocation(program, "LightDiffuse"), 1, light_diffuse);
         glUniform4fv(glGetUniformLocation(program, "LightSpecular"), 1, light_specular);
     }
 
-    // Camera View
+	// Camera & Projection
     mat4 view = camera.getViewMatrix();
     glUniformMatrix4fv(view_loc, 1, GL_TRUE, view);
-
-    // Projection (FIX: theo aspect ratio)
     float aspect = (float)glutGet(GLUT_WINDOW_WIDTH) / (float)glutGet(GLUT_WINDOW_HEIGHT);
 
-    mat4 projection = Perspective(45.0f, aspect, 0.1f, 100.0f);
-    glUniformMatrix4fv(projection_loc, 1, GL_TRUE, projection);
-    glUniformMatrix4fv(model_loc, 1, GL_TRUE, model);
+	mat4 projection = Perspective(45.0f, aspect, 0.1f, 100.0f);
+	glUniformMatrix4fv(projection_loc, 1, GL_TRUE, projection);
+	glUniformMatrix4fv(model_loc, 1, GL_TRUE, model);
 
-    // Vẽ vật thể đặc trước
+    // Vẽ vật thể 
     if (scene)  scene->draw(model);
-
-	// Vẽ đèn 
     if (myLamp) {
-        mat4 lampModel = model * Translate(0.0f, 5.0f, 0.0f);
-        myLamp->draw(lampModel, isLightOn);
+        mat4 lampPos3 = model * Translate(4.5f, 4.0f, 0.0f);
+		mat4 lampPos2 = model * Translate(4.5f, 4.0f, 4.0f);
+		mat4 lampPos1 = model * Translate(4.5f, 4.0f, 8.0f);
+		mat4 lampPos4 = model * Translate(-4.5f, 10.5f, 3.0f) * RotateY(180);
+		mat4 lampPos5 = model * Translate(-4.5f, 10.5f, -3.0f) * RotateY(180);
+        myLamp->draw(lampPos1, isLightOn);
+		myLamp->draw(lampPos2, isLightOn);
+		myLamp->draw(lampPos3, isLightOn);
+		myLamp->draw(lampPos4, isLightOn);
+		myLamp->draw(lampPos5, isLightOn);
+    }
+    if (myGlassCoffeeTable) myGlassCoffeeTable->draw(model);
+	// Vẽ tủ kính
+    for (auto cab : cabinetList) { cab->openAngle = glassCabinetOpen; }
+    for (auto cabDraw : cabinetDrawList) { cabDraw->draw(model); }
+
+    if (myMainDoor) {
+        myMainDoor->openFactor = mainDoorOpen;
+        mat4 doorPos1 = model * Translate(0.0f, 0.0f, 10.0f);
+		mat4 doorPos2 = model * Translate(0.0f, 6.0f, 10.0f);
+        myMainDoor->draw(doorPos1);
+		myMainDoor->draw(doorPos2);
     }
 
-    // Vẽ Bàn trà kính
-    if (myCoffeeTable) myCoffeeTable->draw(model);
-
-    // Vẽ Tủ kính
-    if (myGlassCabinet) myGlassCabinet->draw(model);
-
-    glutSwapBuffers();
+	glutSwapBuffers();
 }
 
 // ================== TIMER (TỐI ƯU FPS) ==================
 void timer(int value) {
-    glutPostRedisplay();                 // Yêu cầu vẽ lại khung hình
+    glutPostRedisplay();                
     glutTimerFunc(1000 / FPS, timer, 0); 
 }
 
 // ================== CALLBACKS ==================
-void reshape(int width, int height) {
-    glViewport(0, 0, width, height);
-}
+void reshape(int width, int height) {   glViewport(0, 0, width, height);    }
 
-// Hàm khi nhấn phím
 void keyboardDown(unsigned char key, int x, int y) {
     keys[key] = true;
     if (key == 27) exit(0); // ESC thoát
+	if (key == 'l' || key == 'L') { isLightOn = !isLightOn; } // Bật/tắt đèn
 
-    // BẤM L ĐỂ BẬT/TẮT ĐÈN
-    if (key == 'l' || key == 'L') {
-        isLightOn = !isLightOn;
+	if (key == '1') { 
+        g_trainMove = !g_trainMove;
+        if (g_trainMove) {
+			g_TrainMove1 = false;
+			g_TrainMove2 = false;
+        }
+    } 
+    if (key == '2') { 
+        g_TrainMove1 = !g_TrainMove1; 
+        if (g_TrainMove1) { 
+            g_TrainMove2 = false;
+		    g_trainMove = false;
+        }
+
     }
-    if (key == '9') {
-		g_trainMove = !g_trainMove;   // bật / tắt chuyển động
+    if (key == '3') { 
+        g_TrainMove2 = !g_TrainMove2; 
+        if (g_TrainMove2) {
+			g_TrainMove1 = false;
+			g_trainMove = false;
+        }
     }
-    if (key == 'q') {
-        rolledDoor += 0.05f;
-    }
-    if (key == 'Q') {
-        rolledDoor -= 0.05f;
-	}
-    if (key == '/') {
-		if (!(drag >= 0.5f)) drag += 0.05f;
-    }
-    if (key == '?') {
-		if (!(drag <= 0.05f)) drag -= 0.05f;
-	}
+
+	// Mở đóng cửa cuốn
+    if (key == 'Q') { if (!(rolledDoor >= 1.0f)) rolledDoor += 0.05f; }
+    if (key == 'q') { if (!(rolledDoor <= 0.0f)) rolledDoor -= 0.05f; }
+    // Kéo trượt ngăn kéo
+    if (key == '/') { if (!(drag >= 0.5f)) drag += 0.05f; }
+    if (key == '?') { if (!(drag <= 0.05f)) drag -= 0.05f;}
+    // Xoay chìa khoá
+    if (key == '=') { if (!(twistKey >= 90.0f)) twistKey += 5.0f; }
+    if (key == '+') { if (!(twistKey <= 0.0f)) twistKey -= 5.0f; }
+	// Mở kính tủ
+    if (key == '-') { if (!(glassCabinetOpen >= 0.65f)) glassCabinetOpen += 0.05f; }
+	if (key == '_') { if (!(glassCabinetOpen <= 0.05f)) glassCabinetOpen -= 0.05f; }
+	// Mở cửa chính
+    if (key == 'o') { if (mainDoorOpen < 1.0f) mainDoorOpen += 0.05f; }
+    if (key == 'O') { if (mainDoorOpen > 0.0f) mainDoorOpen -= 0.05f; }
 }
 
-// Hàm khi thả phím 
-void keyboardUp(unsigned char key, int x, int y) {
-    keys[key] = false;
-}
+void keyboardUp(unsigned char key, int x, int y) { keys[key] = false; }
 
 void mouseMotion(int x, int y) {
     int cx = glutGet(GLUT_WINDOW_WIDTH) / 2;
     int cy = glutGet(GLUT_WINDOW_HEIGHT) / 2;
-
-    // Nếu vị trí chuột chính là tâm (do WarpPointer gây ra), bỏ qua không tính toán
     if (x == cx && y == cy) return;
 
-    float dx = (float)(x - cx); // Tính toán so với tâm màn hình luôn
-    float dy = (float)(cy - y); // Đảo trục Y
-
-    dx *= camera.sensitivity;
-    dy *= camera.sensitivity;
+    float dx = (float)(x - cx) * camera.sensitivity;
+    float dy = (float)(cy - y) * camera.sensitivity; // Đảo trục Y
 
     camera.yaw += dx;
     camera.pitch += dy;
 
-    if (camera.pitch > 89.0f)  camera.pitch = 89.0f;
-    if (camera.pitch < -89.0f) camera.pitch = -89.0f;
+	if (camera.pitch > 89.0f)  camera.pitch = 89.0f;
+	if (camera.pitch < -89.0f) camera.pitch = -89.0f;
 
     camera.updateCameraVectors();
-
-    // Đưa chuột về lại tâm
     glutWarpPointer(cx, cy);
 }
 
-// === HÀM XỬ LÝ PHÍM CHỨC NĂNG (F11) ===
 void specialInput(int key, int x, int y) {
     if (key == GLUT_KEY_F11) {
         isFullScrn = !isFullScrn;
-
-        if (isFullScrn) {
-            glutFullScreen();
-        }
-        else {
-            //Thay đổi kích thước ngay lập tức
-            glutReshapeWindow(FIXED_W, FIXED_H);
-			//Đặt cờ để reset vị trí trong hàm display
-            needToResetPos = true;
-        }
+        if (isFullScrn) glutFullScreen();
+        else { glutReshapeWindow(FIXED_W, FIXED_H); needToResetPos = true; }
     }
 }
 
 
 // ================== MAIN ==================
 int main(int argc, char** argv) {
-    std::cout << "Starting program..." << std::endl;
+	std::cout << "Starting program..." << std::endl;
 
-    glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 
-    // --- CĂN GIỮA MÀN HÌNH LÚC KHỞI ĐỘNG ---
+    // --- Căn giữa màn hình lúc khởi động ---
     int screenW = glutGet(GLUT_SCREEN_WIDTH);
     int screenH = glutGet(GLUT_SCREEN_HEIGHT);
     int posX = (screenW - FIXED_W) / 2;
     int posY = (screenH - FIXED_H) / 2;
-
     glutInitWindowSize(FIXED_W, FIXED_H);
     glutInitWindowPosition(posX, posY);
-
     glutCreateWindow("HAUI - BAI TAP LON - DO HOA MAY TINH - GROUP");
 
-    // GLEW
+    // --- GLEW ---
     if (glewInit() != GLEW_OK) {
         std::cerr << "GLEW initialization failed!" << std::endl;
         return EXIT_FAILURE;
     }
 
-    shaderSetup();
+	shaderSetup();
 
-    // ===== SCENE =====
     scene = new Scene();
-    myLamp = new CeilingLamp();
 
-    // ================== KHUNG CẢNH ==================
+    // ================== KHUNG CẢNH & NGOẠI CẢNH ==================
     scene->addShape(new House());
     scene->addShape(new TransformShape(Translate(15.0f, 0.0f, 0.0f), new HouseModern()));
     scene->addShape(new TransformShape(Translate(-15.0f, 0.0f, 0.0f), new HouseModern3F()));
-    scene->addShape(new TransformShape(Translate(0.0f, -0.25f, 30.0f) *RotateY(90.0f),new RoadWithTrees()));
+    scene->addShape(new TransformShape(Translate(0.0f, -0.25f, 30.0f) * RotateY(90.0f), new RoadWithTrees()));
 
-    // ================== TẦNG 1 – PHÒNG KHÁCH ==================
-    // ===== NỘI THẤT (MỚI THÊM) =====
+    myLamp = new CeilingLamp();
+	myMainDoor = new SlidingGlassDoor();
 
-    // -- Bộ Sofa giữa nhà --
-    // Quay 180 độ để hướng ra cửa, đặt giữa phòng
-    scene->addShape(new TransformShape(
-        Translate(0.0f, 0.0f, 0.0f) * RotateY(180),
-        new Sofa()
-    ));
+    // ================== TẦNG 1 (Ground Floor - Y ~ 0.0f -> 2.0f) ==================
 
-    // -- Kệ tàu hỏa (Sát tường bên trái) --
-    // Tường trái ở x = -5.0f (vì width nhà là 10)
-    scene->addShape(new TransformShape(
-        Translate(-4.5f, 0.0f, 0.0f) * RotateY(90), // Xoay dọc theo tường
-        new WoodShelf()
-    ));
+    // --- Nội thất chính (Sofa, Bàn, Kệ) ---
+    scene->addShape(new TransformShape(Translate(0.0f, 0.15f, 0.0f) * RotateY(90) * Scale(2.5f, 1.5f, 3.0f), new DisplayTable()));
+    scene->addShape(new TransformShape(Translate(0.5f, 1.47f, 1.5f) * RotateY(90), new ToyTrain1(0.2f)));      // Tàu mới 1
+    scene->addShape(new TransformShape(Translate(-0.5f, 1.47f, 1.5f) * RotateY(90), new ToyLocomotive2(0.2f))); // Đầu tàu 2
+    scene->addShape(new TransformShape(Translate(-0.5f, 1.47f, -1.0f) * RotateY(90), new ToyLocomotive3(0.2f))); // Đầu tàu 3
+    scene->addShape(new TransformShape(Translate(0.5f, 1.47f, -1.5f) * RotateY(90), new ToyLocomotive4(0.2f))); // Đầu tàu 4
 
-    // ===== BÀN TRƯNG BÀY GIỮA PHÒNG =====
-    // Đặt lệch một chút so với bàn trà
-    scene->addShape(new TransformShape(
-        Translate(2.5f, 0.0f, 2.0f),
-        new DisplayTable()
-    ));
-
-   
-    // Robot đứng cạnh tàu hỏa
-    scene->addShape(new TransformShape(
-        Translate(3.0f, 0.85f, 2.0f) * RotateY(-45),
-        new ToyRobot()
-    ));
-
-    myCoffeeTable = new TransformShape(
-        Translate(0.0f, 0.0f, 1.5f),
-        new CoffeeTable()
-    );
-
-    myGlassCabinet = new TransformShape(
-        Translate(4.0f, 0.0f, -8.0f) * RotateY(-45),
-        new GlassCabinet()
-    );
-
-
-    // ===== ĐẶT ĐỒ CHƠI LÊN KỆ GỖ (WoodShelf) =====
-    // Giả sử kệ gỗ đặt ở (-4.5f, 0, 0). Mỗi tầng cao khoảng 0.5f
-    // Tầng 1: Robot
-    scene->addShape(new TransformShape(
-        Translate(-4.5f, 0.55f, 0.0f) * RotateY(90),
-        new ToyRobot()
-    ));
-   
-    // Tầng 3: Robot khác
-    scene->addShape(new TransformShape(
-        Translate(-4.5f, 1.55f, 0.0f) * RotateY(90),
-        new ToyRobot()
-    ));
-
-    //mô hình tàu tầng 2
-    scene->addShape(
-        new TransformShape(
-            Translate(0.0f, 6.0f + 0.15f, 5.0f),
-            new ToyTrain(0.2f)
-        )
-    );
-    scene->addShape(
-        new TransformShape(
-            Translate(0.0f, 6.0f + 0.1f, 5.0f),
-            new CycleRail(3.0f, 100)
-        )
-    );
-    scene->addShape(
-        new TransformShape(
-            Translate(0.0f, 6.0f + 0.1f, 5.0f),
-            new CityInside(2.2f)   // < bán kính rail
-        )
-    );
-
-    //tàu mới 1 
-    scene->addShape(
-        new TransformShape(
-            Translate(0.0f, 0.15f, 8.0f),
-            new ToyTrain1(0.2f)
-        )
-    );
-
-    //ray thang
-    scene->addShape(
-        new TransformShape(
-            Translate(0.0f, 0.15f, 6.0f),
-            new StraightRail()
-        )
-    );
+    scene->addShape(new TransformShape(Translate(0.5f, 1.45f, 2.3f) * RotateY(90), new StraightRail()));       // Ray thẳng
+    scene->addShape(new TransformShape(Translate(-0.5f, 1.45f, 2.3f) * RotateY(90), new StraightRail()));       // Ray thẳng
+    scene->addShape(new TransformShape(Translate(0.5f, 1.45f, -0.3f) * RotateY(90), new StraightRail()));       // Ray thẳng
+    scene->addShape(new TransformShape(Translate(-0.5f, 1.45f, -0.3f) * RotateY(90), new StraightRail()));       // Ray thẳng
     
-    // Biển hiệu
-    scene->addShape(
-        new TransformShape(
-            Translate(0.0f, 4.5f, 10.2f), // Tọa độ X=0 (theo nhà), Y=4.5 (tầng 2), Z=10.2 (mặt trước tường)
-            new BienHieu()
-        )
-    );
-    // Poster Quảng cáo Tàu hỏa 
-    scene->addShape(
-        new TransformShape(
-            Translate(3.5f, 4.0f, 10.2f)* Scale(0.8f, 0.8f, 1.0f),
-            new PosterQuangCao()
-        )
-    );
-    scene->addShape(
-        new TransformShape(
-            Translate(-3.5f, 4.0f, 10.2f)* Scale(0.8f, 0.8f, 1.0f),
-            new PosterQuangCao()
-        )
-    );
-    // Gắn đèn soi vào biển hiệu TOY
-    scene->addShape(new TransformShape(
-        Translate(0.0f, 5.9f, 11.0f)* // Đặt cao hơn biển hiệu
-        RotateX(180.0f),                // Quay đèn xuống dưới
-        new DenChieuSang()
-    ));
+    for (int i = 0; i < 3; i++) {
+        float baseZ = 8.0f - i * 4.0f;
+        mat4 cabinetMatrix = Translate(4.5f, 0.15f, baseZ) * RotateY(-90);
 
-    //Gắn một dàn đèn âm trần trong nhà
-    for (float x = -4.0f; x <= 4.0f; x += 4.0f) {
+        // 2. Đặt tàu vào từng tầng 
+        // --- Tầng 1 (Đáy tủ) ---
         scene->addShape(new TransformShape(
-            Translate(x, 5.9f, 0.0f) * RotateX(180.0f),
-            new DenChieuSang()
+            cabinetMatrix * Translate(-0.2f, 0.1f, 0.0f) * Scale(1.0f),
+            new ToyLocomotive2(0.2f)
+        ));
+
+        // --- Tầng 2 (Đợt kính giữa) ---
+        scene->addShape(new TransformShape(
+            cabinetMatrix * Translate(-0.2f, 0.8f, 0.0f) * Scale(1.2f),
+            new ToyLocomotive3(0.2f)
+        ));
+
+        // --- Tầng 3 (Đợt kính cao) ---
+        scene->addShape(new TransformShape(
+            cabinetMatrix * Translate(-0.2f, 1.65f, 0.0f) * Scale(1.2f),
+            new ToyLocomotive4(0.2f)
         ));
     }
-    float zPositions[] = { -6.0f, 6.0f }; // Vị trí Z cho 2 dàn đèn mới
-    for (float z : zPositions) {
-        for (float x = -4.0f; x <= 4.0f; x += 4.0f) {
-            scene->addShape(new TransformShape(
-                Translate(x, 5.9f, z) * RotateX(180.0f),
-                new DenChieuSang()
-            ));
+
+    // ===== Tủ kính 1 =====
+    GlassCabinet* cab1 = new GlassCabinet();
+    TransformShape* cab1Pos = new TransformShape( Translate(4.4f, 0.1f, 8.0f) * RotateY(-90), cab1);
+    cabinetList.push_back(cab1);   
+    cabinetDrawList.push_back(cab1Pos); 
+
+    // ===== Tủ kính 2 =====
+    GlassCabinet* cab2 = new GlassCabinet();
+    TransformShape* cab2Pos = new TransformShape( Translate(4.4f, 0.1f, 4.0f) * RotateY(-90) , cab2);
+    cabinetList.push_back(cab2);
+    cabinetDrawList.push_back(cab2Pos);
+
+    // ===== Tủ kính 3 =====
+    GlassCabinet* cab3 = new GlassCabinet();
+    TransformShape* cab3Pos = new TransformShape(Translate(4.4f, 0.1f, 0.0f) * RotateY(-90), cab3);
+    cabinetList.push_back(cab3);
+    cabinetDrawList.push_back(cab3Pos);
+
+     // --- 3. KHU KỆ GỖ (WALL OF TOYS) - TƯỜNG TRÁI ---
+    // Mỗi kệ cách nhau 3.2m (vì kệ rộng 3m)
+    float shelfZ[] = { -6.5f, -2.0f, 2.5f };
+
+    for (int i = 0; i < 3; i++) {
+        // Vẽ kệ
+        scene->addShape(new TransformShape(Translate(-4.5f, 0.05f, shelfZ[i]) * RotateY(90), new WoodShelf()));
+        // --- Tự động xếp đồ chơi lên kệ ---
+        for (int floor = 0; floor <= 3; floor++) {
+            float yToy = 0.15f + floor *1.18f;
+            // Tầng lẻ: Xếp Robot
+            if (floor % 2 == 0) {
+                scene->addShape(new TransformShape(Translate(-4.4f, yToy, shelfZ[i] - 1.0f) * RotateY(90), new ToyRobot()));
+                scene->addShape(new TransformShape(Translate(-4.4f, yToy , shelfZ[i] + 1.0f) * RotateY(90), new ToyRobot()));
+            }
+            // Tầng chẵn: Xếp Đầu tàu hỏa
+            else {
+                scene->addShape(new TransformShape(Translate(-4.4f, yToy, shelfZ[i] + 1.0f) * RotateY(90) * Scale(1.2f), new ToyTrain1(0.2f)));
+            }
         }
     }
 
+
+    // ================== TẦNG 2 (Upper Floor - Y ~ 4.0f -> 7.5f) ==================
+    // --- Bàn tròn trung tâm tầng 2 (Y = 6.1f) ---
+    scene->addShape(new TransformShape(Translate(0.0f, 6.1f, 4.5f), new RoundTable()));
+    scene->addShape(new TransformShape(Translate(4.15f, 6.1f, -2.5f) * RotateY(-90) * Scale(2.5f, 1.5f, 2.0f), new Sofa()));
+    scene->addShape(new TransformShape(Translate(1.0f, 6.1f, -6.0f) * Scale(1.5f, 1.5f, 2.0f), new Sofa()));
+    myGlassCoffeeTable = new TransformShape(Translate(1.0f, 6.1f, -2.5f) * RotateY(-90) * Scale(2.5f, 1.5f, 2.0f), new CoffeeTable());
+     
+    // --- Set Tàu hỏa trên cao (Set 1 - Y ~ 7.4f) ---
+    scene->addShape(new TransformShape(Translate(0.0f, 7.4f, 4.5f) * Scale(0.75f), new ToyTrain(0.2f)));
+    scene->addShape(new TransformShape(Translate(0.0f, 7.35f, 4.5f) * Scale(0.75f), new CycleRail(3.0f, 100)));
+    scene->addShape(new TransformShape(Translate(0.0f, 7.35f, 4.5f) * Scale(0.75f), new CityInside(2.2f)));
+
+    // --- Biển hiệu & Trang trí tường (Y ~ 4.0f -> 6.75f) ---
+    // ben ngoai
+    scene->addShape(new TransformShape(Translate(0.0f, 11.25f, 10.2f) * Scale(2.4f, 1.0f, 1.0f), new BienHieu())); // to
+    scene->addShape(new TransformShape(Translate(0.0f, 5.2f, 11.0f) * Scale(1.05f, 0.85f , 1.0f), new BienHieu()));
+    scene->addShape(new TransformShape(Translate(3.5f, 4.0f, 10.2f) * Scale(0.8f, 0.8f, 1.0f), new PosterQuangCao()));
+    scene->addShape(new TransformShape(Translate(-3.5f, 4.0f, 10.2f) * Scale(0.8f, 0.8f, 1.0f), new PosterQuangCao()));
+
+    scene->addShape(new TransformShape(Translate(-1.5f, 2.5f, -9.8f) * Scale(1.5), new PosterQuangCao()));
+    scene->addShape(new TransformShape(Translate(-5.0f, 9.0f, 3.0f) * RotateY(90)* Scale( 1.2f), new PosterQuangCao()));
+    scene->addShape(new TransformShape(Translate(-5.0f, 9.0f, -3.0f) * RotateY(90) * Scale( 1.2f), new PosterQuangCao()));
+    
+
+
+    // ================== HỆ THỐNG ĐÈN (Trần nhà & Soi tranh) ==================
+    // --- Đèn soi biển hiệu (Y = 5.9f) ---
+    scene->addShape(new TransformShape(Translate(0.0f, 5.9f, 12.0f) * RotateX(180.0f), new DenChieuSang()));
+
+    // --- Đèn âm trần (Chạy vòng lặp tạo lưới đèn) ---
+    // Dàn 1 (Z = 0)
+    for (float x = -4.0f; x <= 4.0f; x += 4.0f)
+        scene->addShape(new TransformShape(Translate(x, 5.9f, 0.0f) * RotateX(180.0f), new DenChieuSang()));
+
+    // Dàn 2 & 3 (Z = -6 và Z = 6)
+    float zPositions[] = { -6.0f, 6.0f };
+    for (float z : zPositions)
+        for (float x = -4.0f; x <= 4.0f; x += 4.0f)
+            scene->addShape(new TransformShape(Translate(x, 5.9f, z) * RotateX(180.0f), new DenChieuSang()));
+
+    // --- Đèn âm trần (Chạy vòng lặp tạo lưới đèn) ---
+    // Dàn 1 (Z = 0)
+    for (float x = -4.0f; x <= 4.0f; x += 4.0f)
+        scene->addShape(new TransformShape(Translate(x, 11.9f, 0.0f) * RotateX(180.0f), new DenChieuSang()));
+
+    // Dàn 2 & 3 (Z = -6 và Z = 6
+    for (float z : zPositions)
+        for (float x = -4.0f; x <= 4.0f; x += 4.0f)
+            scene->addShape(new TransformShape(Translate(x, 11.9f, z) * RotateX(180.0f), new DenChieuSang()));
+
     // ===== CAMERA SETUP ===== 
-    camera.position = vec3(0.0f, 2.0f, 0.0f); // X (giữa), Y (cao tầm mắt người)
+    camera.position = vec3(0.0f, 2.0f, 30.0f);
 
     // ===== REGISTER CALLBACKS =====
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
-
-	glutKeyboardFunc(keyboardDown); // Nhấn phím
-	glutKeyboardUpFunc(keyboardUp); // Thả phím
-    glutSpecialFunc(specialInput); //F1
-	glutPassiveMotionFunc(mouseMotion); // Chuột di chuyển
-
+	glutKeyboardFunc(keyboardDown); 
+	glutKeyboardUpFunc(keyboardUp); 
+    glutSpecialFunc(specialInput); 
+	glutPassiveMotionFunc(mouseMotion); 
     glutTimerFunc(0, timer, 0); // set FPS
 
-    glutSetCursor(GLUT_CURSOR_NONE);
-    std::cout << "Entering GLUT main loop..." << std::endl;
-    glutMainLoop();
+	glutSetCursor(GLUT_CURSOR_NONE);
+	std::cout << "Entering GLUT main loop..." << std::endl;
+	glutMainLoop();
 
-    delete scene;
-    return 0;
+	delete scene;
+	return 0;
 }

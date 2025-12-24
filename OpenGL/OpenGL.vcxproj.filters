@@ -49,6 +49,9 @@
     <Filter Include="Source Files\objects\TongMinhHieu">
       <UniqueIdentifier>{9b8c39d6-b219-460d-8be0-fd27f5d6326d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\objects\NguyenThanhHung">
+      <UniqueIdentifier>{9b75eec5-c352-4ecd-9bcd-a1f6ba19c1ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -159,14 +162,23 @@
     <ClCompile Include="DenChieuSang.cpp">
       <Filter>Source Files\objects\NguyenQuocDat</Filter>
     </ClCompile>
-    <ClCompile Include="Lights.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StraightRail.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PosterQuangCao.cpp">
       <Filter>Source Files\objects\NguyenQuocDat</Filter>
+    </ClCompile>
+    <ClCompile Include="ToyLocomotive2.cpp">
+      <Filter>Source Files\objects\NguyenThanhHung</Filter>
+    </ClCompile>
+    <ClCompile Include="ToyLocomotive3.cpp">
+      <Filter>Source Files\objects\NguyenThanhHung</Filter>
+    </ClCompile>
+    <ClCompile Include="ToyLocomotive4.cpp">
+      <Filter>Source Files\objects\NguyenThanhHung</Filter>
+    </ClCompile>
+    <ClCompile Include="Lights.cpp">
+      <Filter>Source Files\objects\VuTheVuong</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -298,14 +310,23 @@
     <ClInclude Include="DenChieuSang.h">
       <Filter>Source Files\objects\NguyenQuocDat</Filter>
     </ClInclude>
-    <ClInclude Include="Lights.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StraightRail.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PosterQuangCao.h">
       <Filter>Source Files\objects\NguyenQuocDat</Filter>
+    </ClInclude>
+    <ClInclude Include="ToyLocomotive2.h">
+      <Filter>Source Files\objects\NguyenThanhHung</Filter>
+    </ClInclude>
+    <ClInclude Include="ToyLocomotive3.h">
+      <Filter>Source Files\objects\NguyenThanhHung</Filter>
+    </ClInclude>
+    <ClInclude Include="ToyLocomotive4.h">
+      <Filter>Source Files\objects\NguyenThanhHung</Filter>
+    </ClInclude>
+    <ClInclude Include="Lights.h">
+      <Filter>Source Files\objects\VuTheVuong</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
