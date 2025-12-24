@@ -16,6 +16,7 @@ private:
     std::vector<Shape*> rails;  // Các thanh ray nối tiếp
 
     void initGPUBuffers() override {} // StraightRail không cần buffer riêng
+	int count;
 };
 
 #endif
