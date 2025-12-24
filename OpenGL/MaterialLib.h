@@ -209,4 +209,12 @@ namespace Materials {
         color4(1.0, 1.0, 1.0, 1.0),
         10.0f
     };
+
+    // ================== PASTEL PINK (HỒNG NHẠT) ==================
+    const Material PastelPink = {
+        color4(0.25f, 0.20f, 0.22f, 1.0f), // Ambient (Hồng tối làm nền)
+        color4(1.00f, 0.82f, 0.86f, 1.0f), // Diffuse (Hồng phấn chủ đạo)
+        color4(0.0f, 0.0f, 0.0f, 1.0f), // Specular (Đốm sáng trắng nhẹ)
+        100.0f                              // Độ bóng trung bình
+    };
 }

@@ -207,7 +207,7 @@ HouseModern::~HouseModern() {
 
 void HouseModern::draw(const mat4& modelMatrix) const {
     for (auto p : parts) {
-        Materials::ConcreteBlue.apply();
+        Materials::PastelPink.apply();
         p->draw(modelMatrix);
     }
 }
