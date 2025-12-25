@@ -129,6 +129,7 @@
     <ClCompile Include="CycleRail.cpp" />
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="DenChieuSang.cpp" />
+    <ClCompile Include="DieuHoa.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="Drawers.cpp" />
     <ClCompile Include="Furniture_Vuong.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="CycleRail.h" />
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="DenChieuSang.h" />
+    <ClInclude Include="DieuHoa.h" />
     <ClInclude Include="Furniture_Vuong.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="Drawers.h" />
