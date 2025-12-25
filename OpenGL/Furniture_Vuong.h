@@ -1,11 +1,31 @@
 ﻿#pragma once
-#ifndef FURNITURE_H
-#define FURNITURE_H
 
-#include "Shape.h"
-#include "Cube.h"
-#include "Cylinder.h"
+#include "Angel.h"
 #include <vector>
+#include "TransformShape.h"
+
+#include "Cube.h" 
+#include "Cylinder.h"
+
+// Class hỗ trợ Animation tự động
+class AnimatedShape : public Shape {
+public:
+    float currentVal = 0.0f; // Giá trị hiện tại (0.0 -> 1.0)
+    float targetVal = 0.0f;  // Giá trị đích
+    float speed = 0.05f;     // Tốc độ chuyển động
+
+    void update() {
+        if (abs(currentVal - targetVal) > 0.001f) {
+            float step = (targetVal - currentVal) * 0.05f; // Hiệu ứng Ease-out (gần đích thì chậm lại)
+            if (abs(step) < 0.001f) step = (targetVal > currentVal) ? 0.001f : -0.001f; // Đảm bảo không đứng im
+            currentVal += step;
+        }
+        else {
+            currentVal = targetVal;
+        }
+    }
+    void toggle() { targetVal = (targetVal == 0.0f) ? 1.0f : 0.0f; }
+};
 
 // 1. Bàn trà (Gỗ & Kính)
 class CoffeeTable : public Shape {
@@ -42,24 +62,22 @@ private:
 };
 
 // 4. Tủ kính trưng bày
-class GlassCabinet : public Shape {
+class GlassCabinet : public AnimatedShape {
 public:
     GlassCabinet();
     ~GlassCabinet();
-    float openAngle = 0.0f; // Góc mở cửa
     void draw(const mat4& modelMatrix) const override;
 
 private:
+    float w, h, d; 
     std::vector<Shape*> frameParts;       // Khung tĩnh
     std::vector<Shape*> staticGlassParts; // Kính tĩnh (lưng, hông)
 
-    // CỬA TRÁI
-    std::vector<Shape*> leftDoorGlass;    // Phần kính cửa trái
-    std::vector<Shape*> leftDoorHandle;   // Phần tay nắm cửa trái
-
-    // CỬA PHẢI
-    std::vector<Shape*> rightDoorGlass;   // Phần kính cửa phải
-    std::vector<Shape*> rightDoorHandle;  // Phần tay nắm cửa phải
+    // Gom nhóm cửa để quản lý
+    struct Door {
+        std::vector<Shape*> handle;
+        std::vector<Shape*> glass;
+    } leftDoor, rightDoor;
 
     void initGPUBuffers() override {}
 };
@@ -88,39 +106,21 @@ private:
 };
 
 // 7. Cửa kính trượt
-class SlidingGlassDoor : public Shape {
+class SlidingGlassDoor : public AnimatedShape {
 public:
     SlidingGlassDoor();
     ~SlidingGlassDoor();
-    float openFactor = 0.0f;
     void draw(const mat4& modelMatrix) const override;
 private:
     // Khung bao ngoài (Cố định)
     std::vector<Shape*> fixedFrame;
 
-    // Cánh trái (Khung + Tay nắm + Kính)
-    std::vector<Shape*> leftDoorFrame;   // Phần đặc
-    std::vector<Shape*> leftDoorGlass;   // Phần kính
-
-    // Cánh phải (Khung + Tay nắm + Kính)
-    std::vector<Shape*> rightDoorFrame;  // Phần đặc
-    std::vector<Shape*> rightDoorGlass;  // Phần kính
-
-    void initGPUBuffers() override {}
-};
-
-// 8. Tranh treo tường (Khung gỗ + Tranh)
-class WallPicture : public Shape {
-public:
-    WallPicture(float w, float h); // Cho phép tùy chỉnh kích thước
-    ~WallPicture();
-    void draw(const mat4& modelMatrix) const override;
-
-private:
-    float width, height;
-    std::vector<Shape*> frameParts; // Khung tranh
-    std::vector<Shape*> canvasParts; // Phần tranh (nơi dán ảnh)
+    // Struct phân cấp rõ ràng: Cánh cửa gồm Khung, Kính, Tay nắm
+    struct DoorLeaf {
+        std::vector<Shape*> frame;
+        std::vector<Shape*> glass;
+        std::vector<Shape*> handle;
+    } leftLeaf, rightLeaf;
 
     void initGPUBuffers() override {}
 };
-#endif

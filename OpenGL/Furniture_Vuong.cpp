@@ -2,6 +2,9 @@
 #include "TransformShape.h"
 #include "MaterialLib.h"
 
+#include "Cube.h"
+#include "Cylinder.h"
+
 using namespace Angel;
 
 // ================== 1. BÀN TRÀ (Chân gỗ, Mặt kính) ==================
@@ -9,7 +12,7 @@ CoffeeTable::CoffeeTable() {
     float w = 1.2f; float h = 0.5f; float d = 0.8f;
     float legW = 0.1f, topT = 0.05f; 
 
-    // 4 Chân bàn (Gỗ)
+    // 4 Chân bàn
     TransformShape* leg1 = new TransformShape(Translate(-w / 2 + legW / 2, h / 2, -d / 2 + legW / 2) * Scale(legW, h, legW), new Cube());
     TransformShape* leg2 = new TransformShape(Translate(w / 2 - legW / 2, h / 2, -d / 2 + legW / 2) * Scale(legW, h, legW), new Cube());
     TransformShape* leg3 = new TransformShape(Translate(-w / 2 + legW / 2, h / 2, d / 2 - legW / 2) * Scale(legW, h, legW), new Cube());
@@ -99,7 +102,8 @@ void WoodShelf::draw(const mat4& model) const {
 // 4. TỦ KÍNH TRƯNG BÀY
 // =========================================================
 GlassCabinet::GlassCabinet() {
-    float w = 3.5f; float h = 2.5f; float d = 1.0f;
+    // Lưu vào biến thành viên để đồng bộ với hàm draw
+    this->w = 3.5f; this->h = 2.5f; this->d = 1.0f;
     float thick = 0.05f;
 
     // --- 1. PHẦN TĨNH (KHUNG + KÍNH CỐ ĐỊNH) ---
@@ -121,58 +125,48 @@ GlassCabinet::GlassCabinet() {
     staticGlassParts.push_back(new TransformShape(Translate(0, h * 0.33, 0) * Scale(w - thick, 0.01f, d - thick), new Cube()));
     staticGlassParts.push_back(new TransformShape(Translate(0, h * 0.66, 0) * Scale(w - thick, 0.01f, d - thick), new Cube()));
 
-    // --- 2. CÁNH CỬA TRÁI (Kính + Tay nắm) ---
-    // Tay nắm trái
-    leftDoorHandle.push_back(new TransformShape(Translate(-w / 8, h / 2, d / 2 + 0.01f) * Scale(0.05f, 0.2f, 0.02f), new Cube()));
-    // Kính trái
-    leftDoorGlass.push_back(new TransformShape(Translate(-w / 4.1, h / 2, d / 2) * Scale((w - thick) / 2, h - thick, 0.01f), new Cube()));
-
-    // --- 3. CÁNH CỬA PHẢI (Kính + Tay nắm) ---
-    // Tay nắm phải
-    rightDoorHandle.push_back(new TransformShape(Translate(w / 8, h / 2, d / 2 + 0.01f) * Scale(0.05f, 0.2f, 0.02f), new Cube()));
-    // Kính phải
-    rightDoorGlass.push_back(new TransformShape(Translate(w / 4.1, h / 2, d / 2) * Scale((w - thick) / 2, h - thick, 0.01f), new Cube()));
+    // 2. CỬA TRÁI & PHẢI (Dùng Struct)
+    // Tay nắm
+    leftDoor.handle.push_back(new TransformShape(Translate(-w / 8, h / 2, d / 2 + 0.01f) * Scale(0.05f, 0.2f, 0.02f), new Cube()));
+    rightDoor.handle.push_back(new TransformShape(Translate(w / 8, h / 2, d / 2 + 0.01f) * Scale(0.05f, 0.2f, 0.02f), new Cube()));
+    // Kính cửa
+    leftDoor.glass.push_back(new TransformShape(Translate(-w / 4.1, h / 2, d / 2) * Scale((w - thick) / 2, h - thick, 0.01f), new Cube()));
+    rightDoor.glass.push_back(new TransformShape(Translate(w / 4.1, h / 2, d / 2) * Scale((w - thick) / 2, h - thick, 0.01f), new Cube()));
 }
 
 GlassCabinet::~GlassCabinet() {
     for (auto p : frameParts) delete p;
     for (auto p : staticGlassParts) delete p;
-    for (auto p : leftDoorGlass) delete p;
-    for (auto p : leftDoorHandle) delete p;
-    for (auto p : rightDoorGlass) delete p;
-    for (auto p : rightDoorHandle) delete p;
+    for (auto p : leftDoor.handle) delete p;
+    for (auto p : leftDoor.glass) delete p;
+    for (auto p : rightDoor.handle) delete p;
+    for (auto p : rightDoor.glass) delete p;
 }
 
 // HÀM DRAW MỚI CÓ LOGIC XOAY CỬA
 void GlassCabinet::draw(const mat4& model) const {
-    float w = 3.5f; float d = 1.0f;
+    // Tự động xoay dựa trên biến currentVal (kế thừa từ AnimatedShape)
+    float angleDeg = this->currentVal * 90.0f; // 0 -> 90 độ
 
-	// Tạo ma trận biến đổi cho cửa trái và cửa phải dựa trên góc mở
-    float angleDeg = this->openAngle * 120.0f;
+    // Ma trận xoay quanh bản lề
     mat4 mLeft = model * Translate(-w / 2, 0, d / 2) * RotateY(-angleDeg) * Translate(w / 2, 0, -d / 2);
     mat4 mRight = model * Translate(w / 2, 0, d / 2) * RotateY(angleDeg) * Translate(-w / 2, 0, -d / 2);
 
-    // 1. VẼ KHUNG TĨNH
-    glDisable(GL_BLEND);
-    glDepthMask(GL_TRUE);
+    // 1. VẼ PHẦN ĐẶC
+    glDisable(GL_BLEND); glDepthMask(GL_TRUE);
     Materials::Metal.apply();
     for (auto p : frameParts) p->draw(model);
-    for (auto p : leftDoorHandle) p->draw(mLeft);  
-    for (auto p : rightDoorHandle) p->draw(mRight);
+    for (auto p : leftDoor.handle) p->draw(mLeft);
+    for (auto p : rightDoor.handle) p->draw(mRight);
 
     // 2. VẼ KÍNH
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glDepthMask(GL_FALSE);
-
+    glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); glDepthMask(GL_FALSE);
     Materials::Glass.apply();
-    for (auto p : staticGlassParts) p->draw(model); // Kính tĩnh
-    for (auto p : leftDoorGlass) p->draw(mLeft);
-    for (auto p : rightDoorGlass) p->draw(mRight);
+    for (auto p : staticGlassParts) p->draw(model);
+    for (auto p : leftDoor.glass) p->draw(mLeft);
+    for (auto p : rightDoor.glass) p->draw(mRight);
 
-    // 3. RESET
-    glDepthMask(GL_TRUE);
-    glDisable(GL_BLEND);
+    glDepthMask(GL_TRUE); glDisable(GL_BLEND);
 }
 
 // ================== 5. BÀN TRƯNG BÀY (DisplayTable) ==================
@@ -234,133 +228,62 @@ SlidingGlassDoor::SlidingGlassDoor() {
     // Thanh ngang dưới (Sàn)
     fixedFrame.push_back(new TransformShape(Translate(0, frameThick / 2, 0) * Scale(w, frameThick, d), new Cube()));
 
-    // --- KÍCH THƯỚC CÁNH CỬA ---
-    float doorW = w / 2 - 0.02f; // Nhỏ hơn một xíu để không cạ cột
-    float doorH = h - 2 * frameThick;
+    // Helper Lambda để tạo cánh cửa (Tránh lặp code 2 lần)
+    auto createLeaf = [&](float xCenter, DoorLeaf& leaf) {
+        float doorW = w / 2 - 0.02f;
+        float doorH = h - 2 * frameThick;
+        // Khung trên/dưới
+        leaf.frame.push_back(new TransformShape(Translate(xCenter, h / 2 + doorH / 2 - 0.05f, 0) * Scale(doorW + 0.015, 0.1f, 0.05f), new Cube()));
+        leaf.frame.push_back(new TransformShape(Translate(xCenter, h / 2 - doorH / 2 + 0.05f, 0) * Scale(doorW + 0.015, 0.1f, 0.05f), new Cube()));
+        // Khung trái/phải
+        leaf.frame.push_back(new TransformShape(Translate(xCenter - doorW / 2 + 0.05f, h / 2, 0) * Scale(0.115f, doorH, 0.05f), new Cube()));
+        leaf.frame.push_back(new TransformShape(Translate(xCenter + doorW / 2 - 0.05f, h / 2, 0) * Scale(0.115f, doorH, 0.05f), new Cube()));
+        // Tay nắm (dịch sang bên một chút tùy cánh)
+        float handleOffset = (xCenter < 0) ? 0.65f : -0.65f;
+        leaf.handle.push_back(new TransformShape(Translate(xCenter + handleOffset, h / 2, 0.05f) * Scale(0.05f, 0.4f, 0.02f), new Cube()));
+        // Kính
+        leaf.glass.push_back(new TransformShape(Translate(xCenter, h / 2, 0) * Scale(doorW - 0.2f, doorH - 0.2f, glassThick), new Cube()));
+        };
 
-    // --- 2. CÁNH TRÁI  ---
-    float leftX = -w / 4;
-    float y = h / 2;
-
-    // Khung cánh trái (Viền kim loại) - Trên/Dưới
-    leftDoorFrame.push_back(new TransformShape(Translate(leftX, y + doorH / 2 - 0.05f, 0) * Scale(doorW + 0.015, 0.1f, 0.05f), new Cube()));
-    leftDoorFrame.push_back(new TransformShape(Translate(leftX, y - doorH / 2 + 0.05f, 0) * Scale(doorW +0.015, 0.1f, 0.05f), new Cube()));
-    // Khung cánh trái - Trái/Phải
-    leftDoorFrame.push_back(new TransformShape(Translate(leftX - doorW / 2 + 0.05f, y, 0) * Scale(0.115f, doorH, 0.05f), new Cube()));
-    leftDoorFrame.push_back(new TransformShape(Translate(leftX + doorW / 2 - 0.05f, y, 0) * Scale(0.115f, doorH, 0.05f), new Cube()));
-
-    // Tay nắm trái (Thanh dọc)
-    leftDoorFrame.push_back(new TransformShape(Translate(leftX + 0.65f, y, 0.05f) * Scale(0.05f, 0.4f, 0.02f), new Cube()));
-
-    // Kính trái
-    leftDoorGlass.push_back(new TransformShape(Translate(leftX, y, 0) * Scale(doorW - 0.2f, doorH - 0.2f, glassThick), new Cube()));
-
-
-    // --- 3. CÁNH PHẢI (Ban đầu nằm bên phải) ---
-    float rightX = w / 4;
-
-    // Khung cánh phải
-    rightDoorFrame.push_back(new TransformShape(Translate(rightX, y + doorH / 2 - 0.05f, 0) * Scale(doorW + 0.015 , 0.1f, 0.05f), new Cube()));
-    rightDoorFrame.push_back(new TransformShape(Translate(rightX, y - doorH / 2 + 0.05f, 0) * Scale(doorW + 0.015, 0.1f, 0.05f), new Cube()));
-    rightDoorFrame.push_back(new TransformShape(Translate(rightX - doorW / 2 + 0.05f, y, 0) * Scale(0.115f, doorH, 0.05f), new Cube()));
-    rightDoorFrame.push_back(new TransformShape(Translate(rightX + doorW / 2 - 0.05f, y, 0) * Scale(0.115f, doorH, 0.05f), new Cube()));
-
-    // Tay nắm phải
-    rightDoorFrame.push_back(new TransformShape(Translate(rightX - 0.65f, y, 0.05f) * Scale(0.05f, 0.4f, 0.02f), new Cube()));
-
-    // Kính phải
-    rightDoorGlass.push_back(new TransformShape(Translate(rightX, y, 0) * Scale(doorW - 0.2f, doorH - 0.2f, glassThick), new Cube()));
+	// Tạo cánh trái & phải
+    createLeaf(-w / 4, leftLeaf);
+	createLeaf(w / 4, rightLeaf);
 }
 
 SlidingGlassDoor::~SlidingGlassDoor() {
     for (auto p : fixedFrame) delete p;
-    for (auto p : leftDoorFrame) delete p;
-    for (auto p : leftDoorGlass) delete p;
-    for (auto p : rightDoorFrame) delete p;
-    for (auto p : rightDoorGlass) delete p;
+    // Xóa bộ nhớ trong struct
+    auto deleteLeaf = [](DoorLeaf& leaf) {
+        for (auto p : leaf.frame) delete p;
+        for (auto p : leaf.glass) delete p;
+        for (auto p : leaf.handle) delete p;
+    };
+    deleteLeaf(leftLeaf);
+    deleteLeaf(rightLeaf);
 }
 
 void SlidingGlassDoor::draw(const mat4& model) const {
-    // --- TÍNH TOÁN DỊCH CHUYỂN ---
-    // Cửa rộng 4m, mỗi cánh 2m. Mở hết cỡ là trượt đi khoảng 1.8m
-    float slideDist = this->openFactor * 1.8f;
+    float slideDist = this->currentVal * 1.8f; // Dùng currentVal của AnimatedShape
 
     mat4 mLeft = model * Translate(-slideDist, 0, 0);
     mat4 mRight = model * Translate(slideDist, 0, 0);
 
-
-    // --- 1: VẼ PHẦN ĐẶC (KHUNG + TAY NẮM) ---
-    glDisable(GL_BLEND);
-    glDepthMask(GL_TRUE);
-
-    Materials::Metal.apply(); // Nhôm kính
-    // 1. Khung bao cố định
+    // 1. PHẦN ĐẶC
+    glDisable(GL_BLEND); glDepthMask(GL_TRUE);
+    Materials::Metal.apply();
     for (auto p : fixedFrame) p->draw(model);
 
-    // 2. Khung cánh trái (Áp dụng trượt)
-    for (auto p : leftDoorFrame) p->draw(mLeft);
+    for (auto p : leftLeaf.frame) p->draw(mLeft);
+    for (auto p : leftLeaf.handle) p->draw(mLeft);
 
-    // 3. Khung cánh phải (Áp dụng trượt)
-    for (auto p : rightDoorFrame) p->draw(mRight);
+    for (auto p : rightLeaf.frame) p->draw(mRight);
+    for (auto p : rightLeaf.handle) p->draw(mRight);
 
-
-    // --- PHA 2: VẼ KÍNH (TRONG SUỐT) ---
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glDepthMask(GL_FALSE);
-
+    // 2. KÍNH
+    glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); glDepthMask(GL_FALSE);
     Materials::Glass.apply();
-    // 1. Kính trái
-    for (auto p : leftDoorGlass) p->draw(mLeft);
+    for (auto p : leftLeaf.glass) p->draw(mLeft);
+    for (auto p : rightLeaf.glass) p->draw(mRight);
 
-    // 2. Kính phải
-    for (auto p : rightDoorGlass) p->draw(mRight);
-
-
-    // --- RESET ---
-    glDepthMask(GL_TRUE);
-    glDisable(GL_BLEND);
-}
-
-
-// ================== WALL PICTURE (TRANH TREO TƯỜNG) ==================
-WallPicture::WallPicture(float w, float h) {
-    this->width = w;
-    this->height = h;
-    float frameW = 0.05f; // Độ rộng bản gỗ khung
-    float thick = 0.03f;  // Độ dày khung
-
-    // --- 1. KHUNG TRANH (GỖ) ---
-    // Cạnh trên
-    frameParts.push_back(new TransformShape(Translate(0, h / 2 - frameW / 2, 0) * Scale(w, frameW, thick), new Cube()));
-    // Cạnh dưới
-    frameParts.push_back(new TransformShape(Translate(0, -h / 2 + frameW / 2, 0) * Scale(w, frameW, thick), new Cube()));
-    // Cạnh trái
-    frameParts.push_back(new TransformShape(Translate(-w / 2 + frameW / 2, 0, 0) * Scale(frameW, h - 2 * frameW, thick), new Cube()));
-    // Cạnh phải
-    frameParts.push_back(new TransformShape(Translate(w / 2 - frameW / 2, 0, 0) * Scale(frameW, h - 2 * frameW, thick), new Cube()));
-
-    // --- 2. PHẦN TRANH (CANVAS) ---
-    // Nằm lọt thỏm bên trong khung, mỏng hơn khung một chút
-    // Nếu bạn có texture Mona Lisa, hãy bind texture trước khi vẽ phần này
-    canvasParts.push_back(new TransformShape(Translate(0, 0, 0) * Scale(w - 2 * frameW, h - 2 * frameW, 0.01f), new Cube()));
-}
-
-WallPicture::~WallPicture() {
-    for (auto p : frameParts) delete p;
-    for (auto p : canvasParts) delete p;
-}
-
-void WallPicture::draw(const mat4& model) const {
-    // 1. Vẽ Khung Gỗ
-    Materials::Wood.apply(); // Khung màu gỗ nâu
-    for (auto p : frameParts) p->draw(model);
-
-    // 2. Vẽ Tranh
-    // Nếu chưa có texture, ta dùng màu trắng hoặc màu kem để tượng trưng
-    // Nếu có texture: gọi glBindTexture(...) ở đây
-    Materials::Plastic.apply(); // Tạm dùng Plastic màu sáng
-    // Hoặc bạn có thể định nghĩa Materials::MonaLisaColor nếu muốn màu cụ thể
-
-    for (auto p : canvasParts) p->draw(model);
+    glDepthMask(GL_TRUE); glDisable(GL_BLEND);
 }

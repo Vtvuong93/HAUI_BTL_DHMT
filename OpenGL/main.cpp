@@ -7,25 +7,22 @@ Scene* scene = nullptr;
 Camera camera;
 
 // Cấu hình cửa sổ cố định
-const int FIXED_W = 1440;
-const int FIXED_H = 900;
-const int FPS = 60;
+const int FIXED_W = 1440; const int FIXED_H = 900; const int FPS = 60;
 
 // Trạng thái
 bool keys[256];
 bool isFullScrn = false;
 bool needToResetPos = false;
 bool isLightOn = true; 
-float glassCabinetOpen = 0.0f; 
-float mainDoorOpen = 0.0f;         
-
-std::vector<GlassCabinet*> cabinetList;     
-std::vector<TransformShape*> cabinetDrawList;
+       
+std::vector<GlassCabinet*> cabinets;
+std::vector<TransformShape*> cabinetPositions;
 
 CeilingLamp* myLamp = nullptr; // Đối tượng đèn
 TransformShape* myGlassCoffeeTable = nullptr;
-SlidingGlassDoor* myMainDoor = nullptr; // Con trỏ quản lý cửa chính
 
+SlidingGlassDoor* myMainDoor = nullptr; // Con trỏ quản lý cửa chính
+SlidingGlassDoor* myUpperDoor = nullptr; // Con trỏ quản lý cửa ban công
 
 // ================== SHADER ==================
 void shaderSetup() {
@@ -124,31 +121,39 @@ void display() {
 	glUniformMatrix4fv(projection_loc, 1, GL_TRUE, projection);
 	glUniformMatrix4fv(model_loc, 1, GL_TRUE, model);
 
-    // Vẽ vật thể 
+	// Vẽ Scene
     if (scene)  scene->draw(model);
-    if (myLamp) {
-        mat4 lampPos3 = model * Translate(4.5f, 4.0f, 0.0f);
-		mat4 lampPos2 = model * Translate(4.5f, 4.0f, 4.0f);
-		mat4 lampPos1 = model * Translate(4.5f, 4.0f, 8.0f);
-		mat4 lampPos4 = model * Translate(-4.5f, 10.5f, 3.0f) * RotateY(180);
-		mat4 lampPos5 = model * Translate(-4.5f, 10.5f, -3.0f) * RotateY(180);
-        myLamp->draw(lampPos1, isLightOn);
-		myLamp->draw(lampPos2, isLightOn);
-		myLamp->draw(lampPos3, isLightOn);
-		myLamp->draw(lampPos4, isLightOn);
-		myLamp->draw(lampPos5, isLightOn);
-    }
-    if (myGlassCoffeeTable) myGlassCoffeeTable->draw(model);
-	// Vẽ tủ kính
-    for (auto cab : cabinetList) { cab->openAngle = glassCabinetOpen; }
-    for (auto cabDraw : cabinetDrawList) { cabDraw->draw(model); }
 
+	// Vẽ đèn 
+    if (myLamp) {
+        // Danh sách vị trí đèn (dễ dàng thêm bớt)
+        std::vector<mat4> lampPositions = {
+            model * Translate(4.5f, 4.0f, 0.0f),
+            model * Translate(4.5f, 4.0f, 4.0f),
+            model * Translate(4.5f, 4.0f, 8.0f),
+            model * Translate(-4.5f, 10.5f, 3.0f) * RotateY(180),
+            model * Translate(-4.5f, 10.5f, -3.0f) * RotateY(180)
+        };
+        for (const auto& pos : lampPositions) myLamp->draw(pos, isLightOn);
+    }
+
+	// Vẽ bàn kính
+    if (myGlassCoffeeTable) myGlassCoffeeTable->draw(model);
+
+	// Vẽ tủ kính
+    for (size_t i = 0; i < cabinets.size(); i++) {
+        cabinets[i]->update(); // Tự tính toán góc mở
+        cabinetPositions[i]->draw(model); // Vẽ tại vị trí đã định
+    }
+
+    // --- VẼ CỬA CHÍNH (Tự động) ---
     if (myMainDoor) {
-        myMainDoor->openFactor = mainDoorOpen;
-        mat4 doorPos1 = model * Translate(0.0f, 0.0f, 10.0f);
-		mat4 doorPos2 = model * Translate(0.0f, 6.0f, 10.0f);
-        myMainDoor->draw(doorPos1);
-		myMainDoor->draw(doorPos2);
+        myMainDoor->update();
+        myMainDoor->draw(model * Translate(0.0f, 0.0f, 10.0f));
+    }
+    if (myUpperDoor) {
+        myUpperDoor->update();
+        myUpperDoor->draw(model * Translate(0.0f, 6.0f, 10.0f));
     }
 
 	glutSwapBuffers();
@@ -200,12 +205,22 @@ void keyboardDown(unsigned char key, int x, int y) {
     // Xoay chìa khoá
     if (key == '=') { if (!(twistKey >= 90.0f)) twistKey += 5.0f; }
     if (key == '+') { if (!(twistKey <= 0.0f)) twistKey -= 5.0f; }
-	// Mở kính tủ
-    if (key == '-') { if (!(glassCabinetOpen >= 0.65f)) glassCabinetOpen += 0.05f; }
-	if (key == '_') { if (!(glassCabinetOpen <= 0.05f)) glassCabinetOpen -= 0.05f; }
-	// Mở cửa chính
-    if (key == 'o') { if (mainDoorOpen < 1.0f) mainDoorOpen += 0.05f; }
-    if (key == 'O') { if (mainDoorOpen > 0.0f) mainDoorOpen -= 0.05f; }
+
+    // --- ĐIỀU KHIỂN TỐI ƯU ---
+    // Mở kính tủ (Toggle tất cả tủ)
+    if (key == '-' || key == '_') {
+        for (auto cab : cabinets) cab->toggle();
+    }
+
+    // Mở cửa chính
+    if (key == 'o' || key == 'O') {
+        if (myMainDoor) myMainDoor->toggle();
+    }
+
+    // Mở cửa tầng 2 (Nếu dùng riêng)
+    if (key == 'p' || key == 'P') {
+        if (myUpperDoor) myUpperDoor->toggle();
+    }
 }
 
 void keyboardUp(unsigned char key, int x, int y) { keys[key] = false; }
@@ -271,6 +286,7 @@ int main(int argc, char** argv) {
 
     myLamp = new CeilingLamp();
 	myMainDoor = new SlidingGlassDoor();
+	myUpperDoor = new SlidingGlassDoor();
 
     // ================== TẦNG 1 (Ground Floor - Y ~ 0.0f -> 2.0f) ==================
 
@@ -310,23 +326,14 @@ int main(int argc, char** argv) {
         ));
     }
 
-    // ===== Tủ kính 1 =====
-    GlassCabinet* cab1 = new GlassCabinet();
-    TransformShape* cab1Pos = new TransformShape( Translate(4.4f, 0.1f, 8.0f) * RotateY(-90), cab1);
-    cabinetList.push_back(cab1);   
-    cabinetDrawList.push_back(cab1Pos); 
+    float cabinetZ[] = { 8.0f, 4.0f, 0.0f };
+    for (float z : cabinetZ) {
+        GlassCabinet* cab = new GlassCabinet();
+        TransformShape* cabPos = new TransformShape(Translate(4.4f, 0.1f, z) * RotateY(-90), cab);
 
-    // ===== Tủ kính 2 =====
-    GlassCabinet* cab2 = new GlassCabinet();
-    TransformShape* cab2Pos = new TransformShape( Translate(4.4f, 0.1f, 4.0f) * RotateY(-90) , cab2);
-    cabinetList.push_back(cab2);
-    cabinetDrawList.push_back(cab2Pos);
-
-    // ===== Tủ kính 3 =====
-    GlassCabinet* cab3 = new GlassCabinet();
-    TransformShape* cab3Pos = new TransformShape(Translate(4.4f, 0.1f, 0.0f) * RotateY(-90), cab3);
-    cabinetList.push_back(cab3);
-    cabinetDrawList.push_back(cab3Pos);
+        cabinets.push_back(cab);       // Lưu logic
+        cabinetPositions.push_back(cabPos); // Lưu vị trí vẽ
+    }
 
      // --- 3. KHU KỆ GỖ (WALL OF TOYS) - TƯỜNG TRÁI ---
     // Mỗi kệ cách nhau 3.2m (vì kệ rộng 3m)
