@@ -1,4 +1,4 @@
-// Material.h
+﻿// Material.h
 #pragma once
 #include "Angel.h"
 typedef vec4 color4;

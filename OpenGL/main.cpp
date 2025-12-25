@@ -25,6 +25,12 @@ DieuHoa* myAC = nullptr;
 SlidingGlassDoor* myMainDoor = nullptr; // Con trỏ quản lý cửa chính
 SlidingGlassDoor* myUpperDoor = nullptr; // Con trỏ quản lý cửa ban công
 
+// Giá trị mặc định (Lúc đèn đang BẬT)
+color4 current_light_ambient(0.3f, 0.3f, 0.3f, 1.0f);
+color4 current_light_diffuse(1.0f, 1.0f, 1.0f, 1.0f);
+color4 current_light_specular(1.0f, 1.0f, 1.0f, 1.0f);
+vec4   current_light_position(0.0f, 3.0f, 5.0f, 1.0f); // Vị trí đèn trần
+
 // ================== SHADER ==================
 void shaderSetup() {
 	std::cout << "Loading shaders..." << std::endl;
@@ -97,20 +103,14 @@ void display() {
 
     // --- Gửi ánh sáng dựa trên trạng thái ---
     if (isLightOn) {
-        color4 light_ambient(0.3f, 0.3f, 0.3f, 1.0f);
-        color4 light_diffuse(1.0f, 1.0f, 1.0f, 1.0f);
-        color4 light_specular(1.0f, 1.0f, 1.0f, 1.0f);
-        glUniform4fv(glGetUniformLocation(program, "LightAmbient"), 1, light_ambient);
-        glUniform4fv(glGetUniformLocation(program, "LightDiffuse"), 1, light_diffuse);
-        glUniform4fv(glGetUniformLocation(program, "LightSpecular"), 1, light_specular);
+        current_light_ambient = color4(1.0f, 1.0f, 1.0f, 1.0f);
+        current_light_diffuse = color4(1.0f, 1.0f, 1.0f, 1.0f);
+        current_light_specular = color4(1.0f, 1.0f, 1.0f, 1.0f);
     }
     else {
-        color4 light_ambient(0.05f, 0.05f, 0.05f, 1.0f); 
-        color4 light_diffuse(0.1f, 0.1f, 0.1f, 1.0f);    
-        color4 light_specular(0.0f, 0.0f, 0.0f, 1.0f);   
-        glUniform4fv(glGetUniformLocation(program, "LightAmbient"), 1, light_ambient);
-        glUniform4fv(glGetUniformLocation(program, "LightDiffuse"), 1, light_diffuse);
-        glUniform4fv(glGetUniformLocation(program, "LightSpecular"), 1, light_specular);
+        current_light_ambient = color4(0.6f, 0.6f, 0.6f, 1.0f); // Tối nhưng không đen kịt để còn thấy đường
+        current_light_diffuse = color4(0.0f, 0.0f, 0.0f, 1.0f); // Tắt hẳn diffuse
+        current_light_specular = color4(0.0f, 0.0f, 0.0f, 1.0f); // Tắt phản xạ
     }
 
 	// Camera & Projection
@@ -121,6 +121,9 @@ void display() {
 	mat4 projection = Perspective(45.0f, aspect, 0.1f, 100.0f);
 	glUniformMatrix4fv(projection_loc, 1, GL_TRUE, projection);
 	glUniformMatrix4fv(model_loc, 1, GL_TRUE, model);
+
+    vec4 light_pos_world = vec4(-20.0f, 30.0f, 60.0f, 1.0f);
+    current_light_position = view * light_pos_world;
 
 	// Vẽ Scene
     if (scene)  scene->draw(model);
