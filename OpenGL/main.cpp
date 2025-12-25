@@ -19,6 +19,7 @@
 #include "BienHieu.h"
 #include "PosterQuangCao.h"
 #include "DenChieuSang.h"
+#include "DieuHoa.h"
 
 // ================== CAMERA ==================
 Camera camera;
@@ -91,10 +92,11 @@ void reshape(int width, int height) {
 }
 
 // ================== KEYBOARD ==================
+DieuHoa* myAC = nullptr;
 void keyboard(unsigned char key, int, int) {
     vec3 front = camera.getFront();
     vec3 right = normalize(cross(front, vec3(0.0f, 1.0f, 0.0f)));
-
+    
     switch (key) {
     case 'w': camera.position += camera.speed * front; break;
     case 's': camera.position -= camera.speed * front; break;
@@ -105,7 +107,15 @@ void keyboard(unsigned char key, int, int) {
     case 'c': camera.position.y -= camera.speed; break;
 
     case 27: exit(EXIT_SUCCESS); // ESC
+
     }
+    switch (key) {
+    case 'h': // Nhấn phím 'H' để bật/tắt điều hòa
+        if (myAC) myAC->toggle();
+        break;
+        // ...
+    }
+
 
     glutPostRedisplay();
 }
@@ -192,7 +202,9 @@ int main(int argc, char** argv) {
         )
     );
 
-    // ================== TẦNG 1 – PHÒNG KHÁCH ==================
+    // ================== TẦNG 1 – PHÒNG KHÁCH ================== 
+    myAC = new DieuHoa();
+    scene->addShape(new TransformShape(Translate(-3.0f, 5.0f, -9.6f), myAC));
     // Biển hiệu
     scene->addShape(
         new TransformShape(

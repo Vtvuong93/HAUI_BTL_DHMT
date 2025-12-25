@@ -125,6 +125,7 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="DenChieuSang.cpp" />
+    <ClCompile Include="DieuHoa.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="House.cpp" />
     <ClCompile Include="HouseModern.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="DenChieuSang.h" />
+    <ClInclude Include="DieuHoa.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="BienHieu.h" />
     <ClInclude Include="PosterQuangCao.h" />

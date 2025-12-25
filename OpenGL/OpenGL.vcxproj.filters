@@ -96,6 +96,9 @@
     <ClCompile Include="DenChieuSang.cpp">
       <Filter>Source Files\objects\NguyenQuocDat</Filter>
     </ClCompile>
+    <ClCompile Include="DieuHoa.cpp">
+      <Filter>Source Files\objects\NguyenQuocDat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="fshader1.glsl">
@@ -179,6 +182,9 @@
       <Filter>Source Files\objects\NguyenQuocDat</Filter>
     </ClInclude>
     <ClInclude Include="DenChieuSang.h">
+      <Filter>Source Files\objects\NguyenQuocDat</Filter>
+    </ClInclude>
+    <ClInclude Include="DieuHoa.h">
       <Filter>Source Files\objects\NguyenQuocDat</Filter>
     </ClInclude>
   </ItemGroup>
