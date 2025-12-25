@@ -52,5 +52,9 @@ extern float rolledDoor;
 extern float drag;
 extern float twistKey;
 
+extern color4 current_light_ambient;
+extern color4 current_light_diffuse;
+extern color4 current_light_specular;
+extern vec4   current_light_position;
 
 #endif 
