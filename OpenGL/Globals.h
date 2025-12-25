@@ -31,6 +31,7 @@
 #include "BienHieu.h"
 #include "PosterQuangCao.h"
 #include "DenChieuSang.h"
+#include "DieuHoa.h"
 
 #include "Furniture_Vuong.h"
 #include "Toys_Vuong.h"

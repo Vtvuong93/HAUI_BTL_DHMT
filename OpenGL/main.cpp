@@ -20,6 +20,7 @@ std::vector<TransformShape*> cabinetPositions;
 
 CeilingLamp* myLamp = nullptr; // Đối tượng đèn
 TransformShape* myGlassCoffeeTable = nullptr;
+DieuHoa* myAC = nullptr;
 
 SlidingGlassDoor* myMainDoor = nullptr; // Con trỏ quản lý cửa chính
 SlidingGlassDoor* myUpperDoor = nullptr; // Con trỏ quản lý cửa ban công
@@ -235,6 +236,10 @@ void keyboardDown(unsigned char key, int x, int y) {
     if (key == 'p' || key == 'P') {
         if (myUpperDoor) myUpperDoor->toggle();
     }
+
+    if(key == 'h' || key == 'H') {
+        if (myAC) myAC->toggle();
+    }
 }
 
 void keyboardUp(unsigned char key, int x, int y) { keys[key] = false; }
@@ -370,6 +375,10 @@ int main(int argc, char** argv) {
             }
         }
     }
+
+    myAC = new DieuHoa();
+    scene->addShape(new TransformShape(Translate(-3.0f, 5.0f, -9.6f), myAC));
+    scene->addShape(new TransformShape(Translate(-3.0f, 11.0f, -9.6f), myAC));
 
 
     // ================== TẦNG 2 (Upper Floor - Y ~ 4.0f -> 7.5f) ==================
